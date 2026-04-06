@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FCP 패밀리카라반 경기직영점 - 선착순 한정수량</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Bebas+Neue&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #0a0a0a;
+    --deep: #111111;
+    --dark: #1a1a1a;
+    --accent-blue: #00c8ff;
+    --accent-gold: #c9a84c;
+    --accent-gold-light: #e8d48b;
+    --white: #ffffff;
+    --gray: #888888;
+    --light-gray: #cccccc;
+  }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ===== HERO SECTION ===== */
+  .hero {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Top announcement bar */
+  .announcement-bar {
+    background: linear-gradient(90deg, var(--accent-gold), #d4af37, var(--accent-gold));
+    color: var(--black);
+    text-align: center;
+    padding: 10px 20px;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 20;
+    animation: shimmer 3s infinite;
+  }
+
+  @keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .announcement-bar {
+    background-size: 200% 200%;
+    background-image: linear-gradient(90deg, #b8941f, #e8d48b, #c9a84c, #e8d48b, #b8941f);
+  }
+
+  /* Main hero content area */
+  .hero-main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: calc(100vh - 40px);
+    position: relative;
+  }
+
+  /* Left: Exterior image (full bleed) */
+  .hero-left {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .hero-left::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent 40%, var(--black) 100%);
+    pointer-events: none;
+  }
+
+  .hero-left::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(to top, rgba(10,10,10,0.7), transparent);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Left overlay badge */
+  .badge-limited {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    z-index: 10;
+    background: rgba(201, 168, 76, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--accent-gold);
+    padding: 12px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    animation: fadeSlideDown 1s ease 0.3s both;
+  }
+
+  .badge-limited .badge-top {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: var(--accent-gold-light);
+    text-transform: uppercase;
+  }
+
+  .badge-limited .badge-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--accent-gold);
+    line-height: 1;
+  }
+
+  .badge-limited .badge-unit {
+    font-size: 13px;
+    color: var(--accent-gold-light);
+    font-weight: 500;
+    letter-spacing: 2px;
+  }
+
+  /* Right: Content + interior images */
+  .hero-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 50px 60px 40px;
+    position: relative;
+    z-index: 5;
+  }
+
+  /* Brand */
+  .brand-tag {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 6px;
+    color: var(--accent-blue);
+    margin-bottom: 12px;
+    animation: fadeSlideUp 0.8s ease 0.2s both;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 3.5vw, 52px);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 8px;
+    animation: fadeSlideUp 0.8s ease 0.35s both;
+  }
+
+  .hero-title .highlight {
+    color: var(--accent-gold);
+  }
+
+  .hero-subtitle {
+    font-size: clamp(14px, 1.2vw, 18px);
+    color: var(--gray);
+    font-weight: 300;
+    margin-bottom: 36px;
+    line-height: 1.6;
+    animation: fadeSlideUp 0.8s ease 0.5s both;
+  }
+
+  /* Interior image grid */
+  .interior-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 40px;
+    animation: fadeSlideUp 0.8s ease 0.6s both;
+  }
+
+  .interior-grid .img-card {
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: transform 0.4s ease, border-color 0.4s ease;
+  }
+
+  .interior-grid .img-card:hover {
+    transform: scale(1.03);
+    border-color: var(--accent-blue);
+  }
+
+  .interior-grid .img-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .interior-grid .img-card .img-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px 12px;
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: var(--light-gray);
+  }
+
+  /* Package cards */
+  .packages {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 36px;
+    animation: fadeSlideUp 0.8s ease 0.75s both;
+  }
+
+  .pkg-card {
+    position: relative;
+    padding: 24px 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(5px);
+    transition: all 0.4s ease;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .pkg-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-gold), var(--accent-gold-light));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .pkg-card:hover::before {
+    opacity: 1;
+  }
+
+  .pkg-card:hover {
+    border-color: var(--accent-gold);
+    background: rgba(201, 168, 76, 0.05);
+    transform: translateY(-3px);
+  }
+
+  .pkg-card.premium {
+    border-color: var(--accent-gold);
+    background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.02));
+  }
+
+  .pkg-card.premium::before {
+    opacity: 1;
+  }
+
+  .pkg-card .pkg-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--gray);
+    font-weight: 500;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .pkg-card.premium .pkg-label {
+    color: var(--accent-gold);
+  }
+
+  .pkg-card .pkg-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(30px, 2.5vw, 42px);
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .pkg-card .pkg-price .won {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.45em;
+    font-weight: 400;
+    color: var(--gray);
+    vertical-align: baseline;
+    margin-left: 4px;
+  }
+
+  .pkg-card .pkg-desc {
+    font-size: 12px;
+    color: var(--gray);
+    line-height: 1.5;
+  }
+
+  /* CTA */
+  .cta-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    animation: fadeSlideUp 0.8s ease 0.9s both;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 36px;
+    background: linear-gradient(135deg, var(--accent-gold), #d4af37);
+    color: var(--black);
+    font-weight: 700;
+    font-size: 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(201,168,76,0.3);
+  }
+
+  .cta-btn svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s ease;
+  }
+
+  .cta-btn:hover svg {
+    transform: translateX(4px);
+  }
+
+  .cta-info {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.5;
+  }
+
+  .cta-info strong {
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  /* Store info bar at bottom */
+  .store-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 50px;
+    background: var(--deep);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    position: relative;
+    z-index: 10;
+  }
+
+  .store-bar .store-name {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .store-bar .store-name .fcp-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 3px;
+    color: var(--accent-blue);
+  }
+
+  .store-bar .store-name .divider {
+    width: 1px;
+    height: 18px;
+    background: rgba(255,255,255,0.2);
+  }
+
+  .store-bar .store-name span:last-child {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--light-gray);
+  }
+
+  .store-bar .store-details {
+    display: flex;
+    gap: 30px;
+    font-size: 13px;
+    color: var(--gray);
+  }
+
+  .store-bar .store-details span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Decorative line */
+  .accent-line {
+    width: 50px;
+    height: 2px;
+    background: var(--accent-gold);
+    margin-bottom: 20px;
+    animation: fadeSlideUp 0.8s ease 0.15s both;
+  }
+
+  /* Animations */
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== RESPONSIVE ===== */
+
+  /* Tablet */
+  @media (max-width: 1024px) {
+    .hero-main {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .hero-left {
+      height: 50vh;
+      min-height: 350px;
+    }
+
+    .hero-left::after {
+      background: linear-gradient(to bottom, transparent 50%, var(--black) 100%);
+    }
+
+    .hero-right {
+      padding: 40px 30px 50px;
+    }
+
+    .store-bar {
+      flex-direction: column;
+      gap: 12px;
+      padding: 16px 30px;
+      text-align: center;
+    }
+
+    .store-bar .store-details {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+    }
+  }
+
+  /* Mobile */
+  @media (max-width: 640px) {
+    .announcement-bar {
+      font-size: 12px;
+      padding: 8px 16px;
+    }
+
+    .hero-left {
+      height: 45vh;
+      min-height: 280px;
+    }
+
+    .badge-limited {
+      top: 16px;
+      left: 16px;
+      padding: 8px 16px;
+    }
+
+    .badge-limited .badge-number {
+      font-size: 32px;
+    }
+
+    .hero-right {
+      padding: 30px 20px 40px;
+    }
+
+    .interior-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .interior-grid .img-card:nth-child(3) {
+      grid-column: 1 / -1;
+      aspect-ratio: 16/9;
+    }
+
+    .packages {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .cta-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .cta-btn {
+      justify-content: center;
+      padding: 14px 24px;
+    }
+
+    .cta-info {
+      text-align: center;
+    }
+
+    .store-bar {
+      padding: 14px 20px;
+    }
+
+    .store-bar .store-details {
+      font-size: 12px;
+    }
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--dark); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<section class="hero">
+
+  <!-- Top Announcement -->
+  <div class="announcement-bar">
+    ⚡ 선착순 한정수량 10대 — 지금 바로 상담 예약하세요 ⚡
+  </div>
+
+  <!-- Main Hero -->
+  <div class="hero-main">
+
+    <!-- Left: Exterior -->
+    <div class="hero-left">
+      <img src="DSC_3655.jpg" alt="기아 카니발 외관 - FCP 패밀리카라반">
+      <div class="badge-limited">
+        <span class="badge-top">LIMITED</span>
+        <span class="badge-number">10</span>
+        <span class="badge-unit">대 한정</span>
+      </div>
+    </div>
+
+    <!-- Right: Content -->
+    <div class="hero-right">
+      <div class="accent-line"></div>
+      <div class="brand-tag">FCP FAMILY CARAVAN — 경기직영점</div>
+      <h1 class="hero-title">
+        프리미엄 카니발 패키지<br>
+        <span class="highlight">선착순 한정수량</span> 특별가
+      </h1>
+      <p class="hero-subtitle">
+        VIP 전용 인테리어 · 시트 커스터마이징 · 앰비언트 라이팅<br>
+        패밀리카라반이 만드는 특별한 카니발을 경험하세요
+      </p>
+
+      <!-- Interior Images -->
+      <div class="interior-grid">
+        <div class="img-card">
+          <img src="DSC00012_bright.jpg" alt="풀 인테리어 뷰">
+          <div class="img-label">FULL INTERIOR</div>
+        </div>
+        <div class="img-card">
+          <img src="DSC00032_bright.jpg" alt="VIP 시트">
+          <div class="img-label">VIP SEATS</div>
+        </div>
+        <div class="img-card">
+          <img src="DSC00041_bright.jpg" alt="좌석 조절 컨트롤러">
+          <div class="img-label">SEAT CONTROL</div>
+        </div>
+      </div>
+
+      <!-- Package Cards -->
+      <div class="packages">
+        <div class="pkg-card">
+          <div class="pkg-label">PACKAGE A</div>
+          <div class="pkg-price">1,100<span class="won">만원</span></div>
+          <div class="pkg-desc">프리미엄 커스터마이징 패키지</div>
+        </div>
+        <div class="pkg-card premium">
+          <div class="pkg-label">✦ PACKAGE B · PREMIUM</div>
+          <div class="pkg-price">1,500<span class="won">만원</span></div>
+          <div class="pkg-desc">풀 VIP 프리미엄 패키지</div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="cta-row">
+        <a href="#" class="cta-btn">
+          상담 예약하기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <div class="cta-info">
+          <strong>선착순 10대 한정</strong><br>
+          조기 마감될 수 있습니다
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Store Bar -->
+  <div class="store-bar">
+    <div class="store-name">
+      <span class="fcp-logo">FCP</span>
+      <span class="divider"></span>
+      <span>패밀리카라반 경기직영점</span>
+    </div>
+    <div class="store-details">
+      <span>📍 경기도 직영점</span>
+      <span>📞 상담 문의 가능</span>
+      <span>🕐 AM 10:00 - PM 7:00</span>
+    </div>
+  </div>
+
+</section>
+
+</body>
+</html>
