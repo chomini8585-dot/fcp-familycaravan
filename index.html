@@ -13,6 +13,16 @@
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'Pretendard Variable','Pretendard',-apple-system,'Noto Sans KR',sans-serif; }
   #root { min-height:100vh; }
+  @keyframes fadeIn { from{opacity:0;transform:translateX(-50%) translateY(-10px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+  @media (max-width:768px) {
+    .resp-grid-main { grid-template-columns:1fr !important; }
+    .resp-grid-2col { grid-template-columns:1fr !important; }
+    .resp-sticky { position:relative !important; top:auto !important; }
+    .resp-print-pad { padding:16px 14px !important; }
+    .resp-table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    .resp-btn-wrap { flex-direction:column !important; }
+    .resp-btn-wrap button { width:100% !important; }
+  }
 </style>
 </head>
 <body>
@@ -206,7 +216,8 @@ function App(){
   const[selColor,setSelColor]=useState(null);
   const[cust,setCust]=useState([{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false}]);
   const[cN,setCN]=useState("");const[cP,setCP]=useState("");const[cNo,setCNo]=useState("");const[disc,setDisc]=useState(0);
-  const[sMsg,setSMsg]=useState("");const pr=useRef(null);
+  const[sMsg,setSMsg]=useState("");const[toast,setToast]=useState("");const pr=useRef(null);
+  const showToast=(msg)=>{setToast(msg);setTimeout(()=>setToast(""),2500);};
 
   // URL에서 견적 복원
   useEffect(()=>{
@@ -255,7 +266,7 @@ function App(){
   };
   const copyLink=async()=>{
     const url=makeLink();
-    try{await navigator.clipboard.writeText(url);setSMsg("📋 링크 복사 완료!");setTimeout(()=>setSMsg(""),2500);}
+    try{await navigator.clipboard.writeText(url);showToast("📋 링크가 복사되었습니다.");}
     catch(e){prompt("아래 링크를 복사하세요:",url);}
   };
 
@@ -274,9 +285,11 @@ function App(){
 
   if(!loaded) return (<div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"#fff",fontFamily:F}}><FL /><div style={{color:"#bbb"}}>로딩 중...</div></div>);
 
-  // ═══ STEP 0 ═══
-  if(step===0) return(
-    <div style={{minHeight:"100vh",background:"#ffffff",padding:"40px 20px",fontFamily:F}}><FL />
+  // Toast overlay
+  const toastEl = toast ? (<div style={{position:"fixed",top:30,left:"50%",transform:"translateX(-50%)",zIndex:9999,background:"#1a1a1a",color:"#fff",padding:"14px 28px",borderRadius:12,fontSize:16,fontWeight:700,boxShadow:"0 8px 30px rgba(0,0,0,0.25)",animation:"fadeIn 0.3s ease",whiteSpace:"nowrap"}}>{toast}</div>) : null;
+
+  // Render toast on every step
+  if(step===0) return(<div style={{minHeight:"100vh",background:"#ffffff",padding:"40px 20px",fontFamily:F}}>{toastEl}<FL />
       <div style={{maxWidth:1200,margin:"0 auto"}}>
         <div style={{textAlign:"center",marginBottom:52}}>
           <img src={LOGO} alt="logo" style={{width:56,height:56,objectFit:"contain",marginBottom:10}} />
@@ -291,7 +304,7 @@ function App(){
               <div style={{background:v.id==="carnival"?"#1a1a1a":"#0369A1",color:"#fff",padding:"3px 14px",borderRadius:20,fontSize:12,fontWeight:800,letterSpacing:2}}>{v.badge}</div>
               <div style={{fontSize:17,fontWeight:800,color:"#333"}}>{v.name}</div>
             </div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(185px,1fr))",gap:12}}>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(150px,1fr))",gap:10}}>
               {v.models.map(m=><MC key={m.id} m={m} onClick={()=>{setSV(v.id);setSM(m.id);setST(null);setSSO(v.commonSpecial.filter(o=>o.required).map(o=>o.id));setSBO([]);setSTO([]);setSMO([]);setSelColor(null);setDisc(0);setCust([{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false}]);setStep(1);}} />)}
             </div>
           </div>
@@ -303,19 +316,18 @@ function App(){
 
   // ═══ STEP 1 ═══
   if(step===1) return(
-    <div style={{minHeight:"100vh",background:"#fafafa",padding:"20px 14px",fontFamily:F}}><FL />
+    <div style={{minHeight:"100vh",background:"#fafafa",padding:"20px 14px",fontFamily:F}}>{toastEl}<FL />
       <div style={{maxWidth:1040,margin:"0 auto"}}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20,flexWrap:"wrap",gap:10}}>
           <button onClick={()=>setStep(0)} style={bL}>← 모델 선택</button>
           <button onClick={copyLink} style={{background:"#16a34a",color:"#fff",border:"none",padding:"7px 14px",borderRadius:6,cursor:"pointer",fontSize:12,fontWeight:700}}>🔗 견적 링크 복사</button>
-          {sMsg&&<span style={{fontSize:12,fontWeight:700,color:"#16a34a"}}>{sMsg}</span>}
           <div style={{textAlign:"right"}}><div style={{fontSize:11,color:GD,letterSpacing:3,fontWeight:700}}>{veh?.badge} · {mdl?.subtitle}</div><div style={{fontSize:22,fontWeight:900,color:"#1a1a1a"}}>{mdl?.name}</div></div>
         </div>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 280px",gap:16,alignItems:"start"}}>
+        <div className="resp-grid-main" style={{display:"grid",gridTemplateColumns:"1fr 280px",gap:16,alignItems:"start"}}>
           <div style={{display:"flex",flexDirection:"column",gap:12}}>
             <Sc t="고객 정보" ic="👤"><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}><In l="고객명" v={cN} s={setCN} ph="홍길동" /><In l="연락처" v={cP} s={setCP} ph="010-0000-0000" /></div><In l="비고" v={cNo} s={setCNo} ph="특이사항" mt={8} /></Sc>
             <GL t="순정차 (베이스)" c={BL} />
-            <Sc t="트림 선택 (선택사항)" ic="🚗" bg="#F5F8FF"><div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:8}}>{veh?.trims.map(t=><TC key={t.id} t={t} sel={sT===t.id} oc={()=>{if(sT===t.id){setST(null);setSTO([]);}else{setST(t.id);setSTO([]);}}} />)}</div></Sc>
+            <Sc t="트림 선택 (선택사항)" ic="🚗" bg="#F5F8FF"><div className="resp-grid-2col" style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:8}}>{veh?.trims.map(t=><TC key={t.id} t={t} sel={sT===t.id} oc={()=>{if(sT===t.id){setST(null);setSTO([]);}else{setST(t.id);setSTO([]);}}} />)}</div></Sc>
             {veh?.colors&&<Sc t="색상 선택" ic="🎨" bg="#F5F8FF">{(sT==="xline"?veh.colors.xline:veh.colors.default||[]).map(c=>(<div key={c.id} onClick={()=>setSelColor(selColor===c.id?null:c.id)} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 10px",borderRadius:7,cursor:"pointer",background:selColor===c.id?"#E0EDFF":"transparent",marginBottom:3}}><div style={{width:17,height:17,borderRadius:99,flexShrink:0,border:selColor===c.id?"3px solid #2563EB":"2px solid #ccc",background:selColor===c.id?"#2563EB":"transparent",display:"flex",alignItems:"center",justifyContent:"center"}}>{selColor===c.id&&<div style={{width:7,height:7,borderRadius:99,background:"#fff"}} />}</div><div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:selColor===c.id?"#1E40AF":"#999"}}>{c.name}</div></div><div style={{fontSize:13,fontWeight:700,color:selColor===c.id?"#1E40AF":"#ccc"}}>{c.price>0?fmt(c.price)+"원":"0원"}</div></div>))}</Sc>}
             {veh?.baseOptions.length>0&&<Sc t="공통 선택품목" ic="⚙️" bg="#F5F8FF">{veh.baseOptions.map(o=><OR key={o.id} it={o} ck={sBO.includes(o.id)} tg={()=>tg(sBO,setSBO,o.id)} />)}</Sc>}
             {(veh?.trimOptions[sT]||[]).length>0&&<Sc t={`${trm?.name} 선택품목`} ic="🔧" bg="#F5F8FF">{(veh.trimOptions[sT]||[]).map(o=><OR key={o.id} it={o} ck={sTO.includes(o.id)} tg={()=>tg(sTO,setSTO,o.id)} />)}</Sc>}
@@ -325,7 +337,7 @@ function App(){
             <Sc t="커스텀 옵션" ic="✏️" bg="#FFF8EE">{cust.map((c,i)=>(<div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"6px 8px",borderRadius:6,marginBottom:3,background:c.on?"#FFEFD5":"transparent"}}><div onClick={()=>{const n=[...cust];n[i]={...n[i],on:!n[i].on};setCust(n);}} style={{width:16,height:16,borderRadius:3,flexShrink:0,border:c.on?`2px solid ${GD}`:"2px solid #ddd",background:c.on?GD:"transparent",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#fff",fontWeight:900,cursor:"pointer"}}>{c.on&&"✓"}</div><input type="text" value={c.n} placeholder={`커스텀 ${i+1}`} onChange={e=>{const n=[...cust];n[i]={...n[i],n:e.target.value};setCust(n);}} style={{flex:1,...iS,minWidth:0}} /><input type="number" value={c.p||""} placeholder="금액" onChange={e=>{const n=[...cust];n[i]={...n[i],p:Number(e.target.value)||0};setCust(n);}} style={{width:110,...iS,textAlign:"right",fontWeight:700}} /><span style={{fontSize:12,color:"#bbb"}}>원</span></div>))}</Sc>
             <Sc t="할인" ic="💰"><div style={{display:"flex",alignItems:"center",gap:8}}><span style={{color:"#999",fontSize:14}}>할인</span><input type="number" value={disc||""} onChange={e=>setDisc(Number(e.target.value)||0)} style={{flex:1,...iS,fontSize:16,fontWeight:700,textAlign:"right"}} /><span style={{color:"#999",fontSize:14}}>원</span></div></Sc>
           </div>
-          <div style={{position:"sticky",top:16}}>
+          <div className="resp-sticky" style={{position:"sticky",top:16}}>
             <div style={{background:"#fff",border:"1px solid #eee",borderRadius:14,padding:18,boxShadow:"0 2px 12px rgba(0,0,0,0.04)"}}>
               <div style={{fontSize:17,color:GD,letterSpacing:3,fontWeight:800}}>TOTAL</div>
               <div style={{display:"inline-block",background:"#f8f6f0",borderRadius:4,padding:"2px 8px",fontSize:11,color:GD,fontWeight:700,marginTop:3,marginBottom:6}}>◆ VAT 포함</div>
@@ -334,12 +346,12 @@ function App(){
               {vS()>0&&<div style={{background:"#EBF2FF",borderRadius:8,padding:"10px 12px",marginTop:8,marginBottom:6}}>
               <div style={{fontSize:20,color:"#1E40AF",letterSpacing:2,fontWeight:700,marginBottom:5}}>순정차</div>
               <SL l="베이스" v={vB()} />{vBO()>0&&<SL l="공통선택" v={vBO()} />}{selColor&&<SL l="색상" v={vCL()} />}{vTO()>0&&<SL l="트림옵션" v={vTO()} />}
-              <div style={{display:"flex",justifyContent:"space-between",padding:"8px 0 4px",borderTop:"1px solid #D0E0FF",marginTop:5,fontSize:22}}><span style={{color:"#1E40AF",fontWeight:700}}>소계</span><span style={{color:"#1a1a1a",fontWeight:800}}>{fmt(vS())}원</span></div>
+              <div style={{display:"flex",justifyContent:"space-between",padding:"8px 0 4px",borderTop:"1px solid #D0E0FF",marginTop:5,fontSize:21}}><span style={{color:"#1E40AF",fontWeight:700}}>소계</span><span style={{color:"#1a1a1a",fontWeight:800}}>{fmt(vS())}원</span></div>
               </div>}
               {sS()>0&&<div style={{background:"#FFF5E6",borderRadius:8,padding:"10px 12px",marginBottom:6}}>
               <div style={{fontSize:20,color:"#92400E",letterSpacing:2,fontWeight:700,marginBottom:5}}>특장</div>
               {sC()>0&&<SL l="공통특장" v={sC()} />}{sMd()>0&&<SL l={mdl?.name} v={sMd()} />}{sCu()>0&&<SL l="커스텀" v={sCu()} />}
-              <div style={{display:"flex",justifyContent:"space-between",padding:"8px 0 4px",borderTop:"1px solid #FFE0B2",marginTop:5,fontSize:22}}><span style={{color:"#92400E",fontWeight:700}}>소계</span><span style={{color:"#1a1a1a",fontWeight:800}}>{fmt(sS())}원</span></div>
+              <div style={{display:"flex",justifyContent:"space-between",padding:"8px 0 4px",borderTop:"1px solid #FFE0B2",marginTop:5,fontSize:21}}><span style={{color:"#92400E",fontWeight:700}}>소계</span><span style={{color:"#1a1a1a",fontWeight:800}}>{fmt(sS())}원</span></div>
               </div>}
               {disc>0&&<SL l="할인" v={-disc} d />}
               <button onClick={()=>setStep(2)} style={{width:"100%",padding:"11px",marginTop:4,background:"#1a1a1a",color:"#fff",border:"none",borderRadius:8,fontSize:14,fontWeight:800,cursor:"pointer"}}>견적서 미리보기 →</button>
@@ -363,49 +375,49 @@ function App(){
     const ds=(()=>{const t=new Date();return`${t.getFullYear()}년 ${t.getMonth()+1}월 ${t.getDate()}일`;})();
     const CI=D.company;
     const doPr=()=>{try{const w=window.open("","_blank");if(w){w.document.write(`<!DOCTYPE html><html><head><title>견적서</title><link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Pretendard Variable',sans-serif;background:#fff;color:#111;padding:24px 32px}table{border-collapse:collapse;width:100%}@media print{body{padding:10px}@page{margin:12mm;size:A4}}</style></head><body>${pr.current.innerHTML}</body></html>`);w.document.close();setTimeout(()=>w.print(),600);}else{alert("팝업이 차단되었습니다. 팝업을 허용해주세요.");}}catch(e){alert("인쇄 기능을 사용할 수 없습니다.");}};
-    const doJpg=async()=>{try{const el=pr.current;const canvas=await html2canvas(el,{scale:2,useCORS:true,backgroundColor:"#ffffff"});const link=document.createElement("a");link.download=`견적서_${mdl?.name||"quote"}_${new Date().toISOString().slice(0,10)}.jpg`;canvas.toBlob(blob=>{link.href=URL.createObjectURL(blob);link.click();},"image/jpeg",0.95);}catch(e){alert("이미지 저장에 실패했습니다.");}};
+    const doJpg=async()=>{try{const el=pr.current;const canvas=await html2canvas(el,{scale:2,useCORS:true,backgroundColor:"#ffffff"});const link=document.createElement("a");link.download=`견적서_${mdl?.name||"quote"}_${new Date().toISOString().slice(0,10)}.jpg`;canvas.toBlob(blob=>{link.href=URL.createObjectURL(blob);link.click();showToast("📷 JPG가 저장되었습니다.");},"image/jpeg",0.95);}catch(e){alert("이미지 저장에 실패했습니다.");}};
     const hasV=vS()>0;const hasS=sS()>0;const barTotal=vS()+sS()+(disc>0?disc:0);
     return(
-    <div style={{minHeight:"100vh",background:"#f5f5f5",padding:"20px 14px",fontFamily:F}}><FL />
+    <div style={{minHeight:"100vh",background:"#f5f5f5",padding:"20px 14px",fontFamily:F}}>{toastEl}<FL />
       <div style={{maxWidth:820,margin:"0 auto"}}>
-        <div style={{display:"flex",gap:8,marginBottom:16,flexWrap:"wrap"}}>
+        <div className="resp-btn-wrap" style={{display:"flex",gap:8,marginBottom:16,flexWrap:"wrap"}}>
           <button onClick={()=>setStep(1)} style={bL}>← 수정</button>
           <button onClick={doPr} style={{background:"#1a1a1a",color:"#fff",border:"none",padding:"9px 20px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>🖨️ PDF 출력</button>
           <button onClick={doJpg} style={{background:"#2563EB",color:"#fff",border:"none",padding:"9px 20px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>📷 JPG 저장</button>
           <button onClick={copyLink} style={{background:"#16a34a",color:"#fff",border:"none",padding:"9px 20px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>🔗 링크 복사</button>
-          <button onClick={()=>setStep(0)} style={{...bL,marginLeft:"auto"}}>처음으로</button>
+          <button onClick={()=>setStep(0)} style={bL}>처음으로</button>
         </div>
         <div ref={pr} style={{background:"#fff",borderRadius:8,boxShadow:"0 2px 16px rgba(0,0,0,0.06)"}}>
-          <div style={{padding:"28px 36px"}}>
+          <div className="resp-print-pad" style={{padding:"28px 36px"}}>
             <div style={{borderBottom:"3px double #1a1a1a",paddingBottom:16,marginBottom:20}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:14}}>
-                <div><div style={{fontSize:28,fontWeight:900}}>견 적 서</div><div style={{fontSize:12,color:"#999",marginTop:3}}>{ds}</div><div style={{display:"inline-block",background:"#1a1a1a",borderRadius:3,padding:"2px 8px",fontSize:11,color:"#fff",fontWeight:700,marginTop:5}}>◆ VAT 포함</div></div>
+                <div><div style={{fontSize:30.0,fontWeight:900}}>견 적 서</div><div style={{fontSize:14.0,color:"#999",marginTop:3}}>{ds}</div><div style={{display:"inline-block",background:"#1a1a1a",borderRadius:3,padding:"2px 8px",fontSize:13.0,color:"#fff",fontWeight:700,marginTop:5}}>◆ VAT 포함</div></div>
                 <img src={LOGO} alt="logo" style={{width:56,height:56,objectFit:"contain"}} />
               </div>
-              <table style={{width:"100%",borderCollapse:"collapse",fontSize:11.5,border:"1px solid #ccc"}}><tbody>
-                <tr><td rowSpan={4} style={{padding:"5px 8px",background:"#f7f7f7",fontWeight:700,color:"#555",borderRight:"1px solid #ccc",width:"13%",textAlign:"center",verticalAlign:"middle",fontSize:13,letterSpacing:4}}>판<br/>매<br/>자</td><td style={thC}>등록번호</td><td colSpan={3} style={tdC}>{CI.bizNo}</td></tr>
+              <div className="resp-table-wrap"><table style={{width:"100%",borderCollapse:"collapse",fontSize:13.5,border:"1px solid #ccc",minWidth:450}}><tbody>
+                <tr><td rowSpan={4} style={{padding:"5px 8px",background:"#f7f7f7",fontWeight:700,color:"#555",borderRight:"1px solid #ccc",width:"13%",textAlign:"center",verticalAlign:"middle",fontSize:15.0,letterSpacing:4}}>판<br/>매<br/>자</td><td style={thC}>등록번호</td><td colSpan={3} style={tdC}>{CI.bizNo}</td></tr>
                 <tr><td style={thC}>상 호</td><td style={{...tdC,borderRight:"1px solid #ccc"}}>{CI.name}</td><td style={{...thC,width:"9%"}}>대 표</td><td style={tdC}>{CI.ceo}</td></tr>
                 <tr><td style={thC}>주 소</td><td colSpan={3} style={tdC}>{CI.address}</td></tr>
                 <tr><td style={{...thC,borderBottom:"none"}}>업 태</td><td style={{...tdC,borderRight:"1px solid #ccc",borderBottom:"none"}}>{CI.bizType}</td><td style={{...thC,borderBottom:"none"}}>종 목</td><td style={{...tdC,borderBottom:"none"}}>{CI.bizItem}</td></tr>
-              </tbody></table>
+              </tbody></table></div>
             </div>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:20}}><IB l="고객 정보" a={cN||"—"} b={cP||"—"} /><IB l="차량 / 모델" a={trm?`${veh?.name} ${trm.name}`:`${veh?.name} (트림 미선택)`} b={`${mdl?.name} (${mdl?.subtitle})`} /></div>
+            <div className="resp-grid-2col" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:20}}><IB l="고객 정보" a={cN||"—"} b={cP||"—"} /><IB l="차량 / 모델" a={trm?`${veh?.name} ${trm.name}`:`${veh?.name} (트림 미선택)`} b={`${mdl?.name} (${mdl?.subtitle})`} /></div>
             {vI.length>0&&<><PH t="순정차" c={BL} />
-            <table><thead><tr style={{background:"#f4f6f9"}}><Th w="5%">No</Th><Th w="48%" a="left">항목</Th><Th w="20%" a="left">비고</Th><Th w="27%" a="right">금액</Th></tr></thead><tbody>
+            <div className="resp-table-wrap"><table style={{minWidth:500}}><thead><tr style={{background:"#f4f6f9"}}><Th w="5%">No</Th><Th w="48%" a="left">항목</Th><Th w="20%" a="left">비고</Th><Th w="27%" a="right">금액</Th></tr></thead><tbody>
               {vI.map((it,i)=><tr key={i} style={{borderBottom:"1px solid #f0f0f0"}}><Td c="#ccc">{i+1}</Td><Td b>{it.name}</Td><Td c="#aaa" s={9.5}>{it.desc}</Td><Td a="right" b m>{fmt(it.price)}원</Td></tr>)}
-              <tr style={{background:"#f4f6f9"}}><td colSpan={3} style={{padding:"7px 10px",fontSize:13,fontWeight:800,color:BL}}>순정차 소계</td><td style={{padding:"7px 10px",textAlign:"right",fontSize:14,fontWeight:900}}>{fmt(vS())}원</td></tr>
-            </tbody></table></>}
+              <tr style={{background:"#f4f6f9"}}><td colSpan={3} style={{padding:"7px 10px",fontSize:15.0,fontWeight:800,color:BL}}>순정차 소계</td><td style={{padding:"7px 10px",textAlign:"right",fontSize:16.0,fontWeight:900}}>{fmt(vS())}원</td></tr>
+            </tbody></table></div></>}
             {sI.length>0&&<><PH t={`특장 · ${mdl?.name}`} c={GD} mt={16} />
-            <table><thead><tr style={{background:"#faf8f3"}}><Th w="5%">No</Th><Th w="28%" a="left">항목</Th><Th w="40%" a="left">상세</Th><Th w="27%" a="right">금액</Th></tr></thead><tbody>
+            <div className="resp-table-wrap"><table style={{minWidth:500}}><thead><tr style={{background:"#faf8f3"}}><Th w="5%">No</Th><Th w="28%" a="left">항목</Th><Th w="40%" a="left">상세</Th><Th w="27%" a="right">금액</Th></tr></thead><tbody>
               {sI.map((it,i)=><tr key={i} style={{borderBottom:"1px solid #f0f0f0"}}><Td c="#ccc">{i+1}</Td><Td b>{it.name}</Td><Td c="#aaa" s={9.5}>{it.desc}</Td><Td a="right" b m>{fmt(it.price)}원</Td></tr>)}
-              <tr style={{background:"#faf8f3"}}><td colSpan={3} style={{padding:"7px 10px",fontSize:13,fontWeight:800,color:GD}}>특장 소계</td><td style={{padding:"7px 10px",textAlign:"right",fontSize:14,fontWeight:900}}>{fmt(sS())}원</td></tr>
-            </tbody></table></>}
-            {disc>0&&<div style={{display:"flex",justifyContent:"space-between",padding:"8px 10px",marginTop:8,background:"#FFF5F5",borderRadius:4,border:"1px solid #FEE"}}><span style={{fontSize:13,fontWeight:700,color:"#c00"}}>할인</span><span style={{fontSize:14,fontWeight:900,color:"#c00"}}>-{fmt(disc)}원</span></div>}
-            <div style={{background:"#1a1a1a",borderRadius:8,padding:"14px 20px",marginTop:12,display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:15,fontWeight:800,color:"#fff"}}>총 견적 금액</div><div style={{fontSize:10,color:"rgba(255,255,255,0.6)",marginTop:2}}>◆ VAT 포함</div></div><div style={{fontSize:26,fontWeight:900,color:"#fff"}}>{fmt(tot())}<span style={{fontSize:12,color:"rgba(255,255,255,0.6)",marginLeft:3}}>원</span></div></div>
-            {veh?.id==="pv5"&&<div style={{marginTop:6,padding:"6px 10px",background:"#FFFBEB",borderRadius:4,border:"1px solid #FDE68A",fontSize:11,color:"#92400E",fontWeight:600}}>※ 보조금 할인은 지자체마다 다르며 지원금 미적용 차량 가격입니다.</div>}
+              <tr style={{background:"#faf8f3"}}><td colSpan={3} style={{padding:"7px 10px",fontSize:15.0,fontWeight:800,color:GD}}>특장 소계</td><td style={{padding:"7px 10px",textAlign:"right",fontSize:16.0,fontWeight:900}}>{fmt(sS())}원</td></tr>
+            </tbody></table></div></>}
+            {disc>0&&<div style={{display:"flex",justifyContent:"space-between",padding:"8px 10px",marginTop:8,background:"#FFF5F5",borderRadius:4,border:"1px solid #FEE"}}><span style={{fontSize:15.0,fontWeight:700,color:"#c00"}}>할인</span><span style={{fontSize:16.0,fontWeight:900,color:"#c00"}}>-{fmt(disc)}원</span></div>}
+            <div style={{background:"#1a1a1a",borderRadius:8,padding:"14px 20px",marginTop:12,display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:22.0,fontWeight:800,color:"#fff"}}>총 견적 금액</div><div style={{fontSize:14.0,color:"rgba(255,255,255,0.6)",marginTop:2}}>◆ VAT 포함</div></div><div style={{fontSize:26,fontWeight:900,color:"#fff"}}>{fmt(tot())}<span style={{fontSize:14.0,color:"rgba(255,255,255,0.6)",marginLeft:3}}>원</span></div></div>
+            {veh?.id==="pv5"&&<div style={{marginTop:6,padding:"6px 10px",background:"#FFFBEB",borderRadius:4,border:"1px solid #FDE68A",fontSize:13.0,color:"#92400E",fontWeight:600}}>※ 보조금 할인은 지자체마다 다르며 지원금 미적용 차량 가격입니다.</div>}
             {barTotal>0&&<div style={{display:"flex",marginTop:6,borderRadius:3,overflow:"hidden",height:4}}>{hasV&&<div style={{flex:vS(),background:BL}} />}{hasS&&<div style={{flex:sS(),background:GD}} />}{disc>0&&<div style={{flex:disc,background:"#ef4444"}} />}</div>}
-            {cNo&&<div style={{marginTop:14,padding:"8px 12px",background:"#fafafa",borderRadius:4,borderLeft:"3px solid #1a1a1a"}}><div style={{fontSize:10,color:GD,letterSpacing:2,marginBottom:2,fontWeight:700}}>비고</div><div style={{fontSize:12,color:"#555",lineHeight:1.5}}>{cNo}</div></div>}
-            <div style={{marginTop:20,paddingTop:12,borderTop:"1px solid #eee",textAlign:"center"}}><div style={{fontSize:11,color:"#ccc"}}>본 견적서는 발행일로부터 30일간 유효합니다 · VAT 포함</div><div style={{fontSize:11,color:"#ccc",marginTop:2}}>{CI.name} | {CI.ceo} | {CI.phone} | {CI.address}</div></div>
+            {cNo&&<div style={{marginTop:14,padding:"8px 12px",background:"#fafafa",borderRadius:4,borderLeft:"3px solid #1a1a1a"}}><div style={{fontSize:12.0,color:GD,letterSpacing:2,marginBottom:2,fontWeight:700}}>비고</div><div style={{fontSize:14.0,color:"#555",lineHeight:1.5}}>{cNo}</div></div>}
+            <div style={{marginTop:20,paddingTop:12,borderTop:"1px solid #eee",textAlign:"center"}}><div style={{fontSize:13.0,color:"#ccc"}}>본 견적서는 발행일로부터 30일간 유효합니다 · VAT 포함</div><div style={{fontSize:13.0,color:"#ccc",marginTop:2}}>{CI.name} | {CI.ceo} | {CI.phone} | {CI.address}</div></div>
           </div>
         </div>
       </div>
@@ -471,10 +483,10 @@ function Sc({t,ic,ac,bg,children}){return(<div style={{background:bg||"#fff",bor
 function In({l,v,s,ph,mt}){return(<div style={{marginTop:mt||0}}><div style={{fontSize:11,color:"#bbb",marginBottom:3,fontWeight:600}}>{l}</div><input type="text" value={v} onChange={e=>s(e.target.value)} placeholder={ph} style={{width:"100%",...iS}} /></div>);}
 function TC({t,sel,oc}){return(<div onClick={oc} style={{padding:"10px 12px",borderRadius:7,cursor:"pointer",border:sel?"2px solid #1a1a1a":"1px solid #ddd",background:sel?"#fafafa":"#fff"}}><div style={{fontSize:13.5,fontWeight:700,color:sel?"#1a1a1a":"#555"}}>{t.name}</div><div style={{fontSize:15,fontWeight:800,color:sel?"#1a1a1a":"#888",marginTop:2}}>{fmt(t.price)}원</div></div>);}
 function OR({it,ck,tg,lk,sd}){return(<div onClick={lk?undefined:tg} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 8px",borderRadius:6,cursor:lk?"default":"pointer",background:ck?"#fafafa":"transparent",marginBottom:2}}><div style={{width:15,height:15,borderRadius:3,flexShrink:0,border:ck?"2px solid #1a1a1a":"2px solid #aaa",background:ck?"#1a1a1a":"transparent",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#fff",fontWeight:900}}>{ck&&"✓"}</div><div style={{flex:1,minWidth:0}}><div style={{fontSize:13,fontWeight:600,color:ck?"#1a1a1a":"#555"}}>{it.name}</div>{sd&&it.desc&&<div style={{fontSize:11.5,color:"#888",marginTop:1,lineHeight:1.3}}>{it.desc}</div>}</div><div style={{textAlign:"right",flexShrink:0}}>{it.originalPrice>0&&<div style={{fontSize:11,color:"#999",textDecoration:"line-through"}}>{fmt(it.originalPrice)}</div>}<div style={{fontSize:13.5,fontWeight:700,color:ck?"#1a1a1a":"#888"}}>{fmt(it.price)}원</div></div></div>);}
-function SL({l,v,d}){return(<div style={{display:"flex",justifyContent:"space-between",padding:"4px 0",fontSize:20}}><span style={{color:"#666"}}>{l}</span><span style={{color:d?"#ef4444":"#333",fontWeight:600}}>{d&&"-"}{fmt(Math.abs(v))}원</span></div>);}
-function PH({t,c,mt}){return(<div style={{display:"flex",alignItems:"center",gap:6,padding:"6px 0 4px",marginTop:mt||0}}><div style={{width:4,height:12,borderRadius:2,background:c}} /><div style={{fontSize:13,fontWeight:900,color:"#333"}}>{t}</div><div style={{flex:1,height:1,background:"#eee"}} /></div>);}
-function IB({l,a,b}){return(<div style={{background:"#fafafa",borderRadius:4,padding:"9px 12px",border:"1px solid #f0f0f0"}}><div style={{fontSize:10,color:GD,letterSpacing:2,marginBottom:4,fontWeight:700}}>{l}</div><div style={{fontSize:14,fontWeight:700,color:"#1a1a1a"}}>{a}</div><div style={{fontSize:12,color:"#999",marginTop:1}}>{b}</div></div>);}
-function Th({children,w,a="center"}){return<th style={{padding:"6px 10px",textAlign:a,fontSize:11.5,fontWeight:700,color:"#777",width:w}}>{children}</th>;}
+function SL({l,v,d}){return(<div style={{display:"flex",justifyContent:"space-between",padding:"4px 0",fontSize:16}}><span style={{color:"#666"}}>{l}</span><span style={{color:d?"#ef4444":"#333",fontWeight:600}}>{d&&"-"}{fmt(Math.abs(v))}원</span></div>);}
+function PH({t,c,mt}){return(<div style={{display:"flex",alignItems:"center",gap:6,padding:"6px 0 4px",marginTop:mt||0}}><div style={{width:4,height:12,borderRadius:2,background:c}} /><div style={{fontSize:15,fontWeight:900,color:"#333"}}>{t}</div><div style={{flex:1,height:1,background:"#eee"}} /></div>);}
+function IB({l,a,b}){return(<div style={{background:"#fafafa",borderRadius:4,padding:"9px 12px",border:"1px solid #f0f0f0"}}><div style={{fontSize:12,color:GD,letterSpacing:2,marginBottom:4,fontWeight:700}}>{l}</div><div style={{fontSize:16,fontWeight:700,color:"#1a1a1a"}}>{a}</div><div style={{fontSize:14,color:"#999",marginTop:1}}>{b}</div></div>);}
+function Th({children,w,a="center"}){return<th style={{padding:"6px 10px",textAlign:a,fontSize:13.5,fontWeight:700,color:"#777",width:w}}>{children}</th>;}
 function Td({children,a="left",b,c,s,m}){return<td style={{padding:"6px 10px",textAlign:a,fontSize:s||10.5,fontWeight:b?700:400,color:c||"#333",fontVariantNumeric:m?"tabular-nums":undefined}}>{children}</td>;}
 const bL={background:"#fff",border:"1px solid #eee",color:"#888",padding:"7px 12px",borderRadius:6,cursor:"pointer",fontSize:13,fontWeight:600};
 const iS={background:"#fafafa",border:"1px solid #eee",borderRadius:5,color:"#222",padding:"6px 9px",fontSize:13,outline:"none"};
