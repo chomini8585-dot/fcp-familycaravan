@@ -13,7 +13,7 @@
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'Pretendard Variable','Pretendard',-apple-system,'Noto Sans KR',sans-serif; }
   #root { min-height:100vh; }
-  @keyframes fadeIn { from{opacity:0;transform:translateX(-50%) translateY(-10px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+  @keyframes fadeIn { from{opacity:0;transform:scale(0.9)} to{opacity:1;transform:scale(1)} }
   @media (max-width:768px) {
     .resp-grid-main { grid-template-columns:1fr !important; }
     .resp-grid-2col { grid-template-columns:1fr !important; }
@@ -266,8 +266,10 @@ function App(){
   };
   const copyLink=async()=>{
     const url=makeLink();
-    try{await navigator.clipboard.writeText(url);showToast("📋 링크가 복사되었습니다.");}
-    catch(e){prompt("아래 링크를 복사하세요:",url);}
+    try{
+      if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(url);showToast("📋 링크가 복사되었습니다!");}
+      else{const ta=document.createElement("textarea");ta.value=url;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();document.execCommand("copy");document.body.removeChild(ta);showToast("📋 링크가 복사되었습니다!");}
+    }catch(e){prompt("아래 링크를 복사하세요:",url);}
   };
 
   const veh=D.vehicles.find(v=>v.id===sV);const mdl=veh?.models.find(m=>m.id===sM);const trm=veh?.trims.find(t=>t.id===sT);
@@ -286,7 +288,7 @@ function App(){
   if(!loaded) return (<div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"#fff",fontFamily:F}}><FL /><div style={{color:"#bbb"}}>로딩 중...</div></div>);
 
   // Toast overlay
-  const toastEl = toast ? (<div style={{position:"fixed",top:30,left:"50%",transform:"translateX(-50%)",zIndex:9999,background:"#1a1a1a",color:"#fff",padding:"14px 28px",borderRadius:12,fontSize:16,fontWeight:700,boxShadow:"0 8px 30px rgba(0,0,0,0.25)",animation:"fadeIn 0.3s ease",whiteSpace:"nowrap"}}>{toast}</div>) : null;
+  const toastEl = toast ? (<div style={{position:"fixed",top:0,left:0,right:0,bottom:0,zIndex:99999,display:"flex",alignItems:"center",justifyContent:"center",pointerEvents:"none"}}><div style={{background:"rgba(0,0,0,0.85)",color:"#fff",padding:"20px 40px",borderRadius:16,fontSize:18,fontWeight:800,boxShadow:"0 12px 40px rgba(0,0,0,0.4)",animation:"fadeIn 0.3s ease",textAlign:"center",maxWidth:"90%"}}>{toast}</div></div>) : null;
 
   // Render toast on every step
   if(step===0) return(<div style={{minHeight:"100vh",background:"#ffffff",padding:"40px 20px",fontFamily:F}}>{toastEl}<FL />
