@@ -32,7 +32,11 @@ const DD={
         {id:"prestige",name:"프레스티지",price:36360000},{id:"noblesse",name:"노블레스",price:40710000},
         {id:"signature",name:"시그니처",price:44260000},{id:"xline",name:"그래비티(X-LINE)",price:45020000},
       ],
-      baseOptions:[{id:"hybrid",name:"하이브리드",price:4550000},{id:"snow",name:"스노우 화이트 펄",price:80000}],
+      baseOptions:[{id:"hybrid",name:"하이브리드",price:4550000}],
+      colors:{
+        default:[{id:"cl1",name:"스노우 화이트 펄",price:80000},{id:"cl2",name:"블랙펄",price:0},{id:"cl3",name:"아이보리실버",price:0},{id:"cl4",name:"판테라메탈",price:0}],
+        xline:[{id:"cl1",name:"스노우 화이트 펄",price:80000},{id:"cl2",name:"블랙펄",price:0},{id:"cl3",name:"아이보리실버",price:0},{id:"cl4",name:"판테라메탈",price:0},{id:"cl5",name:"세라믹실버",price:0}],
+      },
       trimOptions:{
         prestige:[{id:"p1",name:"컨비니언스",price:1100000},{id:"p2",name:"스타일",price:1000000},{id:"p3",name:"12.3인치 클러스터",price:600000},{id:"p4",name:"드라이브 와이즈",price:1200000},{id:"p5",name:"모니터링 팩",price:900000}],
         noblesse:[{id:"n1",name:"스타일",price:1000000},{id:"n2",name:"컴포트",price:1400000},{id:"n3",name:"스마트커넥트",price:750000},{id:"n4",name:"드라이브 와이즈",price:750000},{id:"n5",name:"모니터링 팩",price:1200000},{id:"n6",name:"HUD + 빌트인 캠2",price:1200000}],
@@ -148,14 +152,14 @@ const DD={
       ],
       baseOptions:[],
       trimOptions:{
-        cargo_std:[{id:"pc1",name:"컨비니언스",price:1040000},{id:"pc2",name:"스마트 커넥트",price:520000},{id:"pc3",name:"드라이브 와이즈",price:520000},{id:"pc4",name:"모니터링",price:710000},{id:"pc5",name:"유틸리티",price:380000}],
-        cargo_lr:[{id:"pcl1",name:"컨비니언스",price:1040000},{id:"pcl2",name:"스마트 커넥트",price:520000},{id:"pcl3",name:"드라이브 와이즈",price:520000},{id:"pcl4",name:"모니터링",price:710000},{id:"pcl5",name:"유틸리티",price:380000}],
-        pass_basic:[{id:"pb1",name:"컨비니언스",price:1000000},{id:"pb2",name:"파워도어",price:1200000},{id:"pb3",name:"스마트 커넥트",price:550000},{id:"pb4",name:"드라이브 와이즈",price:550000},{id:"pb5",name:"모니터링",price:800000},{id:"pb6",name:"유틸리티",price:400000},{id:"pb7",name:"아웃도어 팩",price:1100000}],
-        pass_plus:[{id:"pp1",name:"파워도어",price:800000},{id:"pp2",name:"스마트 커넥트",price:550000},{id:"pp3",name:"드라이브 와이즈",price:550000},{id:"pp4",name:"모니터링",price:800000},{id:"pp5",name:"아웃도어 팩",price:1100000}],
+        cargo_std:[{id:"pc1",name:"컨비니언스",price:0},{id:"pc2",name:"스마트 커넥트",price:0},{id:"pc3",name:"드라이브 와이즈",price:0},{id:"pc4",name:"모니터링",price:0},{id:"pc5",name:"유틸리티",price:0}],
+        cargo_lr:[{id:"pcl1",name:"컨비니언스",price:0},{id:"pcl2",name:"스마트 커넥트",price:0},{id:"pcl3",name:"드라이브 와이즈",price:0},{id:"pcl4",name:"모니터링",price:0},{id:"pcl5",name:"유틸리티",price:0}],
+        pass_basic:[{id:"pb1",name:"컨비니언스",price:0},{id:"pb2",name:"파워도어",price:0},{id:"pb3",name:"스마트 커넥트",price:0},{id:"pb4",name:"드라이브 와이즈",price:0},{id:"pb5",name:"모니터링",price:0},{id:"pb6",name:"유틸리티",price:0},{id:"pb7",name:"아웃도어 팩",price:0}],
+        pass_plus:[{id:"pp1",name:"파워도어",price:0},{id:"pp2",name:"스마트 커넥트",price:0},{id:"pp3",name:"드라이브 와이즈",price:0},{id:"pp4",name:"모니터링",price:0},{id:"pp5",name:"아웃도어 팩",price:0}],
       },
       commonSpecial:[],
       models:[
-        {id:"pv5_elec_pass",name:"PV5 전동시트 (패신저)",subtitle:"전동 침대변환",color:"#0369A1",options:[
+        {id:"pv5_elec_pass",name:"PV5 전동시트\n(패신저)",subtitle:"전동 침대변환",color:"#0369A1",options:[
           {id:"ep1",name:"2열 3인 전동 침대 변환 시트",desc:"",price:3800000},{id:"ep2",name:"2열시트 통풍, 안마 기능추가",desc:"",price:200000},
           {id:"ep3",name:"전방폴딩추가",desc:"",price:400000},{id:"ep4",name:"PV5 팝업루프",desc:"",price:11000000},
           {id:"ep5",name:"대리석 플로어",desc:"",price:500000},{id:"ep6",name:"엠보 트리밍",desc:"",price:2500000},
@@ -165,7 +169,7 @@ const DD={
           {id:"ep12",name:"트렁크 실내 스위치",desc:"",price:100000},{id:"ep13",name:"식빵등",desc:"",price:100000},
           {id:"ep14",name:"구조변경 대행비(탁송비 포함)",desc:"",price:600000},
         ]},
-        {id:"pv5_elec_cargo",name:"PV5 전동시트 (카고)",subtitle:"전동 침대변환",color:"#0E7490",options:[
+        {id:"pv5_elec_cargo",name:"PV5 전동시트\n(카고)",subtitle:"전동 침대변환",color:"#0E7490",options:[
           {id:"ec1",name:"2열 3인 전동 침대 변환 시트",desc:"",price:4000000},{id:"ec2",name:"2열시트 통풍, 안마 기능추가",desc:"",price:200000},
           {id:"ec3",name:"전방폴딩추가",desc:"",price:400000},{id:"ec4",name:"PV5 팝업루프",desc:"",price:11000000},
           {id:"ec5",name:"대리석 플로어",desc:"",price:800000},{id:"ec6",name:"엠보 트리밍",desc:"",price:2500000},
@@ -175,7 +179,7 @@ const DD={
           {id:"ec13",name:"창문 유리만(개당)",desc:"",price:200000},{id:"ec14",name:"창문유리+캠핑카 창문(개당)",desc:"",price:400000},
           {id:"ec15",name:"비클시네마 17.3인치 모니터",desc:"",price:1150000},{id:"ec16",name:"구조변경 대행비(탁송비 포함)",desc:"",price:600000},
         ]},
-        {id:"pv5_manual",name:"PV5 퍼펙트 수동멀티시트",subtitle:"수동 평탄시트",color:"#6D28D9",options:[
+        {id:"pv5_manual",name:"PV5 퍼펙트\n수동멀티시트",subtitle:"수동 평탄시트",color:"#6D28D9",options:[
           {id:"ms1",name:"퍼펙트 평탄시트",desc:"VAT 포함 행사가",price:2990000},{id:"ms2",name:"PV5 팝업루프",desc:"",price:11000000},
           {id:"ms3",name:"대리석 플로어",desc:"",price:1500000},{id:"ms4",name:"천정등",desc:"",price:200000},
           {id:"ms5",name:"중형 천정등",desc:"",price:350000},{id:"ms6",name:"비클시네마 TV모니터(17.3인치)",desc:"",price:1150000},
@@ -199,6 +203,7 @@ function App(){
   const[aa,setAA]=useState(false);const[ap,setAP]=useState("");const[ae,setAE]=useState(false);const[aTab,setATab]=useState("company");
   const[sV,setSV]=useState(null);const[sM,setSM]=useState(null);const[sT,setST]=useState(null);
   const[sBO,setSBO]=useState([]);const[sTO,setSTO]=useState([]);const[sSO,setSSO]=useState([]);const[sMO,setSMO]=useState([]);
+  const[selColor,setSelColor]=useState(null);
   const[cust,setCust]=useState([{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false}]);
   const[cN,setCN]=useState("");const[cP,setCP]=useState("");const[cNo,setCNo]=useState("");const[disc,setDisc]=useState(0);
   const[sMsg,setSMsg]=useState("");const pr=useRef(null);
@@ -217,6 +222,7 @@ function App(){
           setSTO(p.get("to")?p.get("to").split(","):[]);
           setSSO(p.get("so")?p.get("so").split(","):[]);
           setSMO(p.get("mo")?p.get("mo").split(","):[]);
+          setSelColor(p.get("clr")||null);
           setCN(decodeURIComponent(p.get("cn")||""));
           setCP(decodeURIComponent(p.get("cp")||""));
           setCNo(decodeURIComponent(p.get("cno")||""));
@@ -238,6 +244,7 @@ function App(){
     if(sTO.length)p.set("to",sTO.join(","));
     if(sSO.length)p.set("so",sSO.join(","));
     if(sMO.length)p.set("mo",sMO.join(","));
+    if(selColor)p.set("clr",selColor);
     if(cN)p.set("cn",encodeURIComponent(cN));
     if(cP)p.set("cp",encodeURIComponent(cP));
     if(cNo)p.set("cno",encodeURIComponent(cNo));
@@ -256,8 +263,9 @@ function App(){
   const tg=(l,s,id)=>s(p=>p.includes(id)?p.filter(x=>x!==id):[...p,id]);
   const vB=()=>trm?.price||0;
   const vBO=()=>veh?veh.baseOptions.filter(o=>sBO.includes(o.id)).reduce((a,o)=>a+o.price,0):0;
+  const vCL=()=>{if(!veh?.colors||!selColor)return 0;const allColors=[...(veh.colors.default||[]),...(veh.colors.xline||[])];const c=allColors.find(x=>x.id===selColor);return c?.price||0;};
   const vTO=()=>veh?(veh.trimOptions[sT]||[]).filter(o=>sTO.includes(o.id)).reduce((a,o)=>a+o.price,0):0;
-  const vS=()=>vB()+vBO()+vTO();
+  const vS=()=>vB()+vBO()+vCL()+vTO();
   const sC=()=>veh?veh.commonSpecial.filter(o=>sSO.includes(o.id)).reduce((a,o)=>a+o.price,0):0;
   const sMd=()=>mdl?mdl.options.filter(o=>sMO.includes(o.id)).reduce((a,o)=>a+o.price,0):0;
   const sCu=()=>cust.filter(c=>c.on&&c.n&&c.p>0).reduce((a,c)=>a+c.p,0);
@@ -283,7 +291,7 @@ function App(){
               <div style={{fontSize:17,fontWeight:800,color:"#333"}}>{v.name}</div>
             </div>
             <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(185px,1fr))",gap:12}}>
-              {v.models.map(m=><MC key={m.id} m={m} onClick={()=>{setSV(v.id);setSM(m.id);setST(null);setSSO(v.commonSpecial.filter(o=>o.required).map(o=>o.id));setSBO([]);setSTO([]);setSMO([]);setDisc(0);setCust([{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false}]);setStep(1);}} />)}
+              {v.models.map(m=><MC key={m.id} m={m} onClick={()=>{setSV(v.id);setSM(m.id);setST(null);setSSO(v.commonSpecial.filter(o=>o.required).map(o=>o.id));setSBO([]);setSTO([]);setSMO([]);setSelColor(null);setDisc(0);setCust([{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false}]);setStep(1);}} />)}
             </div>
           </div>
         ))}
@@ -307,6 +315,7 @@ function App(){
             <Sc t="고객 정보" ic="👤"><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}><In l="고객명" v={cN} s={setCN} ph="홍길동" /><In l="연락처" v={cP} s={setCP} ph="010-0000-0000" /></div><In l="비고" v={cNo} s={setCNo} ph="특이사항" mt={8} /></Sc>
             <GL t="순정차 (베이스)" c={BL} />
             <Sc t="트림 선택 (선택사항)" ic="🚗"><div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:8}}>{veh?.trims.map(t=><TC key={t.id} t={t} sel={sT===t.id} oc={()=>{if(sT===t.id){setST(null);setSTO([]);}else{setST(t.id);setSTO([]);}}} />)}</div></Sc>
+            {veh?.colors&&<Sc t="색상 선택" ic="🎨">{(sT==="xline"?veh.colors.xline:veh.colors.default||[]).map(c=>(<div key={c.id} onClick={()=>setSelColor(selColor===c.id?null:c.id)} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 10px",borderRadius:7,cursor:"pointer",background:selColor===c.id?"#fafafa":"transparent",marginBottom:3}}><div style={{width:17,height:17,borderRadius:99,flexShrink:0,border:selColor===c.id?"3px solid #1a1a1a":"2px solid #ddd",background:selColor===c.id?"#1a1a1a":"transparent",display:"flex",alignItems:"center",justifyContent:"center"}}>{selColor===c.id&&<div style={{width:7,height:7,borderRadius:99,background:"#fff"}} />}</div><div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:selColor===c.id?"#1a1a1a":"#999"}}>{c.name}</div></div><div style={{fontSize:13,fontWeight:700,color:selColor===c.id?"#1a1a1a":"#ccc"}}>{c.price>0?fmt(c.price)+"원":"0원"}</div></div>))}</Sc>}
             {veh?.baseOptions.length>0&&<Sc t="공통 선택품목" ic="⚙️">{veh.baseOptions.map(o=><OR key={o.id} it={o} ck={sBO.includes(o.id)} tg={()=>tg(sBO,setSBO,o.id)} />)}</Sc>}
             {(veh?.trimOptions[sT]||[]).length>0&&<Sc t={`${trm?.name} 선택품목`} ic="🔧">{(veh.trimOptions[sT]||[]).map(o=><OR key={o.id} it={o} ck={sTO.includes(o.id)} tg={()=>tg(sTO,setSTO,o.id)} />)}</Sc>}
             {(veh?.commonSpecial.length>0||mdl?.options.length>0)&&<GL t="특장 옵션" c={GD} />}
@@ -322,7 +331,7 @@ function App(){
               <div style={{fontSize:28,fontWeight:900,color:"#1a1a1a",marginBottom:4,lineHeight:1}}>{fmt(tot())}<span style={{fontSize:13,fontWeight:400,color:"#bbb",marginLeft:2}}>원</span></div>
               {veh?.id==="pv5"&&<div style={{fontSize:10,color:"#D97706",lineHeight:1.3,marginBottom:8,padding:"4px 8px",background:"#FFFBEB",borderRadius:4,border:"1px solid #FDE68A"}}>※ 보조금 할인은 지자체마다 다르며 지원금 미적용 차량 가격입니다.</div>}
               {vS()>0&&<><div style={{fontSize:20,color:BL,letterSpacing:2,fontWeight:700,marginBottom:5,marginTop:10}}>순정차</div>
-              <SL l="베이스" v={vB()} />{vBO()>0&&<SL l="공통선택" v={vBO()} />}{vTO()>0&&<SL l="트림옵션" v={vTO()} />}
+              <SL l="베이스" v={vB()} />{vBO()>0&&<SL l="공통선택" v={vBO()} />}{selColor&&<SL l="색상" v={vCL()} />}{vTO()>0&&<SL l="트림옵션" v={vTO()} />}
               <div style={{display:"flex",justifyContent:"space-between",padding:"8px 0 10px",borderTop:"1px solid #f0f0f0",marginTop:5,fontSize:22}}><span style={{color:BL,fontWeight:700}}>소계</span><span style={{color:"#1a1a1a",fontWeight:800}}>{fmt(vS())}원</span></div></>}
               {sS()>0&&<><div style={{fontSize:20,color:GD,letterSpacing:2,fontWeight:700,marginBottom:5}}>특장</div>
               {sC()>0&&<SL l="공통특장" v={sC()} />}{sMd()>0&&<SL l={mdl?.name} v={sMd()} />}{sCu()>0&&<SL l="커스텀" v={sCu()} />}
@@ -341,6 +350,7 @@ function App(){
     if(!veh||!mdl) return(<div style={{minHeight:"100vh",background:"#f5f5f5",padding:"40px",fontFamily:F,textAlign:"center"}}><FL /><div style={{marginTop:100,color:"#999"}}>모델 정보를 찾을 수 없습니다.</div><button onClick={()=>setStep(0)} style={{...bL,marginTop:20}}>처음으로</button></div>);
     const vI=[];if(trm){vI.push({name:`${veh?.name} ${trm?.name}`,desc:"베이스 차량",price:vB()});}
     veh?.baseOptions.filter(o=>sBO.includes(o.id)).forEach(o=>vI.push({name:o.name,desc:"공통 선택",price:o.price}));
+    if(veh?.colors&&selColor){const allC=[...(veh.colors.default||[]),...(veh.colors.xline||[])];const sc=allC.find(x=>x.id===selColor);if(sc)vI.push({name:"색상: "+sc.name,desc:"색상",price:sc.price});}
     if(sT)(veh?.trimOptions[sT]||[]).filter(o=>sTO.includes(o.id)).forEach(o=>vI.push({name:o.name,desc:"트림 전용",price:o.price}));
     const sI=[];veh?.commonSpecial.filter(o=>sSO.includes(o.id)).forEach(o=>sI.push({name:o.name,desc:"공통 특장",price:o.price}));
     mdl?.options.filter(o=>sMO.includes(o.id)).forEach(o=>sI.push({name:o.name,desc:o.desc||"특장",price:o.price}));
@@ -450,7 +460,7 @@ function App(){
   return null;
 }
 
-function MC({m,onClick}){const[h,setH]=useState(false);return(<div onClick={onClick} onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)} style={{background:"#fff",border:`1px solid ${h?"#ccc":"#eee"}`,borderRadius:12,padding:"22px 18px",cursor:"pointer",transition:"all 0.2s",transform:h?"translateY(-2px)":"none",boxShadow:h?"0 8px 20px rgba(0,0,0,0.06)":"0 1px 3px rgba(0,0,0,0.02)",position:"relative",overflow:"hidden"}}><div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg,${m.color},${m.color}88)`}} /><div style={{fontSize:10,color:GD,letterSpacing:3,marginBottom:6,fontWeight:700}}>{m.subtitle}</div><div style={{fontSize:18,fontWeight:900,color:"#1a1a1a",marginBottom:4}}>{m.name}</div><div style={{fontSize:12,color:"#bbb",marginBottom:14}}>옵션 {m.options.length}종</div><div style={{color:GD,fontSize:12,fontWeight:700}}>견적 시작 →</div></div>);}
+function MC({m,onClick}){const[h,setH]=useState(false);return(<div onClick={onClick} onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)} style={{background:"#fff",border:`1px solid ${h?"#ccc":"#eee"}`,borderRadius:12,padding:"22px 18px",cursor:"pointer",transition:"all 0.2s",transform:h?"translateY(-2px)":"none",boxShadow:h?"0 8px 20px rgba(0,0,0,0.06)":"0 1px 3px rgba(0,0,0,0.02)",position:"relative",overflow:"hidden"}}><div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg,${m.color},${m.color}88)`}} /><div style={{fontSize:10,color:GD,letterSpacing:3,marginBottom:6,fontWeight:700}}>{m.subtitle}</div><div style={{fontSize:18,fontWeight:900,color:"#1a1a1a",marginBottom:4,whiteSpace:"pre-line",lineHeight:1.3}}>{m.name}</div><div style={{fontSize:12,color:"#bbb",marginBottom:14}}>옵션 {m.options.length}종</div><div style={{color:GD,fontSize:12,fontWeight:700}}>견적 시작 →</div></div>);}
 function GL({t,c}){return(<div style={{display:"flex",alignItems:"center",gap:8,padding:"2px 0"}}><div style={{width:4,height:16,borderRadius:2,background:c}} /><div style={{fontSize:16,fontWeight:900,color:"#1a1a1a"}}>{t}</div><div style={{flex:1,height:1,background:"#eee"}} /></div>);}
 function Sc({t,ic,ac,children}){return(<div style={{background:"#fff",border:"1px solid #eee",borderRadius:10,padding:"14px 16px"}}><div style={{display:"flex",alignItems:"center",gap:6,marginBottom:10}}>{ac&&<div style={{width:3,height:12,borderRadius:2,background:ac}} />}{ic&&<span style={{fontSize:14}}>{ic}</span>}<div style={{fontSize:13.5,fontWeight:800,color:GD}}>{t}</div></div>{children}</div>);}
 function In({l,v,s,ph,mt}){return(<div style={{marginTop:mt||0}}><div style={{fontSize:11,color:"#bbb",marginBottom:3,fontWeight:600}}>{l}</div><input type="text" value={v} onChange={e=>s(e.target.value)} placeholder={ph} style={{width:"100%",...iS}} /></div>);}
