@@ -45,13 +45,19 @@ const DD={
       baseOptions:[{id:"gasoline",name:"가솔린",price:0},{id:"hybrid",name:"하이브리드",price:4550000}],
       colors:{
         default:[{id:"cl1",name:"스노우 화이트 펄",price:80000},{id:"cl2",name:"블랙펄",price:0},{id:"cl3",name:"아이보리실버",price:0},{id:"cl4",name:"판테라메탈",price:0}],
-        xline:[{id:"cl1",name:"스노우 화이트 펄",price:80000},{id:"cl2",name:"블랙펄",price:0},{id:"cl3",name:"아이보리실버",price:0},{id:"cl4",name:"판테라메탈",price:0},{id:"cl5",name:"세라믹실버",price:0}],
+        xline:[{id:"cl1",name:"스노우 화이트 펄",price:80000},{id:"cl2",name:"블랙펄",price:0},{id:"cl5",name:"세라믹실버",price:0}],
+      },
+      interiorColors:{
+        prestige:[{id:"ic1",name:"토프",price:0}],
+        noblesse:[{id:"ic1",name:"토프",price:0},{id:"ic2",name:"코튼베이지",price:0}],
+        signature:[{id:"ic1",name:"토프",price:0},{id:"ic2",name:"코튼베이지",price:0},{id:"ic3",name:"네이비그레이",price:0}],
+        xline:[{id:"ic1",name:"토프",price:0},{id:"ic2",name:"코튼베이지",price:0},{id:"ic3",name:"네이비그레이",price:0}],
       },
       trimOptions:{
         prestige:[{id:"p1",name:"컨비니언스",price:1100000},{id:"p2",name:"스타일",price:1000000},{id:"p3",name:"12.3인치 클러스터",price:600000},{id:"p4",name:"드라이브 와이즈",price:1200000},{id:"p5",name:"모니터링 팩",price:900000}],
-        noblesse:[{id:"n1",name:"스타일",price:1000000},{id:"n2",name:"컴포트",price:1400000},{id:"n3",name:"스마트커넥트",price:750000},{id:"n4",name:"드라이브 와이즈",price:750000},{id:"n5",name:"모니터링 팩",price:1200000},{id:"n6",name:"HUD + 빌트인 캠2",price:1200000}],
+        noblesse:[{id:"n1",name:"스타일",price:1000000},{id:"n2",name:"컴포트",price:1400000},{id:"n3",name:"스마트커넥트",price:750000},{id:"n4",name:"드라이브 와이즈",price:750000},{id:"n5",name:"모니터링 팩",price:1200000},{id:"n6",name:"HUD + 빌트인 캠2",price:1200000},{id:"n7",name:"듀얼 썬루프",price:800000}],
         signature:[{id:"s1",name:"스마트커넥트",price:750000},{id:"s2",name:"드라이브 와이즈",price:750000},{id:"s3",name:"모니터링 팩",price:1200000},{id:"s4",name:"HUD + 빌트인 캠2",price:1200000},{id:"s5",name:"컴포트",price:1440000},{id:"s7",name:"듀얼선루프",price:800000},{id:"s8",name:"BOSE프리미엄사운드",price:750000}],
-        xline:[{id:"x1",name:"컴포트",price:1400000},{id:"x2",name:"스마트커넥트",price:750000},{id:"x3",name:"드라이브 와이즈",price:750000},{id:"x4",name:"모니터링 팩",price:1200000},{id:"x5",name:"HUD + 빌트인 캠2",price:1200000},{id:"x6",name:"BOSE프리미엄사운드",price:900000},{id:"x7",name:"X-Line 전용 사이드 스텝 / LED 테일게이트 램프",price:570000}],
+        xline:[{id:"x1",name:"컴포트",price:1400000},{id:"x2",name:"스마트커넥트",price:750000},{id:"x3",name:"드라이브 와이즈",price:750000},{id:"x4",name:"모니터링 팩",price:1200000},{id:"x5",name:"HUD + 빌트인 캠2",price:1200000},{id:"x6",name:"BOSE프리미엄사운드",price:900000},{id:"x7",name:"X-Line 전용 사이드 스텝 / LED 테일게이트 램프",price:570000},{id:"x8",name:"듀얼 썬루프",price:800000}],
       },
       commonSpecial:[],
       models:[
@@ -75,6 +81,9 @@ const DD={
           {id:"fcp17",name:"블랙박스",desc:"2ch 블랙박스",price:200000},
           {id:"fcp18",name:"열차단 썬팅",desc:"전창 열차단 썬팅",price:350000},
           {id:"fcp19",name:"구조변경비(탁송비 포함)",desc:"",price:600000},
+          {id:"fcp20",name:"1,100패키지 4.5세대 의전시트 UP",desc:"",price:1300000},
+          {id:"fcp21",name:"은하수 조명",desc:"",price:600000},
+          {id:"fcp22",name:"세로그릴, 앞뒤 바디킷 제외",desc:"",price:-1100000},
         ]},
         {id:"fc9a",name:"카니발 FC9",subtitle:"차박형",color:"#9D6B3A",options:[
           {id:"fa1",name:"FC9 기본 패키지(기본 포함)",desc:"신형 2열회전시트, 3열 아폴로 전동차박시트, 폴딩마감",price:6300000},
@@ -196,6 +205,142 @@ const DD={
         ]},
       ],
     },
+    {
+      id:"challenger",name:"CHALLENGER (2026)",badge:"CHALLENGER",hasTax:true,
+      trims:[
+        {id:"ch_prestige",name:"프레스티지",price:36360000},{id:"ch_noblesse",name:"노블레스",price:40710000},
+        {id:"ch_signature",name:"시그니처",price:44260000},{id:"ch_xline",name:"그래비티(X-LINE)",price:45020000},
+      ],
+      baseOptions:[{id:"ch_gas",name:"가솔린",price:0},{id:"ch_hybrid",name:"하이브리드",price:4550000}],
+      colors:{
+        default:[{id:"cl1",name:"스노우 화이트 펄",price:80000},{id:"cl2",name:"블랙펄",price:0},{id:"cl3",name:"아이보리실버",price:0},{id:"cl4",name:"판테라메탈",price:0}],
+        ch_xline:[{id:"cl1",name:"스노우 화이트 펄",price:80000},{id:"cl2",name:"블랙펄",price:0},{id:"cl5",name:"세라믹실버",price:0}],
+      },
+      interiorColors:{
+        ch_prestige:[{id:"ic1",name:"토프",price:0}],
+        ch_noblesse:[{id:"ic1",name:"토프",price:0},{id:"ic2",name:"코튼베이지",price:0}],
+        ch_signature:[{id:"ic1",name:"토프",price:0},{id:"ic2",name:"코튼베이지",price:0},{id:"ic3",name:"네이비그레이",price:0}],
+        ch_xline:[{id:"ic1",name:"토프",price:0},{id:"ic2",name:"코튼베이지",price:0},{id:"ic3",name:"네이비그레이",price:0}],
+      },
+      trimOptions:{
+        ch_prestige:[{id:"chp1",name:"컨비니언스",price:1100000},{id:"chp2",name:"스타일",price:1000000},{id:"chp3",name:"12.3인치 클러스터",price:600000},{id:"chp4",name:"드라이브 와이즈",price:1200000},{id:"chp5",name:"모니터링 팩",price:900000}],
+        ch_noblesse:[{id:"chn1",name:"스타일",price:1000000},{id:"chn2",name:"컴포트(2열 회전 선택시 선택 불가)",price:1400000},{id:"chn3",name:"스마트커넥트",price:750000},{id:"chn4",name:"드라이브 와이즈",price:750000},{id:"chn5",name:"모니터링 팩",price:1200000},{id:"chn6",name:"HUD + 빌트인 캠2",price:1200000}],
+        ch_signature:[{id:"chs1",name:"스마트커넥트",price:750000},{id:"chs2",name:"드라이브 와이즈",price:750000},{id:"chs3",name:"모니터링 팩",price:1200000},{id:"chs4",name:"HUD + 빌트인 캠2",price:1200000},{id:"chs5",name:"컴포트(2열 회전 선택시 선택 불가)",price:1440000},{id:"chs7",name:"듀얼선루프",price:800000},{id:"chs8",name:"BOSE프리미엄사운드",price:750000}],
+        ch_xline:[{id:"chx1",name:"컴포트(2열 회전 선택시 선택 불가)",price:1400000},{id:"chx2",name:"스마트커넥트",price:750000},{id:"chx3",name:"드라이브 와이즈",price:750000},{id:"chx4",name:"모니터링 팩",price:1200000},{id:"chx5",name:"HUD + 빌트인 캠2",price:1200000},{id:"chx6",name:"BOSE프리미엄사운드",price:900000},{id:"chx7",name:"X-Line 전용 사이드 스텝 / LED 테일게이트 램프",price:570000}],
+      },
+      commonSpecial:[],
+      models:[
+        {id:"ch_carnival",name:"카니발 챌린저",subtitle:"CHALLENGER",color:"#DC2626",options:[
+          {id:"chm1",name:"CHALLENGER 신차인증 패키지(가솔린,H/V)",desc:"",price:17000000},
+          {id:"chm2",name:"프리미엄패키지(무중력시트,무시동히터,인버터PACK)",desc:"",price:9800000},
+          {id:"chm3",name:"프리미엄요트바닥, LED도어스커프",desc:"",price:1700000},
+          {id:"chm4",name:"(Up) 배터리600AH (300AH→600AH)",desc:"프리미엄팩 전용",price:2000000},
+          {id:"chm5",name:"독일에바스무시동히터(가솔린, 1,2층 난방)",desc:"선택품목-단품",price:2300000},
+          {id:"chm6",name:"(Up) 배터리300AH/인버터2KW/주행충전/한전충전",desc:"선택품목-단품",price:2900000},
+          {id:"chm7",name:"(Up) 배터리600AH/인버터2KW/주행충전/한전충전",desc:"선택품목-단품",price:4900000},
+          {id:"chm8",name:"전동시트(무중력차박시트)",desc:"선택품목-단품",price:4400000},
+          {id:"chm9",name:"2열회전시트(좌,우)",desc:"선택품목-단품",price:1100000},
+          {id:"chm10",name:"대리석바닥(요트바닥디자인), LED도어스커프",desc:"선택품목-단품",price:1700000},
+          {id:"chm11",name:"요트바닥 (4인승)",desc:"선택품목-단품",price:2200000},
+          {id:"chm12",name:"어닝PACK(어닝,라이트,빗물받이)-화이트",desc:"용품류",price:1600000},
+          {id:"chm13",name:"어닝PACK(어닝,라이트,빗물받이)-블랙",desc:"용품류",price:1650000},
+          {id:"chm14",name:"챌린저 전용 어닝플랜트",desc:"용품류",price:700000},
+          {id:"chm15",name:"식빵등(트렁크LED조명)",desc:"용품류",price:100000},
+          {id:"chm16",name:"열차단 썬팅",desc:"용품류",price:2500000},
+        ]},
+      ],
+    },
+    {
+      id:"ch_santafe",name:"싼타페 CHALLENGER (2026)",badge:"CHALLENGER",hasTax:true,taxMode:"specialOnly",
+      trims:[
+        {id:"sf_g_exc",name:"가솔린 익스클루시브",price:36060000},
+        {id:"sf_g_pre",name:"가솔린 프레스티지",price:38890000},
+        {id:"sf_g_hpick",name:"가솔린 H-Pick",price:41500000},
+        {id:"sf_g_black",name:"가솔린 Black Exterior",price:41840000},
+        {id:"sf_g_calli",name:"가솔린 캘리그래피",price:44840000},
+        {id:"sf_g_ink",name:"가솔린 캘리그래피(블랙잉크)",price:44840000},
+        {id:"sf_h_exc",name:"하이브리드 익스클루시브",price:39640000},
+        {id:"sf_h_pre",name:"하이브리드 프레스티지",price:42470000},
+        {id:"sf_h_hpick",name:"하이브리드 H-Pick",price:45080000},
+        {id:"sf_h_black",name:"Hybrid Black Exterior",price:45420000},
+        {id:"sf_h_calli",name:"하이브리드 캘리그래피",price:48070000},
+        {id:"sf_h_ink",name:"Hybrid 캘리그래피(블랙잉크)",price:48070000},
+        {id:"sf_ha_exc",name:"하이브리드 AWD 익스클루시브",price:42840000},
+        {id:"sf_ha_pre",name:"하이브리드 AWD 프레스티지",price:45670000},
+        {id:"sf_ha_hpick",name:"Hybrid H-Pick AWD",price:48280000},
+        {id:"sf_ha_black",name:"(AWD) Hybrid Black Exterior",price:48620000},
+        {id:"sf_ha_calli",name:"하이브리드 캘리그래피 AWD",price:51270000},
+        {id:"sf_ha_ink",name:"Hybrid 캘리그래피(블랙잉크) AWD",price:51270000},
+      ],
+      baseOptions:[
+        {id:"sf_seat5",name:"5인승",price:0},
+        {id:"sf_seat6",name:"6인승",price:1040000},
+        {id:"sf_seat7",name:"7인승",price:690000},
+      ],
+      colors:{
+        default:[{id:"sfc1",name:"크리미화이트펄",price:80000},{id:"sfc2",name:"어비스블랙펄",price:0},{id:"sfc3",name:"에코트로닉그레이펄",price:0},{id:"sfc4",name:"사이버세이지펄",price:0},{id:"sfc5",name:"얼씨브레스메탈릭매트",price:200000}],
+        calli:[{id:"sfc1",name:"크리미화이트펄",price:80000},{id:"sfc2",name:"어비스블랙펄",price:0},{id:"sfc3",name:"에코트로닉그레이펄",price:0},{id:"sfc4",name:"사이버세이지펄",price:0},{id:"sfc6",name:"크리미화이트매트(캘리그래피전용-블랙잉크)",price:200000},{id:"sfc5",name:"얼씨브레스메탈릭매트",price:200000}],
+        brown:[{id:"sfc1",name:"크리미화이트펄",price:80000},{id:"sfc2",name:"어비스블랙펄",price:0},{id:"sfc3",name:"에코트로닉그레이펄",price:0},{id:"sfc4",name:"사이버세이지펄",price:0},{id:"sfc7",name:"페블블루펄(피칸브라운-적용X)",price:0},{id:"sfc8",name:"오카도그린펄(피칸브라운-적용X)",price:0},{id:"sfc5",name:"얼씨브레스메탈릭매트",price:200000}],
+      },
+      interiorColors:{
+        sf_g_exc:[{id:"sic1",name:"블랙원톤",price:0}],
+        sf_g_pre:[{id:"sic1",name:"블랙원톤",price:0},{id:"sic2",name:"그레이투톤",price:0},{id:"sic3",name:"피칸브라운투톤(프레스티지-디자인플러스)",price:0}],
+        sf_g_hpick:[{id:"sic1",name:"블랙원톤",price:0},{id:"sic2",name:"그레이투톤",price:0},{id:"sic4",name:"피칸브라운투톤(H-Pick,캘리그래피)",price:0}],
+        sf_g_black:[{id:"sic1",name:"블랙원톤",price:0}],
+        sf_g_calli:[{id:"sic1",name:"블랙원톤",price:0},{id:"sic4",name:"피칸브라운투톤",price:0},{id:"sic5",name:"라이트베이지투톤(캘리그래피)",price:0}],
+        sf_g_ink:[{id:"sic6",name:"블랙원톤-블랙잉크전용",price:0}],
+        sf_h_exc:[{id:"sic1",name:"블랙원톤",price:0}],
+        sf_h_pre:[{id:"sic1",name:"블랙원톤",price:0},{id:"sic2",name:"그레이투톤",price:0},{id:"sic3",name:"피칸브라운투톤",price:0}],
+        sf_h_hpick:[{id:"sic1",name:"블랙원톤",price:0},{id:"sic2",name:"그레이투톤",price:0},{id:"sic4",name:"피칸브라운투톤",price:0}],
+        sf_h_black:[{id:"sic1",name:"블랙원톤",price:0}],
+        sf_h_calli:[{id:"sic1",name:"블랙원톤",price:0},{id:"sic4",name:"피칸브라운투톤",price:0},{id:"sic5",name:"라이트베이지투톤",price:0}],
+        sf_h_ink:[{id:"sic6",name:"블랙원톤-블랙잉크전용",price:0}],
+        sf_ha_exc:[{id:"sic1",name:"블랙원톤",price:0}],
+        sf_ha_pre:[{id:"sic1",name:"블랙원톤",price:0},{id:"sic2",name:"그레이투톤",price:0},{id:"sic3",name:"피칸브라운투톤",price:0}],
+        sf_ha_hpick:[{id:"sic1",name:"블랙원톤",price:0},{id:"sic2",name:"그레이투톤",price:0},{id:"sic4",name:"피칸브라운투톤",price:0}],
+        sf_ha_black:[{id:"sic1",name:"블랙원톤",price:0}],
+        sf_ha_calli:[{id:"sic1",name:"블랙원톤",price:0},{id:"sic4",name:"피칸브라운투톤",price:0},{id:"sic5",name:"라이트베이지투톤",price:0}],
+        sf_ha_ink:[{id:"sic6",name:"블랙원톤-블랙잉크전용",price:0}],
+      },
+      trimOptions:{
+        sf_g_exc:[{id:"sfe1",name:"동승석8way 전동시트",price:200000},{id:"sfe2",name:"헤드업디스플레이",price:590000},{id:"sfe3",name:"파킹어시스트플러스1",price:1190000},{id:"sfe4",name:"플레티넘1",price:450000},{id:"sfe5",name:"베스트셀렉션(파킹어시스트플러스1,플레티넘1)",price:1500000}],
+        sf_h_exc:[{id:"sfe1",name:"동승석8way 전동시트",price:200000},{id:"sfe2",name:"헤드업디스플레이",price:590000},{id:"sfe3",name:"파킹어시스트플러스1",price:1190000},{id:"sfe4",name:"플레티넘1",price:450000},{id:"sfe5",name:"베스트셀렉션(파킹어시스트플러스1,플레티넘1)",price:1500000}],
+        sf_ha_exc:[{id:"sfe1",name:"동승석8way 전동시트",price:200000},{id:"sfe2",name:"헤드업디스플레이",price:590000},{id:"sfe3",name:"파킹어시스트플러스1",price:1190000},{id:"sfe4",name:"플레티넘1",price:450000},{id:"sfe5",name:"베스트셀렉션(파킹어시스트플러스1,플레티넘1)",price:1500000}],
+        sf_g_pre:[{id:"sfp1",name:"헤드업디스플레이",price:590000},{id:"sfp2",name:"시트플러스",price:740000},{id:"sfp3",name:"파킹어시스트플러스 I",price:1190000},{id:"sfp4",name:"디자인플러스 I(가솔린PR,하이브리드AWD-PR전용)",price:1350000}],
+        sf_h_pre:[{id:"sfp1",name:"헤드업디스플레이",price:590000},{id:"sfp2",name:"시트플러스",price:740000},{id:"sfp3",name:"파킹어시스트플러스 I",price:1190000}],
+        sf_ha_pre:[{id:"sfp1",name:"헤드업디스플레이",price:590000},{id:"sfp2",name:"시트플러스",price:740000},{id:"sfp3",name:"파킹어시스트플러스 I",price:1190000},{id:"sfp4",name:"디자인플러스 I(AWD-PR전용)",price:1350000}],
+        sf_g_hpick:[{id:"sfh1",name:"디자인플러스 II(하이브리드2WD전용)",price:850000},{id:"sfh2",name:"20인치휠&타이어(하이브리드2WD-PR전용)",price:490000}],
+        sf_h_hpick:[{id:"sfh1",name:"디자인플러스 II(하이브리드2WD전용)",price:850000},{id:"sfh2",name:"20인치휠&타이어(하이브리드2WD-PR전용)",price:490000}],
+        sf_ha_hpick:[],
+        sf_g_black:[{id:"sfb1",name:"20인치휠&타이어",price:490000}],
+        sf_h_black:[{id:"sfb1",name:"20인치휠&타이어",price:490000}],
+        sf_ha_black:[{id:"sfb1",name:"20인치휠&타이어",price:490000}],
+        sf_g_calli:[],
+        sf_h_calli:[],
+        sf_ha_calli:[],
+        sf_g_ink:[{id:"sfi1",name:"블랙잉크플러스(블랙잉크전용내/외장,블랙사이드스텝)",price:940000}],
+        sf_h_ink:[{id:"sfi1",name:"블랙잉크플러스(블랙잉크전용내/외장,블랙사이드스텝)",price:940000}],
+        sf_ha_ink:[{id:"sfi1",name:"블랙잉크플러스(블랙잉크전용내/외장,블랙사이드스텝)",price:940000}],
+      },
+      commonSpecial:[
+        {id:"sf_common1",name:"빌트인캠2,증강현실내비게이션",price:450000},
+        {id:"sf_common2",name:"HTRACK,험로주행모드(가솔린전용)",price:2230000},
+        {id:"sf_common3",name:"라이프스타일",price:490000},
+        {id:"sf_common4",name:"사이드스텝",price:400000},
+        {id:"sf_common5",name:"사이드스텝(블랙)",price:450000},
+        {id:"sf_common6",name:"탁송료+책임보험료",price:350000},
+      ],
+      models:[
+        {id:"ch_santafe",name:"싼타페 챌린저",subtitle:"CHALLENGER",color:"#EA580C",options:[
+          {id:"sfm1",name:"싼타페 기본패키지(가솔린,H/V)",desc:"",price:17000000},
+          {id:"sfm2",name:"에바스패커무시동히터(가솔린)",desc:"",price:2300000},
+          {id:"sfm3",name:"(Upgrade) 배터리300AH/인버터2KW/주행충전/한전충전",desc:"",price:2900000},
+          {id:"sfm4",name:"어닝PACK(어닝,라이트,빗물받이)-화이트",desc:"",price:1600000},
+          {id:"sfm5",name:"어닝PACK(어닝,라이트,빗물받이)-블랙",desc:"",price:1650000},
+          {id:"sfm6",name:"챌린저 전용 어닝룸텐트",desc:"용품류",price:700000},
+        ]},
+      ],
+    },
   ],
 };
 
@@ -212,10 +357,12 @@ function App(){
   const[D,setD]=useState(DD);const[loaded,setLoaded]=useState(false);const[step,setStep]=useState(0);
   const[aa,setAA]=useState(false);const[ap,setAP]=useState("");const[ae,setAE]=useState(false);const[aTab,setATab]=useState("company");
   const[sV,setSV]=useState(null);const[sM,setSM]=useState(null);const[sT,setST]=useState(null);
+  const[trimTab,setTrimTab]=useState("all");
   const[sBO,setSBO]=useState([]);const[sTO,setSTO]=useState([]);const[sSO,setSSO]=useState([]);const[sMO,setSMO]=useState([]);
   const[selColor,setSelColor]=useState(null);
+  const[selIntColor,setSelIntColor]=useState(null);
   const[cust,setCust]=useState([{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false}]);
-  const[cN,setCN]=useState("");const[cP,setCP]=useState("");const[cNo,setCNo]=useState("");const[disc,setDisc]=useState(0);
+  const[cN,setCN]=useState("");const[cP,setCP]=useState("");const[cAddr,setCAddr]=useState("");const[cNo,setCNo]=useState("");const[disc,setDisc]=useState(0);
   const[sMsg,setSMsg]=useState("");const[toast,setToast]=useState("");const pr=useRef(null);
   const showToast=(msg)=>{setToast(msg);setTimeout(()=>setToast(""),2500);};
 
@@ -234,8 +381,11 @@ function App(){
           setSSO(p.get("so")?p.get("so").split(","):[]);
           setSMO(p.get("mo")?p.get("mo").split(","):[]);
           setSelColor(p.get("clr")||null);
+          setSelIntColor(p.get("iclr")||null);
+          if(p.get("ttab"))setTrimTab(p.get("ttab"));
           setCN(decodeURIComponent(p.get("cn")||""));
           setCP(decodeURIComponent(p.get("cp")||""));
+          setCAddr(decodeURIComponent(p.get("ca")||""));
           setCNo(decodeURIComponent(p.get("cno")||""));
           setDisc(Number(p.get("dc"))||0);
           const cu=p.get("cu");
@@ -256,11 +406,14 @@ function App(){
     if(sSO.length)p.set("so",sSO.join(","));
     if(sMO.length)p.set("mo",sMO.join(","));
     if(selColor)p.set("clr",selColor);
+    if(selIntColor)p.set("iclr",selIntColor);
+    if(trimTab!=="all")p.set("ttab",trimTab);
     if(cN)p.set("cn",encodeURIComponent(cN));
     if(cP)p.set("cp",encodeURIComponent(cP));
+    if(cAddr)p.set("ca",encodeURIComponent(cAddr));
     if(cNo)p.set("cno",encodeURIComponent(cNo));
     if(disc>0)p.set("dc",disc);
-    const activeCust=cust.filter(c=>c.on&&c.n&&c.p>0);
+    const activeCust=cust.filter(c=>c.on&&c.n&&c.p!==0);
     if(activeCust.length)p.set("cu",encodeURIComponent(JSON.stringify(cust)));
     return window.location.origin+window.location.pathname+"?"+p.toString();
   };
@@ -276,13 +429,33 @@ function App(){
   const tg=(l,s,id)=>s(p=>p.includes(id)?p.filter(x=>x!==id):[...p,id]);
   const vB=()=>trm?.price||0;
   const vBO=()=>veh?veh.baseOptions.filter(o=>sBO.includes(o.id)).reduce((a,o)=>a+o.price,0):0;
-  const vCL=()=>{if(!veh?.colors||!selColor)return 0;const allColors=[...(veh.colors.default||[]),...(veh.colors.xline||[])];const c=allColors.find(x=>x.id===selColor);return c?.price||0;};
+  const vCL=()=>{if(!veh?.colors||!selColor)return 0;const cs=veh.colors;const allColors=[...(cs.default||[]),...(cs.xline||[]),...(cs.ch_xline||[]),...(cs.calli||[]),...(cs.brown||[])];const c=allColors.find(x=>x.id===selColor);return c?.price||0;};
   const vTO=()=>veh?(veh.trimOptions[sT]||[]).filter(o=>sTO.includes(o.id)).reduce((a,o)=>a+o.price,0):0;
   const vS=()=>vB()+vBO()+vCL()+vTO();
   const sC=()=>veh?veh.commonSpecial.filter(o=>sSO.includes(o.id)).reduce((a,o)=>a+o.price,0):0;
   const sMd=()=>mdl?mdl.options.filter(o=>sMO.includes(o.id)).reduce((a,o)=>a+o.price,0):0;
-  const sCu=()=>cust.filter(c=>c.on&&c.n&&c.p>0).reduce((a,c)=>a+c.p,0);
-  const sS=()=>sC()+sMd()+sCu();const tot=()=>vS()+sS()-disc;
+  const sCu=()=>cust.filter(c=>c.on&&c.n&&c.p!==0).reduce((a,c)=>a+c.p,0);
+  const sS=()=>sC()+sMd()+sCu();
+  // 세금 계산 (CHALLENGER: 개별소비세 3.5% + 교육세)
+  const calcTax=()=>{
+    if(!veh?.hasTax) return {indTax:0,eduTax:0,total:0};
+    if(veh.taxMode==="specialOnly"){
+      // 싼타페: 특장 부분만 세금 적용 (순정차는 이미 세금 포함)
+      const specialBase=sS();
+      if(specialBase<=0) return {indTax:0,eduTax:0,total:0};
+      const supplyPrice=specialBase/1.1;
+      const indTax=Math.round(supplyPrice*0.035);
+      const eduTax=Math.round(indTax*0.3);
+      return {indTax,eduTax,total:indTax+eduTax};
+    }
+    // 카니발 챌린저: 전체 금액에 세금 적용
+    const base=(vS()+sS()-disc);
+    const supplyPrice=base/1.1;
+    const indTax=Math.round(supplyPrice*0.035);
+    const eduTax=Math.round(indTax*0.3);
+    return {indTax,eduTax,total:indTax+eduTax};
+  };
+  const tot=()=>vS()+sS()-disc+calcTax().total;
   const doSv=async nd=>{setD(nd);const ok=await sv(nd);setSMsg(ok?"✅ 저장":"❌ 실패");setTimeout(()=>setSMsg(""),2000);};
 
   if(!loaded) return (<div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"#fff",fontFamily:F}}><FL /><div style={{color:"#bbb"}}>로딩 중...</div></div>);
@@ -300,17 +473,26 @@ function App(){
           <div style={{fontSize:13,color:"#bbb",fontWeight:600,marginTop:6}}>Ver.1.0 Beta</div>
           <div style={{width:40,height:2,background:GD,margin:"12px auto 0"}} />
         </div>
-        {D.vehicles.map(v=>(
-          <div key={v.id} style={{marginBottom:40}}>
-            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:14}}>
-              <div style={{background:v.id==="carnival"?"#1a1a1a":"#0369A1",color:"#fff",padding:"3px 14px",borderRadius:20,fontSize:12,fontWeight:800,letterSpacing:2}}>{v.badge}</div>
-              <div style={{fontSize:17,fontWeight:800,color:"#333"}}>{v.name}</div>
-            </div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(150px,1fr))",gap:10}}>
-              {v.models.map(m=><MC key={m.id} m={m} onClick={()=>{setSV(v.id);setSM(m.id);setST(null);setSSO(v.commonSpecial.filter(o=>o.required).map(o=>o.id));setSBO([]);setSTO([]);setSMO([]);setSelColor(null);setDisc(0);setCust([{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false}]);setStep(1);}} />)}
-            </div>
-          </div>
-        ))}
+        {(()=>{
+          const groups=[];const seen={};
+          D.vehicles.forEach(v=>{
+            if(!seen[v.badge]){seen[v.badge]=[];groups.push(v.badge);}
+            seen[v.badge].push(v);
+          });
+          return groups.map(badge=>{
+            const vehs=seen[badge];
+            const first=vehs[0];
+            return(<div key={badge} style={{marginBottom:40}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginBottom:14}}>
+                <div style={{background:first.id==="carnival"?"#1a1a1a":badge==="CHALLENGER"?"#DC2626":first.id==="pv5"?"#0369A1":"#555",color:"#fff",padding:"3px 14px",borderRadius:20,fontSize:12,fontWeight:800,letterSpacing:2}}>{badge}</div>
+                <div style={{fontSize:19,fontWeight:800,color:"#333"}}>{vehs[0].name}</div>
+              </div>
+              <div style={{display:"flex",flexWrap:"wrap",gap:10,justifyContent:"center",maxWidth:560,margin:"0 auto"}}>
+                {vehs.flatMap(v=>v.models.map(m=><MC key={m.id} m={m} onClick={()=>{setSV(v.id);setSM(m.id);setST(null);setSSO(v.commonSpecial.filter(o=>o.required).map(o=>o.id));setSBO([]);setSTO([]);setSMO([]);setSelColor(null);setSelIntColor(null);setTrimTab(v.id==="ch_santafe"?"sf_g":"all");setDisc(0);setCust([{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false}]);setStep(1);}} />))}
+              </div>
+            </div>);
+          });
+        })()}
         <div style={{textAlign:"center",marginTop:20}}><button onClick={()=>{setAA(false);setAP("");setAE(false);setStep(3);}} style={{...bL,fontSize:12,color:"#ccc",borderColor:"#eee"}}>🔒 관리자</button></div>
       </div>
     </div>
@@ -322,21 +504,25 @@ function App(){
       <div style={{maxWidth:1040,margin:"0 auto"}}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20,flexWrap:"wrap",gap:10}}>
           <button onClick={()=>setStep(0)} style={bL}>← 모델 선택</button>
-          <button onClick={copyLink} style={{background:"#16a34a",color:"#fff",border:"none",padding:"7px 14px",borderRadius:6,cursor:"pointer",fontSize:12,fontWeight:700}}>🔗 견적 링크 복사</button>
           <div style={{textAlign:"right"}}><div style={{fontSize:11,color:GD,letterSpacing:3,fontWeight:700}}>{veh?.badge} · {mdl?.subtitle}</div><div style={{fontSize:22,fontWeight:900,color:"#1a1a1a"}}>{mdl?.name}</div></div>
         </div>
         <div className="resp-grid-main" style={{display:"grid",gridTemplateColumns:"1fr 280px",gap:16,alignItems:"start"}}>
           <div style={{display:"flex",flexDirection:"column",gap:12}}>
-            <Sc t="고객 정보" ic="👤"><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}><In l="고객명" v={cN} s={setCN} ph="홍길동" /><In l="연락처" v={cP} s={setCP} ph="010-0000-0000" /></div><In l="비고" v={cNo} s={setCNo} ph="특이사항" mt={8} /></Sc>
+            <Sc t="고객 정보" ic="👤"><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}><In l="고객명" v={cN} s={setCN} ph="고객명 입력" /><In l="연락처" v={cP} s={setCP} ph="010-0000-0000" /></div><In l="주소" v={cAddr} s={setCAddr} ph="주소 입력" mt={8} /><In l="비고" v={cNo} s={setCNo} ph="특이사항" mt={8} /></Sc>
+            {veh?.id==="pv5"&&<div style={{padding:"12px 16px",background:"#FFFBEB",borderRadius:8,border:"1px solid #FDE68A",fontSize:13,color:"#92400E",fontWeight:900,lineHeight:1.6}}>※ PV5 차량 가격은 보조금이 반영된 견적으로 따로 반영됩니다. 아래 견적은 특장비만 반영됩니다. 참조부탁드립니다.</div>}
             <GL t="순정차 (베이스)" c={BL} />
-            <Sc t="트림 선택 (선택사항)" ic="🚗" bg="#F5F8FF"><div className="resp-grid-2col" style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:8}}>{veh?.trims.map(t=><TC key={t.id} t={t} sel={sT===t.id} oc={()=>{if(sT===t.id){setST(null);setSTO([]);}else{setST(t.id);setSTO([]);}}} />)}</div></Sc>
-            {veh?.colors&&<Sc t="색상 선택" ic="🎨" bg="#F5F8FF">{(sT==="xline"?veh.colors.xline:veh.colors.default||[]).map(c=>(<div key={c.id} onClick={()=>setSelColor(selColor===c.id?null:c.id)} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 10px",borderRadius:7,cursor:"pointer",background:selColor===c.id?"#E0EDFF":"transparent",marginBottom:3}}><div style={{width:17,height:17,borderRadius:99,flexShrink:0,border:selColor===c.id?"3px solid #2563EB":"2px solid #ccc",background:selColor===c.id?"#2563EB":"transparent",display:"flex",alignItems:"center",justifyContent:"center"}}>{selColor===c.id&&<div style={{width:7,height:7,borderRadius:99,background:"#fff"}} />}</div><div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:selColor===c.id?"#1E40AF":"#999"}}>{c.name}</div></div><div style={{fontSize:13,fontWeight:700,color:selColor===c.id?"#1E40AF":"#ccc"}}>{c.price>0?fmt(c.price)+"원":"0원"}</div></div>))}</Sc>}
+            <Sc t="트림 선택 (선택사항)" ic="🚗" bg="#F5F8FF">
+              {veh?.id==="ch_santafe"&&<div style={{display:"flex",gap:6,marginBottom:10}}>{[{k:"sf_g",l:"가솔린 2.5T"},{k:"sf_h",l:"하이브리드 1.5T"},{k:"sf_ha",l:"하이브리드 AWD"}].map(tb=><button key={tb.k} onClick={()=>{setTrimTab(tb.k);setST(null);setSTO([]);setSelColor(null);setSelIntColor(null);}} style={{padding:"6px 14px",borderRadius:20,border:"none",cursor:"pointer",fontSize:12,fontWeight:700,background:trimTab===tb.k?"#2563EB":"#E0EDFF",color:trimTab===tb.k?"#fff":"#2563EB"}}>{tb.l}</button>)}</div>}
+              <div className="resp-grid-2col" style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:8}}>{(veh?.id==="ch_santafe"?veh.trims.filter(t=>t.id.startsWith(trimTab)):veh?.trims||[]).map(t=><TC key={t.id} t={t} sel={sT===t.id} oc={()=>{if(sT===t.id){setST(null);setSTO([]);}else{setST(t.id);setSTO([]);setSelColor(null);setSelIntColor(null);}}} />)}</div>
+            </Sc>
+            {veh?.colors&&<Sc t="외장 색상" ic="🎨" bg="#F5F8FF">{(()=>{const cs=veh.colors;if(sT==="xline"||sT==="ch_xline") return cs.xline||cs.ch_xline||cs.default||[];if(sT&&(sT.includes("calli")||sT.includes("ink"))) return cs.calli||cs.default||[];if(sT&&sT.includes("brown")) return cs.brown||cs.default||[];return cs.default||[];})().map(c=>(<div key={c.id} onClick={()=>setSelColor(selColor===c.id?null:c.id)} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 10px",borderRadius:7,cursor:"pointer",background:selColor===c.id?"#E0EDFF":"transparent",marginBottom:3}}><div style={{width:17,height:17,borderRadius:99,flexShrink:0,border:selColor===c.id?"3px solid #2563EB":"2px solid #ccc",background:selColor===c.id?"#2563EB":"transparent",display:"flex",alignItems:"center",justifyContent:"center"}}>{selColor===c.id&&<div style={{width:7,height:7,borderRadius:99,background:"#fff"}} />}</div><div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:selColor===c.id?"#1E40AF":"#555"}}>{c.name}</div></div><div style={{fontSize:13,fontWeight:700,color:selColor===c.id?"#1E40AF":"#888"}}>{c.price>0?fmt(c.price)+"원":"0원"}</div></div>))}</Sc>}
+            {veh?.interiorColors&&sT&&(veh.interiorColors[sT]||[]).length>0&&<Sc t="내장 색상" ic="🪑" bg="#F5F8FF">{(veh.interiorColors[sT]||[]).map(c=>(<div key={c.id} onClick={()=>setSelIntColor(selIntColor===c.id?null:c.id)} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 10px",borderRadius:7,cursor:"pointer",background:selIntColor===c.id?"#E0EDFF":"transparent",marginBottom:3}}><div style={{width:17,height:17,borderRadius:99,flexShrink:0,border:selIntColor===c.id?"3px solid #2563EB":"2px solid #ccc",background:selIntColor===c.id?"#2563EB":"transparent",display:"flex",alignItems:"center",justifyContent:"center"}}>{selIntColor===c.id&&<div style={{width:7,height:7,borderRadius:99,background:"#fff"}} />}</div><div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:selIntColor===c.id?"#1E40AF":"#555"}}>{c.name}</div></div><div style={{fontSize:13,fontWeight:700,color:selIntColor===c.id?"#1E40AF":"#888"}}>{c.price>0?fmt(c.price)+"원":"0원"}</div></div>))}</Sc>}
             {veh?.baseOptions.length>0&&<Sc t="공통 선택품목" ic="⚙️" bg="#F5F8FF">{veh.baseOptions.map(o=><OR key={o.id} it={o} ck={sBO.includes(o.id)} tg={()=>tg(sBO,setSBO,o.id)} />)}</Sc>}
             {(veh?.trimOptions[sT]||[]).length>0&&<Sc t={`${trm?.name} 선택품목`} ic="🔧" bg="#F5F8FF">{(veh.trimOptions[sT]||[]).map(o=><OR key={o.id} it={o} ck={sTO.includes(o.id)} tg={()=>tg(sTO,setSTO,o.id)} />)}</Sc>}
-            {(veh?.commonSpecial.length>0||mdl?.options.length>0)&&<GL t="특장 옵션" c={GD} />}
-            {veh?.commonSpecial.length>0&&<Sc t="공통 특장" ic="📦" bg="#FFF8EE">{veh.commonSpecial.map(o=><OR key={o.id} it={o} ck={sSO.includes(o.id)} tg={()=>tg(sSO,setSSO,o.id)} />)}</Sc>}
+            {veh?.commonSpecial.length>0&&<Sc t="공통 선택품목" ic="📦" bg="#F5F8FF">{veh.commonSpecial.map(o=><OR key={o.id} it={o} ck={sSO.includes(o.id)} tg={()=>tg(sSO,setSSO,o.id)} />)}</Sc>}
+            {mdl?.options.length>0&&<GL t="특장 옵션" c={GD} />}
             <Sc t={`${mdl?.name} 특장`} ic="⭐" ac={mdl?.color} bg="#FFF8EE">{mdl?.options.map(o=><OR key={o.id} it={o} ck={sMO.includes(o.id)} tg={()=>tg(sMO,setSMO,o.id)} sd />)}</Sc>
-            <Sc t="커스텀 옵션" ic="✏️" bg="#FFF8EE">{cust.map((c,i)=>(<div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"6px 8px",borderRadius:6,marginBottom:3,background:c.on?"#FFEFD5":"transparent"}}><div onClick={()=>{const n=[...cust];n[i]={...n[i],on:!n[i].on};setCust(n);}} style={{width:16,height:16,borderRadius:3,flexShrink:0,border:c.on?`2px solid ${GD}`:"2px solid #ddd",background:c.on?GD:"transparent",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#fff",fontWeight:900,cursor:"pointer"}}>{c.on&&"✓"}</div><input type="text" value={c.n} placeholder={`커스텀 ${i+1}`} onChange={e=>{const n=[...cust];n[i]={...n[i],n:e.target.value};setCust(n);}} style={{flex:1,...iS,minWidth:0}} /><input type="number" value={c.p||""} placeholder="금액" onChange={e=>{const n=[...cust];n[i]={...n[i],p:Number(e.target.value)||0};setCust(n);}} style={{width:110,...iS,textAlign:"right",fontWeight:700}} /><span style={{fontSize:12,color:"#bbb"}}>원</span></div>))}</Sc>
+            <Sc t="커스텀 옵션" ic="✏️" bg="#FFF8EE">{cust.map((c,i)=>(<div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"6px 8px",borderRadius:6,marginBottom:3,background:c.on?"#FFEFD5":"transparent"}}><div onClick={()=>{const n=[...cust];n[i]={...n[i],on:!n[i].on};setCust(n);}} style={{width:16,height:16,borderRadius:3,flexShrink:0,border:c.on?`2px solid ${GD}`:"2px solid #ddd",background:c.on?GD:"transparent",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#fff",fontWeight:900,cursor:"pointer"}}>{c.on&&"✓"}</div><input type="text" value={c.n} placeholder="옵션명 입력" onChange={e=>{const n=[...cust];n[i]={...n[i],n:e.target.value};setCust(n);}} style={{flex:1,...iS,minWidth:0}} /><input type="number" value={c.p||""} placeholder="금액" onChange={e=>{const n=[...cust];n[i]={...n[i],p:Number(e.target.value)};setCust(n);}} style={{width:110,...iS,textAlign:"right",fontWeight:700,color:c.p<0?"#ef4444":"#222"}} /><span style={{fontSize:12,color:c.p<0?"#ef4444":"#bbb"}}>원</span></div>))}</Sc>
             <Sc t="할인" ic="💰"><div style={{display:"flex",alignItems:"center",gap:8}}><span style={{color:"#999",fontSize:14}}>할인</span><input type="number" value={disc||""} onChange={e=>setDisc(Number(e.target.value)||0)} style={{flex:1,...iS,fontSize:16,fontWeight:700,textAlign:"right"}} /><span style={{color:"#999",fontSize:14}}>원</span></div></Sc>
           </div>
           <div className="resp-sticky" style={{position:"sticky",top:16}}>
@@ -344,7 +530,6 @@ function App(){
               <div style={{fontSize:17,color:GD,letterSpacing:3,fontWeight:800}}>TOTAL</div>
               <div style={{display:"inline-block",background:"#f8f6f0",borderRadius:4,padding:"2px 8px",fontSize:11,color:GD,fontWeight:700,marginTop:3,marginBottom:6}}>◆ VAT 포함</div>
               <div style={{fontSize:34,fontWeight:900,color:"#1a1a1a",marginBottom:6,lineHeight:1}}>{fmt(tot())}<span style={{fontSize:15,fontWeight:400,color:"#bbb",marginLeft:2}}>원</span></div>
-              {veh?.id==="pv5"&&<div style={{fontSize:10,color:"#D97706",lineHeight:1.3,marginBottom:8,padding:"4px 8px",background:"#FFFBEB",borderRadius:4,border:"1px solid #FDE68A"}}>※ 보조금 할인은 지자체마다 다르며 지원금 미적용 차량 가격입니다.</div>}
               {vS()>0&&<div style={{background:"#EBF2FF",borderRadius:8,padding:"10px 12px",marginTop:8,marginBottom:6}}>
               <div style={{fontSize:20,color:"#1E40AF",letterSpacing:2,fontWeight:700,marginBottom:5}}>순정차</div>
               <SL l="베이스" v={vB()} />{vBO()>0&&<SL l="공통선택" v={vBO()} />}{selColor&&<SL l="색상" v={vCL()} />}{vTO()>0&&<SL l="트림옵션" v={vTO()} />}
@@ -356,6 +541,12 @@ function App(){
               <div style={{display:"flex",justifyContent:"space-between",padding:"8px 0 4px",borderTop:"1px solid #FFE0B2",marginTop:5,fontSize:21}}><span style={{color:"#92400E",fontWeight:700}}>소계</span><span style={{color:"#1a1a1a",fontWeight:800}}>{fmt(sS())}원</span></div>
               </div>}
               {disc>0&&<SL l="할인" v={-disc} d />}
+              {veh?.hasTax&&calcTax().total>0&&<div style={{background:"#FEF2F2",borderRadius:8,padding:"8px 12px",marginTop:6,marginBottom:4}}>
+              <div style={{fontSize:14,color:"#991B1B",fontWeight:700,marginBottom:4}}>세금 {veh.taxMode==="specialOnly"?"(특장 부분만 적용)":""}</div>
+              <SL l="개별소비세 (3.5%)" v={calcTax().indTax} />
+              <SL l="교육세 (개소세의 30%)" v={calcTax().eduTax} />
+              <div style={{display:"flex",justifyContent:"space-between",padding:"6px 0 2px",borderTop:"1px solid #FECACA",marginTop:4,fontSize:16}}><span style={{color:"#991B1B",fontWeight:700}}>세금 합계</span><span style={{color:"#1a1a1a",fontWeight:800}}>{fmt(calcTax().total)}원</span></div>
+              </div>}
               <button onClick={()=>setStep(2)} style={{width:"100%",padding:"11px",marginTop:4,background:"#1a1a1a",color:"#fff",border:"none",borderRadius:8,fontSize:14,fontWeight:800,cursor:"pointer"}}>견적서 미리보기 →</button>
             </div>
           </div>
@@ -369,11 +560,12 @@ function App(){
     if(!veh||!mdl) return(<div style={{minHeight:"100vh",background:"#f5f5f5",padding:"40px",fontFamily:F,textAlign:"center"}}><FL /><div style={{marginTop:100,color:"#999"}}>모델 정보를 찾을 수 없습니다.</div><button onClick={()=>setStep(0)} style={{...bL,marginTop:20}}>처음으로</button></div>);
     const vI=[];if(trm){vI.push({name:`${veh?.name} ${trm?.name}`,desc:"베이스 차량",price:vB()});}
     veh?.baseOptions.filter(o=>sBO.includes(o.id)).forEach(o=>vI.push({name:o.name,desc:"공통 선택",price:o.price}));
-    if(veh?.colors&&selColor){const allC=[...(veh.colors.default||[]),...(veh.colors.xline||[])];const sc=allC.find(x=>x.id===selColor);if(sc)vI.push({name:"색상: "+sc.name,desc:"색상",price:sc.price});}
+    if(veh?.colors&&selColor){const allC=[...(veh.colors.default||[]),...(veh.colors.xline||[])];const sc=allC.find(x=>x.id===selColor);if(sc)vI.push({name:"외장 색상: "+sc.name,desc:"외장 색상",price:sc.price});}
+    if(veh?.interiorColors&&selIntColor&&sT){const ic=(veh.interiorColors[sT]||[]).find(x=>x.id===selIntColor);if(ic)vI.push({name:"내장 색상: "+ic.name,desc:"내장 색상",price:ic.price});}
     if(sT)(veh?.trimOptions[sT]||[]).filter(o=>sTO.includes(o.id)).forEach(o=>vI.push({name:o.name,desc:"트림 전용",price:o.price}));
     const sI=[];veh?.commonSpecial.filter(o=>sSO.includes(o.id)).forEach(o=>sI.push({name:o.name,desc:"공통 특장",price:o.price}));
     mdl?.options.filter(o=>sMO.includes(o.id)).forEach(o=>sI.push({name:o.name,desc:o.desc||"특장",price:o.price}));
-    cust.filter(c=>c.on&&c.n&&c.p>0).forEach(c=>sI.push({name:c.n,desc:"커스텀",price:c.p}));
+    cust.filter(c=>c.on&&c.n&&c.p!==0).forEach(c=>sI.push({name:c.n,desc:"커스텀",price:c.p}));
     const ds=(()=>{const t=new Date();return`${t.getFullYear()}년 ${t.getMonth()+1}월 ${t.getDate()}일`;})();
     const CI=D.company;
     const doPr=()=>{try{const w=window.open("","_blank");if(w){w.document.write(`<!DOCTYPE html><html><head><title>견적서</title><link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Pretendard Variable',sans-serif;background:#fff;color:#111;padding:24px 32px}table{border-collapse:collapse;width:100%}@media print{body{padding:10px}@page{margin:12mm;size:A4}}</style></head><body>${pr.current.innerHTML}</body></html>`);w.document.close();setTimeout(()=>w.print(),600);}else{alert("팝업이 차단되었습니다. 팝업을 허용해주세요.");}}catch(e){alert("인쇄 기능을 사용할 수 없습니다.");}};
@@ -404,7 +596,7 @@ function App(){
                 <tr><td style={{...thC,borderBottom:"none"}}>업 태</td><td style={{...tdC,borderRight:"1px solid #ccc",borderBottom:"none"}}>{CI.bizType}</td><td style={{...thC,borderBottom:"none"}}>종 목</td><td style={{...tdC,borderBottom:"none"}}>{CI.bizItem}</td></tr>
               </tbody></table></div>
             </div>
-            <div className="resp-grid-2col" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:20}}><IB l="고객 정보" a={cN||"—"} b={cP||"—"} /><IB l="차량 / 모델" a={trm?`${veh?.name} ${trm.name}`:`${veh?.name} (트림 미선택)`} b={`${mdl?.name} (${mdl?.subtitle})`} /></div>
+            <div className="resp-grid-2col" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:20}}><IB l="고객 정보" a={cN||"—"} b={cP||"—"} c={cAddr} /><IB l="차량 / 모델" a={trm?`${veh?.name} ${trm.name}`:`${veh?.name} (트림 미선택)`} b={`${mdl?.name} (${mdl?.subtitle})`} /></div>
             {vI.length>0&&<><PH t="순정차" c={BL} />
             <div className="resp-table-wrap"><table style={{minWidth:500}}><thead><tr style={{background:"#f4f6f9"}}><Th w="5%">No</Th><Th w="48%" a="left">항목</Th><Th w="20%" a="left">비고</Th><Th w="27%" a="right">금액</Th></tr></thead><tbody>
               {vI.map((it,i)=><tr key={i} style={{borderBottom:"1px solid #f0f0f0"}}><Td c="#ccc">{i+1}</Td><Td b>{it.name}</Td><Td c="#aaa" s={9.5}>{it.desc}</Td><Td a="right" b m>{fmt(it.price)}원</Td></tr>)}
@@ -416,8 +608,13 @@ function App(){
               <tr style={{background:"#faf8f3"}}><td colSpan={3} style={{padding:"7px 10px",fontSize:15.0,fontWeight:800,color:GD}}>특장 소계</td><td style={{padding:"7px 10px",textAlign:"right",fontSize:16.0,fontWeight:900}}>{fmt(sS())}원</td></tr>
             </tbody></table></div></>}
             {disc>0&&<div style={{display:"flex",justifyContent:"space-between",padding:"8px 10px",marginTop:8,background:"#FFF5F5",borderRadius:4,border:"1px solid #FEE"}}><span style={{fontSize:15.0,fontWeight:700,color:"#c00"}}>할인</span><span style={{fontSize:16.0,fontWeight:900,color:"#c00"}}>-{fmt(disc)}원</span></div>}
+            {veh?.hasTax&&calcTax().total>0&&<div style={{marginTop:8,padding:"10px 14px",background:"#FEF2F2",borderRadius:6,border:"1px solid #FECACA"}}>
+              <div style={{fontSize:12,color:"#991B1B",fontWeight:700,marginBottom:6}}>{veh.taxMode==="specialOnly"?"세금 (특장 부분만 적용)":"세금"}</div>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}><span style={{fontSize:13,color:"#991B1B",fontWeight:600}}>개별소비세 (3.5%)</span><span style={{fontSize:13,fontWeight:700,color:"#991B1B"}}>{fmt(calcTax().indTax)}원</span></div>
+              <div style={{display:"flex",justifyContent:"space-between"}}><span style={{fontSize:13,color:"#991B1B",fontWeight:600}}>교육세 (개소세의 30%)</span><span style={{fontSize:13,fontWeight:700,color:"#991B1B"}}>{fmt(calcTax().eduTax)}원</span></div>
+              <div style={{display:"flex",justifyContent:"space-between",borderTop:"1px solid #FECACA",marginTop:6,paddingTop:6}}><span style={{fontSize:14,color:"#991B1B",fontWeight:800}}>세금 합계</span><span style={{fontSize:14,fontWeight:900,color:"#991B1B"}}>{fmt(calcTax().total)}원</span></div>
+            </div>}
             <div style={{background:"#1a1a1a",borderRadius:8,padding:"14px 20px",marginTop:12,display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:22.0,fontWeight:800,color:"#fff"}}>총 견적 금액</div><div style={{fontSize:14.0,color:"rgba(255,255,255,0.6)",marginTop:2}}>◆ VAT 포함</div></div><div style={{fontSize:26,fontWeight:900,color:"#fff"}}>{fmt(tot())}<span style={{fontSize:14.0,color:"rgba(255,255,255,0.6)",marginLeft:3}}>원</span></div></div>
-            {veh?.id==="pv5"&&<div style={{marginTop:6,padding:"6px 10px",background:"#FFFBEB",borderRadius:4,border:"1px solid #FDE68A",fontSize:13.0,color:"#92400E",fontWeight:600}}>※ 보조금 할인은 지자체마다 다르며 지원금 미적용 차량 가격입니다.</div>}
             {barTotal>0&&<div style={{display:"flex",marginTop:6,borderRadius:3,overflow:"hidden",height:4}}>{hasV&&<div style={{flex:vS(),background:BL}} />}{hasS&&<div style={{flex:sS(),background:GD}} />}{disc>0&&<div style={{flex:disc,background:"#ef4444"}} />}</div>}
             {cNo&&<div style={{marginTop:14,padding:"8px 12px",background:"#fafafa",borderRadius:4,borderLeft:"3px solid #1a1a1a"}}><div style={{fontSize:12.0,color:GD,letterSpacing:2,marginBottom:2,fontWeight:700}}>비고</div><div style={{fontSize:14.0,color:"#555",lineHeight:1.5}}>{cNo}</div></div>}
             <div style={{marginTop:20,paddingTop:12,borderTop:"1px solid #eee",textAlign:"center"}}><div style={{fontSize:13.0,color:"#ccc"}}>본 견적서는 발행일로부터 30일간 유효합니다 · VAT 포함</div><div style={{fontSize:13.0,color:"#ccc",marginTop:2}}>{CI.name} | {CI.ceo} | {CI.phone} | {CI.address}</div></div>
@@ -454,7 +651,7 @@ function App(){
             {["name","ceo","bizNo","bizType","bizItem","phone","address"].map(k=>(<div key={k} style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}><span style={{width:70,fontSize:12,color:"#999",fontWeight:600,textAlign:"right"}}>{({name:"상호",ceo:"대표",bizNo:"등록번호",bizType:"업태",bizItem:"종목",phone:"전화",address:"주소"})[k]}</span><input value={D.company[k]} onChange={e=>up(d=>{d.company[k]=e.target.value;})} style={{flex:1,...iS}} /></div>))}
           </div>}
           {aTab==="vehicles"&&<div>{D.vehicles.map((v,vi)=>(<div key={v.id} style={{marginBottom:24,borderBottom:"1px solid #f0f0f0",paddingBottom:14}}>
-            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}><div style={{background:v.id==="carnival"?"#1a1a1a":"#0369A1",color:"#fff",padding:"2px 10px",borderRadius:12,fontSize:11,fontWeight:800}}>{v.badge}</div><input value={v.name} onChange={e=>up(d=>{d.vehicles[vi].name=e.target.value;})} style={{fontSize:15,fontWeight:800,...iS,border:"none",padding:"3px 6px"}} /></div>
+            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}><div style={{background:v.id==="carnival"?"#1a1a1a":v.id==="challenger"?"#DC2626":"#0369A1",color:"#fff",padding:"2px 10px",borderRadius:12,fontSize:11,fontWeight:800}}>{v.badge}</div><input value={v.name} onChange={e=>up(d=>{d.vehicles[vi].name=e.target.value;})} style={{fontSize:15,fontWeight:800,...iS,border:"none",padding:"3px 6px"}} /></div>
             <div style={{fontSize:13,fontWeight:700,color:GD,marginBottom:6}}>트림</div>
             {v.trims.map((t,ti)=>(<div key={t.id} style={{display:"flex",alignItems:"center",gap:6,marginBottom:4,marginLeft:8}}><input value={t.name} onChange={e=>up(d=>{d.vehicles[vi].trims[ti].name=e.target.value;})} style={{width:160,...iS,fontSize:13}} /><input type="number" value={t.price} onChange={e=>up(d=>{d.vehicles[vi].trims[ti].price=Number(e.target.value)||0;})} style={{width:120,...iS,textAlign:"right",fontSize:13}} /><span style={{fontSize:12,color:"#bbb"}}>원</span><button onClick={()=>up(d=>{d.vehicles[vi].trims.splice(ti,1);})} style={dB}>✕</button></div>))}
             <button onClick={()=>up(d=>{d.vehicles[vi].trims.push({id:uid(),name:"새 트림",price:0});})} style={{...aB,marginLeft:8,fontSize:12}}>+ 트림</button>
@@ -480,15 +677,15 @@ function App(){
   return null;
 }
 
-function MC({m,onClick}){const[h,setH]=useState(false);return(<div onClick={onClick} onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)} style={{background:"#fff",border:`1px solid ${h?"#ccc":"#eee"}`,borderRadius:12,padding:"22px 18px",cursor:"pointer",transition:"all 0.2s",transform:h?"translateY(-2px)":"none",boxShadow:h?"0 8px 20px rgba(0,0,0,0.06)":"0 1px 3px rgba(0,0,0,0.02)",position:"relative",overflow:"hidden"}}><div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg,${m.color},${m.color}88)`}} /><div style={{fontSize:10,color:GD,letterSpacing:3,marginBottom:6,fontWeight:700}}>{m.subtitle}</div><div style={{fontSize:18,fontWeight:900,color:"#1a1a1a",marginBottom:4,whiteSpace:"pre-line",lineHeight:1.3}}>{m.name}</div><div style={{fontSize:12,color:"#bbb",marginBottom:14}}>옵션 {m.options.length}종</div><div style={{color:GD,fontSize:12,fontWeight:700}}>견적 시작 →</div></div>);}
+function MC({m,onClick}){const[h,setH]=useState(false);return(<div onClick={onClick} onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)} style={{width:170,background:"#fff",border:`1px solid ${h?"#ccc":"#eee"}`,borderRadius:12,padding:"22px 18px",cursor:"pointer",transition:"all 0.2s",transform:h?"translateY(-2px)":"none",boxShadow:h?"0 8px 20px rgba(0,0,0,0.06)":"0 1px 3px rgba(0,0,0,0.02)",position:"relative",overflow:"hidden"}}><div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg,${m.color},${m.color}88)`}} /><div style={{fontSize:10,color:GD,letterSpacing:3,marginBottom:6,fontWeight:700}}>{m.subtitle}</div><div style={{fontSize:18,fontWeight:900,color:"#1a1a1a",marginBottom:4,whiteSpace:"pre-line",lineHeight:1.3}}>{m.name}</div><div style={{fontSize:12,color:"#bbb",marginBottom:14}}>옵션 {m.options.length}종</div><div style={{color:GD,fontSize:12,fontWeight:700}}>견적 시작 →</div></div>);}
 function GL({t,c}){const bg=c===BL?"linear-gradient(90deg,#EBF2FF,#E0EDFF)":"linear-gradient(90deg,#FFF5E6,#FFEDCC)";return(<div style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",borderRadius:8,background:bg,marginTop:4}}><div style={{width:5,height:18,borderRadius:3,background:c}} /><div style={{fontSize:16,fontWeight:900,color:c===BL?"#1E40AF":"#92400E"}}>{t}</div></div>);}
 function Sc({t,ic,ac,bg,children}){return(<div style={{background:bg||"#fff",border:"1px solid "+(bg?"transparent":"#eee"),borderRadius:10,padding:"14px 16px"}}><div style={{display:"flex",alignItems:"center",gap:6,marginBottom:10}}>{ac&&<div style={{width:3,height:12,borderRadius:2,background:ac}} />}{ic&&<span style={{fontSize:14}}>{ic}</span>}<div style={{fontSize:13.5,fontWeight:800,color:ac||GD}}>{t}</div></div>{children}</div>);}
 function In({l,v,s,ph,mt}){return(<div style={{marginTop:mt||0}}><div style={{fontSize:11,color:"#bbb",marginBottom:3,fontWeight:600}}>{l}</div><input type="text" value={v} onChange={e=>s(e.target.value)} placeholder={ph} style={{width:"100%",...iS}} /></div>);}
 function TC({t,sel,oc}){return(<div onClick={oc} style={{padding:"10px 12px",borderRadius:7,cursor:"pointer",border:sel?"2px solid #1a1a1a":"1px solid #ddd",background:sel?"#fafafa":"#fff"}}><div style={{fontSize:13.5,fontWeight:700,color:sel?"#1a1a1a":"#555"}}>{t.name}</div><div style={{fontSize:15,fontWeight:800,color:sel?"#1a1a1a":"#888",marginTop:2}}>{fmt(t.price)}원</div></div>);}
-function OR({it,ck,tg,lk,sd}){return(<div onClick={lk?undefined:tg} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 8px",borderRadius:6,cursor:lk?"default":"pointer",background:ck?"#fafafa":"transparent",marginBottom:2}}><div style={{width:15,height:15,borderRadius:3,flexShrink:0,border:ck?"2px solid #1a1a1a":"2px solid #aaa",background:ck?"#1a1a1a":"transparent",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#fff",fontWeight:900}}>{ck&&"✓"}</div><div style={{flex:1,minWidth:0}}><div style={{fontSize:13,fontWeight:600,color:ck?"#1a1a1a":"#555"}}>{it.name}</div>{sd&&it.desc&&<div style={{fontSize:11.5,color:"#888",marginTop:1,lineHeight:1.3}}>{it.desc}</div>}</div><div style={{textAlign:"right",flexShrink:0}}>{it.originalPrice>0&&<div style={{fontSize:11,color:"#999",textDecoration:"line-through"}}>{fmt(it.originalPrice)}</div>}<div style={{fontSize:13.5,fontWeight:700,color:ck?"#1a1a1a":"#888"}}>{fmt(it.price)}원</div></div></div>);}
+function OR({it,ck,tg,lk,sd}){const neg=it.price<0;return(<div onClick={lk?undefined:tg} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 8px",borderRadius:6,cursor:lk?"default":"pointer",background:ck?(neg?"#FEF2F2":"#fafafa"):"transparent",marginBottom:2}}><div style={{width:15,height:15,borderRadius:3,flexShrink:0,border:ck?(neg?"2px solid #ef4444":"2px solid #1a1a1a"):"2px solid #aaa",background:ck?(neg?"#ef4444":"#1a1a1a"):"transparent",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#fff",fontWeight:900}}>{ck&&"✓"}</div><div style={{flex:1,minWidth:0}}><div style={{fontSize:13,fontWeight:600,color:ck?(neg?"#ef4444":"#1a1a1a"):"#555"}}>{it.name}</div>{sd&&it.desc&&<div style={{fontSize:11.5,color:"#888",marginTop:1,lineHeight:1.3}}>{it.desc}</div>}</div><div style={{textAlign:"right",flexShrink:0}}>{it.originalPrice>0&&<div style={{fontSize:11,color:"#999",textDecoration:"line-through"}}>{fmt(it.originalPrice)}</div>}<div style={{fontSize:13.5,fontWeight:700,color:neg?(ck?"#ef4444":"#e88"):(ck?"#1a1a1a":"#888")}}>{fmt(it.price)}원</div></div></div>);}
 function SL({l,v,d}){return(<div style={{display:"flex",justifyContent:"space-between",padding:"4px 0",fontSize:16}}><span style={{color:"#666"}}>{l}</span><span style={{color:d?"#ef4444":"#333",fontWeight:600}}>{d&&"-"}{fmt(Math.abs(v))}원</span></div>);}
 function PH({t,c,mt}){return(<div style={{display:"flex",alignItems:"center",gap:6,padding:"6px 0 4px",marginTop:mt||0}}><div style={{width:4,height:12,borderRadius:2,background:c}} /><div style={{fontSize:15,fontWeight:900,color:"#333"}}>{t}</div><div style={{flex:1,height:1,background:"#eee"}} /></div>);}
-function IB({l,a,b}){return(<div style={{background:"#fafafa",borderRadius:4,padding:"9px 12px",border:"1px solid #f0f0f0"}}><div style={{fontSize:12,color:GD,letterSpacing:2,marginBottom:4,fontWeight:700}}>{l}</div><div style={{fontSize:16,fontWeight:700,color:"#1a1a1a"}}>{a}</div><div style={{fontSize:14,color:"#999",marginTop:1}}>{b}</div></div>);}
+function IB({l,a,b,c}){return(<div style={{background:"#fafafa",borderRadius:4,padding:"9px 12px",border:"1px solid #f0f0f0"}}><div style={{fontSize:12,color:GD,letterSpacing:2,marginBottom:4,fontWeight:700}}>{l}</div><div style={{fontSize:16,fontWeight:700,color:"#1a1a1a"}}>{a}</div><div style={{fontSize:14,color:"#999",marginTop:1}}>{b}</div>{c&&<div style={{fontSize:13,color:"#888",marginTop:2}}>{c}</div>}</div>);}
 function Th({children,w,a="center"}){return<th style={{padding:"6px 10px",textAlign:a,fontSize:13.5,fontWeight:700,color:"#777",width:w}}>{children}</th>;}
 function Td({children,a="left",b,c,s,m}){return<td style={{padding:"6px 10px",textAlign:a,fontSize:s||10.5,fontWeight:b?700:400,color:c||"#333",fontVariantNumeric:m?"tabular-nums":undefined}}>{children}</td>;}
 const bL={background:"#fff",border:"1px solid #eee",color:"#888",padding:"7px 12px",borderRadius:6,cursor:"pointer",fontSize:13,fontWeight:600};
