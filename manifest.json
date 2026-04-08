@@ -1,0 +1,21 @@
+{
+  "name": "패밀리카라반 전체 라인 견적시스템",
+  "short_name": "패밀리카라반",
+  "description": "카니발 · PV5 · CHALLENGER 특장차량 견적 프로그램",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1a1a1a",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
