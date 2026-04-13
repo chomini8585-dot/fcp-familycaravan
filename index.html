@@ -521,7 +521,6 @@ function App(){
             <div style={{fontSize:13,color:"#bbb",fontWeight:600,marginTop:6}}>Ver.1.1 Beta</div>
             {!isStandalone&&!installDismissed&&showInstall&&!isIOS&&<div style={{marginTop:12,position:"relative"}}><button onClick={doInstall} style={{width:"100%",padding:"12px 24px",background:"#1a1a1a",color:"#fff",border:"none",borderRadius:8,fontSize:14,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>📲 앱 설치</button>{!installPrompt&&isAndroid&&<div style={{fontSize:11,color:"#999",textAlign:"center",marginTop:4}}>브라우저 메뉴(⋮) → 홈 화면에 추가</div>}<button onClick={()=>setInstallDismissed(true)} style={{position:"absolute",top:-6,right:-6,background:"#ddd",border:"none",borderRadius:"50%",width:20,height:20,fontSize:11,cursor:"pointer",color:"#666"}}>✕</button></div>}
             {!isStandalone&&isIOS&&!installDismissed&&<div style={{marginTop:12,padding:"10px 16px",background:"#f0f0f0",borderRadius:8,fontSize:13,color:"#555",textAlign:"center",lineHeight:1.5,position:"relative"}}>📲 Safari 하단 <strong>공유(↑)</strong> → <strong>홈 화면에 추가</strong>로 앱 설치<button onClick={()=>setInstallDismissed(true)} style={{position:"absolute",top:-6,right:-6,background:"#ddd",border:"none",borderRadius:"50%",width:20,height:20,fontSize:11,cursor:"pointer",color:"#666"}}>✕</button></div>}
-            <button onClick={()=>{loadQuotes();setStep(4);}} style={{marginTop:12,padding:"10px 24px",background:"#2563EB",color:"#fff",border:"none",borderRadius:8,fontSize:14,fontWeight:700,cursor:"pointer"}}>📋 견적 리스트</button>
             <div style={{width:40,height:2,background:GD,margin:"12px auto 0"}} />
           </div>
           <img src={LOGO} alt="logo" style={{width:80,height:80,objectFit:"contain",flexShrink:0}} />
@@ -602,7 +601,8 @@ function App(){
               <SL l="교육세 (개소세의 30%)" v={calcTax().eduTax} />
               <div style={{display:"flex",justifyContent:"space-between",padding:"6px 0 2px",borderTop:"1px solid #FECACA",marginTop:4,fontSize:16}}><span style={{color:"#991B1B",fontWeight:700}}>세금 합계</span><span style={{color:"#1a1a1a",fontWeight:800}}>{fmt(calcTax().total)}원</span></div>
               </div>}
-              <button onClick={()=>{saveQuote();setStep(2);}} style={{width:"100%",padding:"11px",marginTop:4,background:"#1a1a1a",color:"#fff",border:"none",borderRadius:8,fontSize:14,fontWeight:800,cursor:"pointer"}}>견적서 미리보기 →</button>
+              <button onClick={()=>setStep(2)} style={{width:"100%",padding:"11px",marginTop:4,background:"#1a1a1a",color:"#fff",border:"none",borderRadius:8,fontSize:14,fontWeight:800,cursor:"pointer"}}>견적서 미리보기 →</button>
+              <button onClick={async()=>{await saveQuote();loadQuotes();setStep(5);}} style={{width:"100%",padding:"11px",marginTop:6,background:"#2563EB",color:"#fff",border:"none",borderRadius:8,fontSize:14,fontWeight:800,cursor:"pointer"}}>💾 견적서 저장하기</button>
             </div>
             {(()=>{const items=[];if(trm)items.push({cat:"차량",name:`${veh?.name} ${trm.name}`,price:vB()});veh?.baseOptions.filter(o=>sBO.includes(o.id)).forEach(o=>items.push({cat:"공통선택",name:o.name,price:o.price}));if(selColor){const allC=[...(veh?.colors?.default||[]),...(veh?.colors?.xline||[])];const sc=allC.find(x=>x.id===selColor);if(sc)items.push({cat:"색상",name:sc.name,price:sc.price});}if(sT)(veh?.trimOptions[sT]||[]).filter(o=>sTO.includes(o.id)).forEach(o=>items.push({cat:"차량옵션",name:o.name,price:o.price}));if(veh)veh.commonSpecial.filter(o=>sSO.includes(o.id)).forEach(o=>items.push({cat:"공통특장",name:o.name,price:o.price}));if(mdl)mdl.options.filter(o=>sMO.includes(o.id)).forEach(o=>items.push({cat:"특장",name:o.name,price:o.price}));cust.filter(c=>c.on&&c.n&&c.p!==0).forEach(c=>items.push({cat:"커스텀",name:c.n,price:c.p}));if(items.length===0)return null;return(<div style={{background:"#fff",border:"1px solid #eee",borderRadius:14,padding:14,marginTop:10,boxShadow:"0 2px 12px rgba(0,0,0,0.04)",maxHeight:400,overflowY:"auto"}}><div style={{fontSize:13,fontWeight:800,color:"#888",marginBottom:8,letterSpacing:1}}>📋 선택 항목</div>{items.map((it,i)=>(<div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"4px 0",borderBottom:"1px solid #f5f5f5",fontSize:12}}><div style={{display:"flex",gap:6,alignItems:"center",minWidth:0,flex:1}}><span style={{background:it.cat==="특장"||it.cat==="커스텀"?"#FFF5E6":"#EBF2FF",color:it.cat==="특장"||it.cat==="커스텀"?"#92400E":"#1E40AF",fontSize:10,fontWeight:700,padding:"1px 5px",borderRadius:3,flexShrink:0}}>{it.cat}</span><span style={{color:"#333",fontWeight:600,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{it.name}</span></div><span style={{color:it.price<0?"#ef4444":"#333",fontWeight:700,flexShrink:0,marginLeft:6}}>{fmt(it.price)}원</span></div>))}</div>);})()}
           </div>
@@ -806,51 +806,51 @@ function App(){
   }
 
 
-  // ═══ STEP 4: QUOTE LIST ═══
-  if(step===4){
+  // ═══ STEP 5: QUOTE LIST ═══
+  if(step===5){
     return(
     <div style={{minHeight:"100vh",background:"#f5f5f5",padding:"20px 14px",fontFamily:F}}>{toastEl}<FL />
       <div style={{maxWidth:900,margin:"0 auto"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
-          <button onClick={()=>setStep(0)} style={bL}>← 처음으로</button>
-          <div style={{fontSize:22,fontWeight:900}}>📋 견적 리스트</div>
+          <div style={{display:"flex",gap:6}}>
+            <button onClick={()=>setStep(1)} style={bL}>← 견적 수정</button>
+            <button onClick={()=>setStep(0)} style={bL}>처음으로</button>
+          </div>
           <button onClick={loadQuotes} style={{...bL,color:"#2563EB",borderColor:"#2563EB"}}>🔄 새로고침</button>
+        </div>
+        <div style={{background:"#fff",borderRadius:12,padding:"16px 18px",marginBottom:16,border:"1px solid #eee"}}>
+          <div style={{fontSize:20,fontWeight:900,marginBottom:4}}>📋 저장된 견적 리스트</div>
+          <div style={{fontSize:13,color:"#999"}}>견적서 저장 시 자동으로 기록됩니다</div>
         </div>
         {quotesLoading?<div style={{textAlign:"center",padding:40,color:"#999"}}>불러오는 중...</div>:
         quotes.length===0?<div style={{textAlign:"center",padding:60,color:"#bbb",fontSize:16}}>저장된 견적이 없습니다.</div>:
-        <div style={{display:"flex",flexDirection:"column",gap:10}}>
-          <div style={{fontSize:13,color:"#999",textAlign:"right"}}>총 {quotes.length}건</div>
-          {quotes.map(q=>{
-            const dt=q.createdAtLocal?new Date(q.createdAtLocal):null;
-            const ds=dt?`${dt.getFullYear()}.${String(dt.getMonth()+1).padStart(2,"0")}.${String(dt.getDate()).padStart(2,"0")} ${String(dt.getHours()).padStart(2,"0")}:${String(dt.getMinutes()).padStart(2,"0")}`:"";
-            return(
-            <div key={q.id} style={{background:"#fff",borderRadius:12,padding:"16px 18px",boxShadow:"0 1px 6px rgba(0,0,0,0.04)",border:"1px solid #eee"}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
-                <div>
-                  <div style={{fontSize:16,fontWeight:800,color:"#1a1a1a"}}>{q.customerName}</div>
-                  <div style={{fontSize:13,color:"#888",marginTop:2}}>{q.customerPhone}</div>
-                </div>
-                <div style={{textAlign:"right"}}>
-                  <div style={{fontSize:11,color:"#bbb"}}>{ds}</div>
-                  <div style={{fontSize:18,fontWeight:900,color:"#1a1a1a",marginTop:2}}>{fmt(q.total)}원</div>
-                </div>
-              </div>
-              <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:8}}>
-                <span style={{fontSize:11,fontWeight:700,padding:"2px 8px",borderRadius:20,background:"#EBF2FF",color:"#1E40AF"}}>{q.vehicle}</span>
-                <span style={{fontSize:11,fontWeight:700,padding:"2px 8px",borderRadius:20,background:"#FFF5E6",color:"#92400E"}}>{q.model}</span>
-                {q.trim&&<span style={{fontSize:11,fontWeight:700,padding:"2px 8px",borderRadius:20,background:"#f0f0f0",color:"#555"}}>{q.trim}</span>}
-              </div>
-              <div style={{display:"flex",gap:12,fontSize:12,color:"#888"}}>
-                <span>기본차량 {fmt(q.vehicleTotal)}원</span>
-                <span>특장 {fmt(q.specialTotal)}원</span>
-                {q.discount>0&&<span style={{color:"#ef4444"}}>할인 -{fmt(q.discount)}원</span>}
-              </div>
-              {q.note&&<div style={{fontSize:12,color:"#999",marginTop:6,padding:"4px 8px",background:"#fafafa",borderRadius:4}}>📝 {q.note}</div>}
-              <div style={{display:"flex",justifyContent:"flex-end",marginTop:8}}>
-                <button onClick={()=>deleteQuote(q.id)} style={{background:"none",border:"1px solid #fcc",color:"#c00",borderRadius:6,padding:"4px 12px",fontSize:12,cursor:"pointer",fontWeight:600}}>🗑️ 삭제</button>
-              </div>
-            </div>);
-          })}
+        <div>
+          <div style={{fontSize:13,color:"#999",textAlign:"right",marginBottom:8}}>총 {quotes.length}건</div>
+          <div className="resp-table-wrap" style={{background:"#fff",borderRadius:12,border:"1px solid #eee",overflow:"hidden"}}>
+            <table style={{width:"100%",borderCollapse:"collapse"}}>
+              <thead><tr style={{background:"#f8f9fa"}}>
+                <th style={{padding:"10px 12px",textAlign:"left",fontSize:13,fontWeight:700,color:"#555",borderBottom:"2px solid #eee"}}>고객명</th>
+                <th style={{padding:"10px 12px",textAlign:"left",fontSize:13,fontWeight:700,color:"#555",borderBottom:"2px solid #eee"}}>연락처</th>
+                <th style={{padding:"10px 12px",textAlign:"left",fontSize:13,fontWeight:700,color:"#555",borderBottom:"2px solid #eee"}}>차량 / 모델</th>
+                <th style={{padding:"10px 12px",textAlign:"right",fontSize:13,fontWeight:700,color:"#555",borderBottom:"2px solid #eee"}}>총 금액</th>
+                <th style={{padding:"10px 12px",textAlign:"center",fontSize:13,fontWeight:700,color:"#555",borderBottom:"2px solid #eee"}}>날짜</th>
+                <th style={{padding:"10px 12px",textAlign:"center",fontSize:13,fontWeight:700,color:"#555",borderBottom:"2px solid #eee"}}></th>
+              </tr></thead>
+              <tbody>{quotes.map(q=>{
+                const dt=q.createdAtLocal?new Date(q.createdAtLocal):null;
+                const ds=dt?`${String(dt.getMonth()+1).padStart(2,"0")}/${String(dt.getDate()).padStart(2,"0")} ${String(dt.getHours()).padStart(2,"0")}:${String(dt.getMinutes()).padStart(2,"0")}`:"";
+                return(
+                <tr key={q.id} style={{borderBottom:"1px solid #f0f0f0"}}>
+                  <td style={{padding:"10px 12px",fontSize:14,fontWeight:700,color:"#1a1a1a"}}>{q.customerName}</td>
+                  <td style={{padding:"10px 12px",fontSize:13,color:"#555"}}>{q.customerPhone}</td>
+                  <td style={{padding:"10px 12px"}}><div style={{fontSize:13,fontWeight:600,color:"#1a1a1a"}}>{q.model}</div><div style={{fontSize:11,color:"#999"}}>{q.vehicle}{q.trim?" · "+q.trim:""}</div></td>
+                  <td style={{padding:"10px 12px",textAlign:"right",fontSize:14,fontWeight:800,color:"#1a1a1a"}}>{fmt(q.total)}원</td>
+                  <td style={{padding:"10px 12px",textAlign:"center",fontSize:12,color:"#999"}}>{ds}</td>
+                  <td style={{padding:"10px 12px",textAlign:"center"}}><button onClick={()=>deleteQuote(q.id)} style={{background:"none",border:"1px solid #fcc",color:"#c00",borderRadius:4,padding:"3px 8px",fontSize:11,cursor:"pointer",fontWeight:600}}>삭제</button></td>
+                </tr>);
+              })}</tbody>
+            </table>
+          </div>
         </div>}
       </div>
     </div>);
