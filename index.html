@@ -411,7 +411,10 @@ function App(){
   const[brSel,setBrSel]=useState([]);
   const showToast=(msg)=>{setToast(msg);setTimeout(()=>setToast(""),2500);};
   const[quotes,setQuotes]=useState([]);const[quotesLoading,setQuotesLoading]=useState(false);
-  const saveQuote=()=>{try{const veh=D.vehicles.find(v=>v.id===sV);const mdl=veh?.models.find(m=>m.id===sM);const trm=veh?.trims.find(t=>t.id===sT);const data={customerName:cN||"미입력",customerPhone:cP||"",customerAddr:cAddr||"",vehicle:veh?.name||"",model:mdl?.name||"",trim:trm?.name||"",total:tot(),vehicleTotal:vS(),specialTotal:sS(),discount:disc,note:cNo||"",options:{baseOptions:sBO,trimOptions:sTO,specialOptions:sSO,modelOptions:sMO,color:selColor,intColor:selIntColor,custom:cust.filter(c=>c.on&&c.n)},createdAtLocal:new Date().toISOString()};return window.db.collection("quotes").add(data);}catch(e){alert("saveQuote error: "+e.message);return Promise.reject(e);}};
+  const saveQuote=()=>{const veh=D.vehicles.find(v=>v.id===sV);const mdl=veh&&veh.models?veh.models.find(m=>m.id===sM):null;const trm=veh&&veh.trims?veh.trims.find(t=>t.id===sT):null;const data={customerName:cN||"미입력",customerPhone:cP||"",customerAddr:cAddr||"",vehicle:veh?veh.name:"",model:mdl?mdl.name:"",trim:trm?trm.name:"",total:tot(),vehicleTotal:vS(),specialTotal:sS(),discount:disc,note:cNo||"",createdAtLocal:new Date().toISOString()};return window.db.collection("quotes").add(data);};
+  const doSaveQuote=()=>{if(!window.db){alert("Firebase 미연결");return;}saveQuote().then(()=>{alert("✅ 견적이 저장되었습니다!");loadQuotes();setStep(5);}).catch((e)=>{alert("❌ 저장 실패: "+e.message);});};
+  const restoreQuote=function(q){if(!q.state)return alert("이전 버전 견적이라 복원할 수 없습니다.");var s=q.state;setSV(s.sV||null);setSM(s.sM||null);setST(s.sT||null);setSBO(s.sBO||[]);setSTO(s.sTO||[]);setSSO(s.sSO||[]);setSMO(s.sMO||[]);setSelColor(s.selColor||null);setSelIntColor(s.selIntColor||null);setCust(s.cust||[{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false}]);setCN(s.cN||"");setCP(s.cP||"");setCAddr(s.cAddr||"");setCNo(s.cNo||"");setDisc(s.disc||0);setStep(2);};
+  const resetAll=function(){setSV(null);setSM(null);setST(null);setSBO([]);setSTO([]);setSSO([]);setSMO([]);setSelColor(null);setSelIntColor(null);setCust([{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false}]);setCN("");setCP("");setCAddr("");setCNo("");setDisc(0);setStep(0);};
   const loadQuotes=()=>{setQuotesLoading(true);window.db.collection("quotes").orderBy("createdAtLocal","desc").get().then((snap)=>{const list=[];snap.forEach(function(doc){list.push({id:doc.id,...doc.data()});});setQuotes(list);setQuotesLoading(false);}).catch((e)=>{console.error(e);showToast("불러오기 실패: "+e.message);setQuotesLoading(false);});};
   const deleteQuote=(id)=>{if(!confirm("이 견적을 삭제하시겠습니까?"))return;window.db.collection("quotes").doc(id).delete().then(()=>{setQuotes(prev=>prev.filter(q=>q.id!==id));showToast("🗑️ 삭제되었습니다.");}).catch(()=>{showToast("삭제 실패");});};
 
@@ -422,7 +425,22 @@ function App(){
       setLoaded(true);
       try{
         const p=new URLSearchParams(window.location.search);
-        if(p.get("v")&&p.get("m")){
+        const qid=p.get("q");
+        if(qid&&window.db){
+          window.db.collection("shares").doc(qid).get().then(function(doc){
+            if(doc.exists){
+              var s=doc.data();
+              setSV(s.sV||null);setSM(s.sM||null);setST(s.sT||null);
+              setSBO(s.sBO||[]);setSTO(s.sTO||[]);setSSO(s.sSO||[]);setSMO(s.sMO||[]);
+              setSelColor(s.selColor||null);setSelIntColor(s.selIntColor||null);
+              if(s.trimTab)setTrimTab(s.trimTab);
+              setCN(s.cN||"");setCP(s.cP||"");setCAddr(s.cAddr||"");setCNo(s.cNo||"");
+              setDisc(s.disc||0);
+              if(s.cust){try{setCust(s.cust);}catch(e){}}
+              setStep(2);
+            }
+          }).catch(function(){});
+        } else if(p.get("v")&&p.get("m")){
           setSV(p.get("v"));setSM(p.get("m"));
           setST(p.get("t")||null);
           setSBO(p.get("bo")?p.get("bo").split(","):[]);
@@ -466,12 +484,16 @@ function App(){
     if(activeCust.length)p.set("cu",encodeURIComponent(JSON.stringify(cust)));
     return window.location.origin+window.location.pathname+"?"+p.toString();
   };
-  const copyLink=async()=>{
-    const url=makeLink();
-    try{
-      if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(url);showToast("📋 링크가 복사되었습니다!");}
-      else{const ta=document.createElement("textarea");ta.value=url;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();document.execCommand("copy");document.body.removeChild(ta);showToast("📋 링크가 복사되었습니다!");}
-    }catch(e){prompt("아래 링크를 복사하세요:",url);}
+  const copyLink=function(){
+    if(!window.db){alert("Firebase가 연결되지 않았습니다.");return;}
+    showToast("🔗 링크 생성 중...");
+    var data={sV:sV,sM:sM,sT:sT,sBO:sBO,sTO:sTO,sSO:sSO,sMO:sMO,selColor:selColor,selIntColor:selIntColor,trimTab:trimTab,cN:cN,cP:cP,cAddr:cAddr,cNo:cNo,disc:disc,cust:cust,createdAtLocal:new Date().toISOString()};
+    var id=(Math.random().toString(36).substring(2,8)).toUpperCase();
+    window.db.collection("shares").doc(id).set(data).then(function(){
+      var url=window.location.origin+window.location.pathname+"?q="+id;
+      if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(url).then(function(){showToast("📋 링크가 복사되었습니다!");});}
+      else{var ta=document.createElement("textarea");ta.value=url;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();document.execCommand("copy");document.body.removeChild(ta);showToast("📋 링크가 복사되었습니다!");}
+    }).catch(function(e){alert("링크 생성 실패: "+e.message);});
   };
 
   const veh=D.vehicles.find(v=>v.id===sV);const mdl=veh?.models.find(m=>m.id===sM);const trm=veh?.trims.find(t=>t.id===sT);
@@ -515,6 +537,7 @@ function App(){
   // Render toast on every step
   if(step===0) return(<div style={{minHeight:"100vh",background:"#ffffff",padding:"40px 20px",fontFamily:F}}>{toastEl}<FL />
       <div style={{maxWidth:1200,margin:"0 auto"}}>
+        <div style={{display:"flex",justifyContent:"flex-end",marginBottom:-40}}><button onClick={function(){loadQuotes();setStep(5);}} style={{background:"#2563EB",color:"#fff",border:"none",padding:"8px 16px",borderRadius:8,fontSize:13,fontWeight:700,cursor:"pointer"}}>📋 견적 리스트</button></div>
         <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:20,marginBottom:52}}>
           <div style={{textAlign:"center"}}>
             <div style={{fontSize:12,letterSpacing:6,color:"#999",fontWeight:600,marginBottom:6}}>FAMILY CARAVAN</div>
@@ -559,7 +582,7 @@ function App(){
     <div style={{minHeight:"100vh",background:"#fafafa",padding:"20px 14px",fontFamily:F}}>{toastEl}<FL />
       <div style={{maxWidth:1040,margin:"0 auto"}}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20,flexWrap:"wrap",gap:10}}>
-          <button onClick={()=>setStep(0)} style={bL}>← 모델 선택</button>
+          <button onClick={resetAll} style={bL}>← 모델 선택</button>
           <div style={{textAlign:"right"}}><div style={{fontSize:11,color:GD,letterSpacing:3,fontWeight:700}}>{veh?.badge} · {mdl?.subtitle}</div><div style={{fontSize:22,fontWeight:900,color:"#1a1a1a"}}>{mdl?.name}</div></div>
         </div>
         <div className="resp-grid-main" style={{display:"grid",gridTemplateColumns:"1fr 280px",gap:16,alignItems:"start"}}>
@@ -602,8 +625,8 @@ function App(){
               <SL l="교육세 (개소세의 30%)" v={calcTax().eduTax} />
               <div style={{display:"flex",justifyContent:"space-between",padding:"6px 0 2px",borderTop:"1px solid #FECACA",marginTop:4,fontSize:16}}><span style={{color:"#991B1B",fontWeight:700}}>세금 합계</span><span style={{color:"#1a1a1a",fontWeight:800}}>{fmt(calcTax().total)}원</span></div>
               </div>}
-              <button onClick={()=>setStep(2)} style={{width:"100%",padding:"11px",marginTop:4,background:"#1a1a1a",color:"#fff",border:"none",borderRadius:8,fontSize:14,fontWeight:800,cursor:"pointer"}}>견적서 미리보기 →</button>
-              <button onClick={()=>{if(!window.db){alert("Firebase가 로드되지 않았습니다. 인터넷 연결을 확인해주세요.");return;}var veh=D.vehicles.find(function(v){return v.id===sV});var mdl=veh?veh.models.find(function(m){return m.id===sM}):null;var trm=veh?veh.trims.find(function(t){return t.id===sT}):null;var data={customerName:cN||"미입력",customerPhone:cP||"",customerAddr:cAddr||"",vehicle:veh?veh.name:"",model:mdl?mdl.name:"",trim:trm?trm.name:"",total:tot(),vehicleTotal:vS(),specialTotal:sS(),discount:disc,note:cNo||"",createdAtLocal:new Date().toISOString()};window.db.collection("quotes").add(data).then(function(){alert("✅ 견적이 저장되었습니다!");loadQuotes();setStep(5);}).catch(function(e){alert("❌ 저장 실패: "+e.message);});}} style={{width:"100%",padding:"11px",marginTop:6,background:"#2563EB",color:"#fff",border:"none",borderRadius:8,fontSize:14,fontWeight:800,cursor:"pointer"}}>💾 견적서 저장하기</button>
+              <button onClick={function(){try{var veh=D.vehicles.find(function(v){return v.id===sV});var mdl=veh?veh.models.find(function(m){return m.id===sM}):null;var trm=veh?veh.trims.find(function(t){return t.id===sT}):null;var data={customerName:cN||"미입력",customerPhone:cP||"",customerAddr:cAddr||"",vehicle:veh?veh.name:"",model:mdl?mdl.name:"",trim:trm?trm.name:"",total:tot(),vehicleTotal:vS(),specialTotal:sS(),discount:disc,note:cNo||"",createdAtLocal:new Date().toISOString(),state:{sV:sV,sM:sM,sT:sT,sBO:sBO,sTO:sTO,sSO:sSO,sMO:sMO,selColor:selColor,selIntColor:selIntColor,cust:cust,cN:cN,cP:cP,cAddr:cAddr,cNo:cNo,disc:disc}};var done=false;var timer=setTimeout(function(){if(!done){alert("⏳ Firestore 보안규칙을 확인해주세요.");}},5000);window.db.collection("quotes").add(data).then(function(){done=true;clearTimeout(timer);alert("✅ 견적이 저장되었습니다!");loadQuotes();setStep(5);}).catch(function(e){done=true;clearTimeout(timer);alert("❌ 저장 실패: "+e.message);});}catch(e){alert("오류: "+e.message);}}} style={{width:"100%",padding:"11px",marginTop:6,background:"#2563EB",color:"#fff",border:"none",borderRadius:8,fontSize:14,fontWeight:800,cursor:"pointer"}}>💾 견적서 저장하기</button>
+              <button onClick={()=>setStep(2)} style={{width:"100%",padding:"11px",marginTop:6,background:"#1a1a1a",color:"#fff",border:"none",borderRadius:8,fontSize:14,fontWeight:800,cursor:"pointer"}}>견적서 미리보기 →</button>
             </div>
             {(()=>{const items=[];if(trm)items.push({cat:"차량",name:`${veh?.name} ${trm.name}`,price:vB()});veh?.baseOptions.filter(o=>sBO.includes(o.id)).forEach(o=>items.push({cat:"공통선택",name:o.name,price:o.price}));if(selColor){const allC=[...(veh?.colors?.default||[]),...(veh?.colors?.xline||[])];const sc=allC.find(x=>x.id===selColor);if(sc)items.push({cat:"색상",name:sc.name,price:sc.price});}if(sT)(veh?.trimOptions[sT]||[]).filter(o=>sTO.includes(o.id)).forEach(o=>items.push({cat:"차량옵션",name:o.name,price:o.price}));if(veh)veh.commonSpecial.filter(o=>sSO.includes(o.id)).forEach(o=>items.push({cat:"공통특장",name:o.name,price:o.price}));if(mdl)mdl.options.filter(o=>sMO.includes(o.id)).forEach(o=>items.push({cat:"특장",name:o.name,price:o.price}));cust.filter(c=>c.on&&c.n&&c.p!==0).forEach(c=>items.push({cat:"커스텀",name:c.n,price:c.p}));if(items.length===0)return null;return(<div style={{background:"#fff",border:"1px solid #eee",borderRadius:14,padding:14,marginTop:10,boxShadow:"0 2px 12px rgba(0,0,0,0.04)",maxHeight:400,overflowY:"auto"}}><div style={{fontSize:13,fontWeight:800,color:"#888",marginBottom:8,letterSpacing:1}}>📋 선택 항목</div>{items.map((it,i)=>(<div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"4px 0",borderBottom:"1px solid #f5f5f5",fontSize:12}}><div style={{display:"flex",gap:6,alignItems:"center",minWidth:0,flex:1}}><span style={{background:it.cat==="특장"||it.cat==="커스텀"?"#FFF5E6":"#EBF2FF",color:it.cat==="특장"||it.cat==="커스텀"?"#92400E":"#1E40AF",fontSize:10,fontWeight:700,padding:"1px 5px",borderRadius:3,flexShrink:0}}>{it.cat}</span><span style={{color:"#333",fontWeight:600,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{it.name}</span></div><span style={{color:it.price<0?"#ef4444":"#333",fontWeight:700,flexShrink:0,marginLeft:6}}>{fmt(it.price)}원</span></div>))}</div>);})()}
           </div>
@@ -614,7 +637,7 @@ function App(){
 
   // ═══ STEP 2 ═══
   if(step===2){
-    if(!veh||!mdl) return(<div style={{minHeight:"100vh",background:"#f5f5f5",padding:"40px",fontFamily:F,textAlign:"center"}}><FL /><div style={{marginTop:100,color:"#999"}}>모델 정보를 찾을 수 없습니다.</div><button onClick={()=>setStep(0)} style={{...bL,marginTop:20}}>처음으로</button></div>);
+    if(!veh||!mdl) return(<div style={{minHeight:"100vh",background:"#f5f5f5",padding:"40px",fontFamily:F,textAlign:"center"}}><FL /><div style={{marginTop:100,color:"#999"}}>모델 정보를 찾을 수 없습니다.</div><button onClick={resetAll} style={{...bL,marginTop:20}}>처음으로</button></div>);
     const vI=[];if(trm){vI.push({name:`${veh?.name} ${trm?.name}`,desc:"차량가",price:vB()});}
     veh?.baseOptions.filter(o=>sBO.includes(o.id)).forEach(o=>vI.push({name:o.name,desc:"공통 선택",price:o.price}));
     if(veh?.colors&&selColor){const allC=[...(veh.colors.default||[]),...(veh.colors.xline||[])];const sc=allC.find(x=>x.id===selColor);if(sc)vI.push({name:"외장 색상: "+sc.name,desc:"외장 색상",price:sc.price});}
@@ -637,7 +660,8 @@ function App(){
           <button onClick={doPr} style={{background:"#1a1a1a",color:"#fff",border:"none",padding:"9px 20px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>🖨️ PDF 출력</button>
           <button onClick={doJpg} style={{background:"#2563EB",color:"#fff",border:"none",padding:"9px 20px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>📷 JPG 저장</button>
           <button onClick={copyLink} style={{background:"#16a34a",color:"#fff",border:"none",padding:"9px 20px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>🔗 링크 복사</button>
-          <button onClick={()=>setStep(0)} style={bL}>처음으로</button>
+          <button onClick={function(){try{var veh=D.vehicles.find(function(v){return v.id===sV});var mdl=veh?veh.models.find(function(m){return m.id===sM}):null;var trm=veh?veh.trims.find(function(t){return t.id===sT}):null;var data={customerName:cN||"미입력",customerPhone:cP||"",customerAddr:cAddr||"",vehicle:veh?veh.name:"",model:mdl?mdl.name:"",trim:trm?trm.name:"",total:tot(),vehicleTotal:vS(),specialTotal:sS(),discount:disc,note:cNo||"",createdAtLocal:new Date().toISOString(),state:{sV:sV,sM:sM,sT:sT,sBO:sBO,sTO:sTO,sSO:sSO,sMO:sMO,selColor:selColor,selIntColor:selIntColor,cust:cust,cN:cN,cP:cP,cAddr:cAddr,cNo:cNo,disc:disc}};window.db.collection("quotes").add(data).then(function(){alert("✅ 견적이 저장되었습니다!");}).catch(function(e){alert("❌ 저장 실패: "+e.message);});}catch(e){alert("오류: "+e.message);}}} style={{background:"#7C3AED",color:"#fff",border:"none",padding:"9px 20px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>💾 저장</button>
+          <button onClick={resetAll} style={bL}>처음으로</button>
         </div>
         <div ref={pr} style={{background:"#fff",borderRadius:8,boxShadow:"0 2px 16px rgba(0,0,0,0.06)"}}>
           <div className="resp-print-pad" style={{padding:"28px 36px"}}>
@@ -743,7 +767,7 @@ function App(){
     <div style={{minHeight:"100vh",background:"#f5f5f5",padding:"20px 14px",fontFamily:F}}>{toastEl}<FL />
       <div style={{maxWidth:900,margin:"0 auto"}}>
         <div className="resp-btn-wrap" style={{display:"flex",gap:8,marginBottom:12,flexWrap:"wrap"}}>
-          <button onClick={()=>setStep(0)} style={bL}>← 메인으로</button>
+          <button onClick={resetAll} style={bL}>← 메인으로</button>
           {selBr&&<button onClick={doBrPrint} style={{background:"#1a1a1a",color:"#fff",border:"none",padding:"9px 20px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>🖨️ PDF 출력</button>}
           {selBr&&<button onClick={doBrJpg} style={{background:"#2563EB",color:"#fff",border:"none",padding:"9px 20px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>📷 JPG 저장</button>}
         </div>
@@ -815,13 +839,13 @@ function App(){
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
           <div style={{display:"flex",gap:6}}>
             <button onClick={()=>setStep(1)} style={bL}>← 견적 수정</button>
-            <button onClick={()=>setStep(0)} style={bL}>처음으로</button>
+            <button onClick={resetAll} style={bL}>처음으로</button>
           </div>
           <button onClick={loadQuotes} style={{...bL,color:"#2563EB",borderColor:"#2563EB"}}>🔄 새로고침</button>
         </div>
         <div style={{background:"#fff",borderRadius:12,padding:"16px 18px",marginBottom:16,border:"1px solid #eee"}}>
           <div style={{fontSize:20,fontWeight:900,marginBottom:4}}>📋 저장된 견적 리스트</div>
-          <div style={{fontSize:13,color:"#999"}}>견적서 저장 시 자동으로 기록됩니다</div>
+          <div style={{fontSize:13,color:"#999"}}>견적을 클릭하면 미리보기로 이동합니다</div>
         </div>
         {quotesLoading?<div style={{textAlign:"center",padding:40,color:"#999"}}>불러오는 중...</div>:
         quotes.length===0?<div style={{textAlign:"center",padding:60,color:"#bbb",fontSize:16}}>저장된 견적이 없습니다.</div>:
@@ -841,13 +865,13 @@ function App(){
                 const dt=q.createdAtLocal?new Date(q.createdAtLocal):null;
                 const ds=dt?`${String(dt.getMonth()+1).padStart(2,"0")}/${String(dt.getDate()).padStart(2,"0")} ${String(dt.getHours()).padStart(2,"0")}:${String(dt.getMinutes()).padStart(2,"0")}`:"";
                 return(
-                <tr key={q.id} style={{borderBottom:"1px solid #f0f0f0"}}>
+                <tr key={q.id} onClick={function(){restoreQuote(q);}} style={{borderBottom:"1px solid #f0f0f0",cursor:"pointer",transition:"background 0.15s"}} onMouseEnter={function(e){e.currentTarget.style.background="#f8f9ff";}} onMouseLeave={function(e){e.currentTarget.style.background="";}}> 
                   <td style={{padding:"10px 12px",fontSize:14,fontWeight:700,color:"#1a1a1a"}}>{q.customerName}</td>
                   <td style={{padding:"10px 12px",fontSize:13,color:"#555"}}>{q.customerPhone}</td>
                   <td style={{padding:"10px 12px"}}><div style={{fontSize:13,fontWeight:600,color:"#1a1a1a"}}>{q.model}</div><div style={{fontSize:11,color:"#999"}}>{q.vehicle}{q.trim?" · "+q.trim:""}</div></td>
                   <td style={{padding:"10px 12px",textAlign:"right",fontSize:14,fontWeight:800,color:"#1a1a1a"}}>{fmt(q.total)}원</td>
                   <td style={{padding:"10px 12px",textAlign:"center",fontSize:12,color:"#999"}}>{ds}</td>
-                  <td style={{padding:"10px 12px",textAlign:"center"}}><button onClick={()=>deleteQuote(q.id)} style={{background:"none",border:"1px solid #fcc",color:"#c00",borderRadius:4,padding:"3px 8px",fontSize:11,cursor:"pointer",fontWeight:600}}>삭제</button></td>
+                  <td style={{padding:"10px 12px",textAlign:"center"}}><button onClick={function(e){e.stopPropagation();deleteQuote(q.id);}} style={{background:"none",border:"1px solid #fcc",color:"#c00",borderRadius:4,padding:"3px 8px",fontSize:11,cursor:"pointer",fontWeight:600}}>삭제</button></td>
                 </tr>);
               })}</tbody>
             </table>
