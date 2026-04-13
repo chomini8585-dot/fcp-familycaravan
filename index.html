@@ -21,6 +21,19 @@
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+firebase.initializeApp({
+  apiKey:"AIzaSyCXR8kWsVT6kNZMmDHBd20daYsRXJSYs40",
+  authDomain:"familycaravan-c9a5f.firebaseapp.com",
+  projectId:"familycaravan-c9a5f",
+  storageBucket:"familycaravan-c9a5f.firebasestorage.app",
+  messagingSenderId:"1080053181285",
+  appId:"1:1080053181285:web:a4c8f1567e07f938c54f8c"
+});
+const db=firebase.firestore();
+</script>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'Pretendard Variable','Pretendard',-apple-system,'Noto Sans KR',sans-serif; }
@@ -236,7 +249,7 @@ const DD={
         {id:"ch_prestige",name:"프레스티지",price:36360000},{id:"ch_noblesse",name:"노블레스",price:40710000},
         {id:"ch_signature",name:"시그니처",price:44260000},{id:"ch_xline",name:"그래비티(X-LINE)",price:45020000},
       ],
-      baseOptions:[{id:"ch_gas",name:"가솔린",price:0},{id:"ch_hybrid",name:"하이브리드",price:4550000}],
+      baseOptions:[{id:"ch_gas",name:"가솔린",price:0},{id:"ch_hybrid",name:"하이브리드",price:4550000},{id:"ch_taksong",name:"탁송비",price:190000}],
       colors:{
         default:[{id:"cl1",name:"스노우 화이트 펄",price:80000},{id:"cl2",name:"블랙펄",price:0},{id:"cl3",name:"아이보리실버",price:0},{id:"cl4",name:"판테라메탈",price:0}],
         ch_xline:[{id:"cl1",name:"스노우 화이트 펄",price:80000},{id:"cl2",name:"블랙펄",price:0},{id:"cl5",name:"세라믹실버",price:0}],
@@ -271,7 +284,7 @@ const DD={
           {id:"chm13",name:"어닝PACK(어닝,라이트,빗물받이)-블랙",desc:"용품류",price:1650000},
           {id:"chm14",name:"챌린저 전용 어닝플랜트",desc:"용품류",price:700000},
           {id:"chm15",name:"식빵등(트렁크LED조명)",desc:"용품류",price:100000},
-          {id:"chm16",name:"열차단 썬팅",desc:"용품류",price:2500000},
+          {id:"chm16",name:"열차단 썬팅",desc:"용품류",price:450000},
         ]},
       ],
     },
@@ -396,6 +409,10 @@ function App(){
   const doInstall=async()=>{if(installPrompt){installPrompt.prompt();const r=await installPrompt.userChoice;if(r.outcome==='accepted'){showToast('✅ 앱이 설치되었습니다!');setShowInstall(false);}setInstallPrompt(null);}else if(isAndroid){showToast('브라우저 메뉴(⋮)에서 "홈 화면에 추가"를 눌러주세요');}else{showToast('브라우저 주소창 오른쪽 설치(⊕) 아이콘을 클릭하세요');}};
   const[brSel,setBrSel]=useState([]);
   const showToast=(msg)=>{setToast(msg);setTimeout(()=>setToast(""),2500);};
+  const[quotes,setQuotes]=useState([]);const[quotesLoading,setQuotesLoading]=useState(false);
+  const saveQuote=async()=>{try{const veh=D.vehicles.find(v=>v.id===sV);const mdl=veh?.models.find(m=>m.id===sM);const trm=veh?.trims.find(t=>t.id===sT);const data={customerName:cN||"미입력",customerPhone:cP||"",customerAddr:cAddr||"",vehicle:veh?.name||"",model:mdl?.name||"",trim:trm?.name||"",total:tot(),vehicleTotal:vS(),specialTotal:sS(),discount:disc,note:cNo||"",options:{baseOptions:sBO,trimOptions:sTO,specialOptions:sSO,modelOptions:sMO,color:selColor,intColor:selIntColor,custom:cust.filter(c=>c.on&&c.n)},createdAt:firebase.firestore.FieldValue.serverTimestamp(),createdAtLocal:new Date().toISOString()};await db.collection("quotes").add(data);showToast("💾 견적이 저장되었습니다.");}catch(e){console.error(e);showToast("저장 실패: "+e.message);}};
+  const loadQuotes=async()=>{setQuotesLoading(true);try{const snap=await db.collection("quotes").orderBy("createdAtLocal","desc").get();const list=[];snap.forEach(doc=>{list.push({id:doc.id,...doc.data()});});setQuotes(list);}catch(e){console.error(e);showToast("불러오기 실패: "+e.message);}setQuotesLoading(false);};
+  const deleteQuote=async(id)=>{if(!confirm("이 견적을 삭제하시겠습니까?"))return;try{await db.collection("quotes").doc(id).delete();setQuotes(prev=>prev.filter(q=>q.id!==id));showToast("🗑️ 삭제되었습니다.");}catch(e){showToast("삭제 실패");}};
 
   // URL에서 견적 복원
   useEffect(()=>{
@@ -504,6 +521,7 @@ function App(){
             <div style={{fontSize:13,color:"#bbb",fontWeight:600,marginTop:6}}>Ver.1.1 Beta</div>
             {!isStandalone&&!installDismissed&&showInstall&&!isIOS&&<div style={{marginTop:12,position:"relative"}}><button onClick={doInstall} style={{width:"100%",padding:"12px 24px",background:"#1a1a1a",color:"#fff",border:"none",borderRadius:8,fontSize:14,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>📲 앱 설치</button>{!installPrompt&&isAndroid&&<div style={{fontSize:11,color:"#999",textAlign:"center",marginTop:4}}>브라우저 메뉴(⋮) → 홈 화면에 추가</div>}<button onClick={()=>setInstallDismissed(true)} style={{position:"absolute",top:-6,right:-6,background:"#ddd",border:"none",borderRadius:"50%",width:20,height:20,fontSize:11,cursor:"pointer",color:"#666"}}>✕</button></div>}
             {!isStandalone&&isIOS&&!installDismissed&&<div style={{marginTop:12,padding:"10px 16px",background:"#f0f0f0",borderRadius:8,fontSize:13,color:"#555",textAlign:"center",lineHeight:1.5,position:"relative"}}>📲 Safari 하단 <strong>공유(↑)</strong> → <strong>홈 화면에 추가</strong>로 앱 설치<button onClick={()=>setInstallDismissed(true)} style={{position:"absolute",top:-6,right:-6,background:"#ddd",border:"none",borderRadius:"50%",width:20,height:20,fontSize:11,cursor:"pointer",color:"#666"}}>✕</button></div>}
+            <button onClick={()=>{loadQuotes();setStep(4);}} style={{marginTop:12,padding:"10px 24px",background:"#2563EB",color:"#fff",border:"none",borderRadius:8,fontSize:14,fontWeight:700,cursor:"pointer"}}>📋 견적 리스트</button>
             <div style={{width:40,height:2,background:GD,margin:"12px auto 0"}} />
           </div>
           <img src={LOGO} alt="logo" style={{width:80,height:80,objectFit:"contain",flexShrink:0}} />
@@ -584,7 +602,7 @@ function App(){
               <SL l="교육세 (개소세의 30%)" v={calcTax().eduTax} />
               <div style={{display:"flex",justifyContent:"space-between",padding:"6px 0 2px",borderTop:"1px solid #FECACA",marginTop:4,fontSize:16}}><span style={{color:"#991B1B",fontWeight:700}}>세금 합계</span><span style={{color:"#1a1a1a",fontWeight:800}}>{fmt(calcTax().total)}원</span></div>
               </div>}
-              <button onClick={()=>setStep(2)} style={{width:"100%",padding:"11px",marginTop:4,background:"#1a1a1a",color:"#fff",border:"none",borderRadius:8,fontSize:14,fontWeight:800,cursor:"pointer"}}>견적서 미리보기 →</button>
+              <button onClick={()=>{saveQuote();setStep(2);}} style={{width:"100%",padding:"11px",marginTop:4,background:"#1a1a1a",color:"#fff",border:"none",borderRadius:8,fontSize:14,fontWeight:800,cursor:"pointer"}}>견적서 미리보기 →</button>
             </div>
             {(()=>{const items=[];if(trm)items.push({cat:"차량",name:`${veh?.name} ${trm.name}`,price:vB()});veh?.baseOptions.filter(o=>sBO.includes(o.id)).forEach(o=>items.push({cat:"공통선택",name:o.name,price:o.price}));if(selColor){const allC=[...(veh?.colors?.default||[]),...(veh?.colors?.xline||[])];const sc=allC.find(x=>x.id===selColor);if(sc)items.push({cat:"색상",name:sc.name,price:sc.price});}if(sT)(veh?.trimOptions[sT]||[]).filter(o=>sTO.includes(o.id)).forEach(o=>items.push({cat:"차량옵션",name:o.name,price:o.price}));if(veh)veh.commonSpecial.filter(o=>sSO.includes(o.id)).forEach(o=>items.push({cat:"공통특장",name:o.name,price:o.price}));if(mdl)mdl.options.filter(o=>sMO.includes(o.id)).forEach(o=>items.push({cat:"특장",name:o.name,price:o.price}));cust.filter(c=>c.on&&c.n&&c.p!==0).forEach(c=>items.push({cat:"커스텀",name:c.n,price:c.p}));if(items.length===0)return null;return(<div style={{background:"#fff",border:"1px solid #eee",borderRadius:14,padding:14,marginTop:10,boxShadow:"0 2px 12px rgba(0,0,0,0.04)",maxHeight:400,overflowY:"auto"}}><div style={{fontSize:13,fontWeight:800,color:"#888",marginBottom:8,letterSpacing:1}}>📋 선택 항목</div>{items.map((it,i)=>(<div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"4px 0",borderBottom:"1px solid #f5f5f5",fontSize:12}}><div style={{display:"flex",gap:6,alignItems:"center",minWidth:0,flex:1}}><span style={{background:it.cat==="특장"||it.cat==="커스텀"?"#FFF5E6":"#EBF2FF",color:it.cat==="특장"||it.cat==="커스텀"?"#92400E":"#1E40AF",fontSize:10,fontWeight:700,padding:"1px 5px",borderRadius:3,flexShrink:0}}>{it.cat}</span><span style={{color:"#333",fontWeight:600,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{it.name}</span></div><span style={{color:it.price<0?"#ef4444":"#333",fontWeight:700,flexShrink:0,marginLeft:6}}>{fmt(it.price)}원</span></div>))}</div>);})()}
           </div>
@@ -782,6 +800,57 @@ function App(){
             <div style={{fontSize:11,color:"#bbb",marginTop:2}}>{CI.address}</div>
             <div style={{fontSize:10,color:"#ccc",marginTop:6}}>본 가격표는 사전 고지 없이 변경될 수 있습니다.</div>
           </div>
+        </div>}
+      </div>
+    </div>);
+  }
+
+
+  // ═══ STEP 4: QUOTE LIST ═══
+  if(step===4){
+    return(
+    <div style={{minHeight:"100vh",background:"#f5f5f5",padding:"20px 14px",fontFamily:F}}>{toastEl}<FL />
+      <div style={{maxWidth:900,margin:"0 auto"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
+          <button onClick={()=>setStep(0)} style={bL}>← 처음으로</button>
+          <div style={{fontSize:22,fontWeight:900}}>📋 견적 리스트</div>
+          <button onClick={loadQuotes} style={{...bL,color:"#2563EB",borderColor:"#2563EB"}}>🔄 새로고침</button>
+        </div>
+        {quotesLoading?<div style={{textAlign:"center",padding:40,color:"#999"}}>불러오는 중...</div>:
+        quotes.length===0?<div style={{textAlign:"center",padding:60,color:"#bbb",fontSize:16}}>저장된 견적이 없습니다.</div>:
+        <div style={{display:"flex",flexDirection:"column",gap:10}}>
+          <div style={{fontSize:13,color:"#999",textAlign:"right"}}>총 {quotes.length}건</div>
+          {quotes.map(q=>{
+            const dt=q.createdAtLocal?new Date(q.createdAtLocal):null;
+            const ds=dt?`${dt.getFullYear()}.${String(dt.getMonth()+1).padStart(2,"0")}.${String(dt.getDate()).padStart(2,"0")} ${String(dt.getHours()).padStart(2,"0")}:${String(dt.getMinutes()).padStart(2,"0")}`:"";
+            return(
+            <div key={q.id} style={{background:"#fff",borderRadius:12,padding:"16px 18px",boxShadow:"0 1px 6px rgba(0,0,0,0.04)",border:"1px solid #eee"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
+                <div>
+                  <div style={{fontSize:16,fontWeight:800,color:"#1a1a1a"}}>{q.customerName}</div>
+                  <div style={{fontSize:13,color:"#888",marginTop:2}}>{q.customerPhone}</div>
+                </div>
+                <div style={{textAlign:"right"}}>
+                  <div style={{fontSize:11,color:"#bbb"}}>{ds}</div>
+                  <div style={{fontSize:18,fontWeight:900,color:"#1a1a1a",marginTop:2}}>{fmt(q.total)}원</div>
+                </div>
+              </div>
+              <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:8}}>
+                <span style={{fontSize:11,fontWeight:700,padding:"2px 8px",borderRadius:20,background:"#EBF2FF",color:"#1E40AF"}}>{q.vehicle}</span>
+                <span style={{fontSize:11,fontWeight:700,padding:"2px 8px",borderRadius:20,background:"#FFF5E6",color:"#92400E"}}>{q.model}</span>
+                {q.trim&&<span style={{fontSize:11,fontWeight:700,padding:"2px 8px",borderRadius:20,background:"#f0f0f0",color:"#555"}}>{q.trim}</span>}
+              </div>
+              <div style={{display:"flex",gap:12,fontSize:12,color:"#888"}}>
+                <span>기본차량 {fmt(q.vehicleTotal)}원</span>
+                <span>특장 {fmt(q.specialTotal)}원</span>
+                {q.discount>0&&<span style={{color:"#ef4444"}}>할인 -{fmt(q.discount)}원</span>}
+              </div>
+              {q.note&&<div style={{fontSize:12,color:"#999",marginTop:6,padding:"4px 8px",background:"#fafafa",borderRadius:4}}>📝 {q.note}</div>}
+              <div style={{display:"flex",justifyContent:"flex-end",marginTop:8}}>
+                <button onClick={()=>deleteQuote(q.id)} style={{background:"none",border:"1px solid #fcc",color:"#c00",borderRadius:6,padding:"4px 12px",fontSize:12,cursor:"pointer",fontWeight:600}}>🗑️ 삭제</button>
+              </div>
+            </div>);
+          })}
         </div>}
       </div>
     </div>);
