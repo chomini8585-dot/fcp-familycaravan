@@ -389,8 +389,8 @@ const AC="#1a1a1a",GD="#8B6F2F",BL="#2563EB";
 const F="'Pretendard Variable','Pretendard',-apple-system,'Noto Sans KR',sans-serif";
 function FL(){return null;}
 
-async function ld(){try{const r=localStorage.getItem("qa-data3");return r?JSON.parse(r):null;}catch(e){return null;}}
-async function sv(d){try{localStorage.setItem("qa-data3",JSON.stringify(d));return true;}catch(e){return false;}}
+function ld(){return new Promise(function(resolve){if(!window.db){resolve(null);return;}window.db.collection("config").doc("vehicleData").get().then(function(doc){if(doc.exists){resolve(doc.data().data);}else{resolve(null);}}).catch(function(){resolve(null);});});}
+function sv(d){return new Promise(function(resolve){if(!window.db){resolve(false);return;}window.db.collection("config").doc("vehicleData").set({data:d,updatedAt:new Date().toISOString()}).then(function(){resolve(true);}).catch(function(){resolve(false);});});}
 
 function App(){
   const[D,setD]=useState(DD);const[loaded,setLoaded]=useState(false);const[step,setStep]=useState(0);
@@ -527,7 +527,7 @@ function App(){
     return {indTax,eduTax,total:indTax+eduTax};
   };
   const tot=()=>vS()+sS()-disc+calcTax().total;
-  const doSv=async nd=>{setD(nd);const ok=await sv(nd);setSMsg(ok?"✅ 저장":"❌ 실패");setTimeout(()=>setSMsg(""),2000);};
+  const doSv=function(nd){setD(nd);sv(nd).then(function(ok){setSMsg(ok?"✅ 서버 저장 완료":"❌ 저장 실패");setTimeout(function(){setSMsg("");},2000);});};
 
   if(!loaded) return (<div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"#fff",fontFamily:F}}><FL /><div style={{color:"#bbb"}}>로딩 중...</div></div>);
 
@@ -717,7 +717,7 @@ function App(){
       </div>
     </div>);
 
-    const tabs=[{k:"company",l:"회사정보"},{k:"vehicles",l:"차종/트림"},{k:"models",l:"특장모델"},{k:"pw",l:"비밀번호"}];
+    const tabs=[{k:"company",l:"회사정보"},{k:"vehicles",l:"차종/트림"},{k:"options",l:"트림옵션"},{k:"colors",l:"색상"},{k:"base",l:"공통선택"},{k:"models",l:"특장모델"},{k:"pw",l:"비밀번호"}];
     const up=fn=>{const nd=JSON.parse(JSON.stringify(D));fn(nd);doSv(nd);};
     return(<div style={{minHeight:"100vh",background:"#fafafa",padding:"20px 14px",fontFamily:F}}><FL />
       <div style={{maxWidth:960,margin:"0 auto"}}>
@@ -738,6 +738,36 @@ function App(){
             {v.trims.map((t,ti)=>(<div key={t.id} style={{display:"flex",alignItems:"center",gap:6,marginBottom:4,marginLeft:8}}><input value={t.name} onChange={e=>up(d=>{d.vehicles[vi].trims[ti].name=e.target.value;})} style={{width:160,...iS,fontSize:13}} /><input type="number" value={t.price} onChange={e=>up(d=>{d.vehicles[vi].trims[ti].price=Number(e.target.value)||0;})} style={{width:120,...iS,textAlign:"right",fontSize:13}} /><span style={{fontSize:12,color:"#bbb"}}>원</span><button onClick={()=>up(d=>{d.vehicles[vi].trims.splice(ti,1);})} style={dB}>✕</button></div>))}
             <button onClick={()=>up(d=>{d.vehicles[vi].trims.push({id:uid(),name:"새 트림",price:0});})} style={{...aB,marginLeft:8,fontSize:12}}>+ 트림</button>
           </div>))}</div>}
+          {aTab==="options"&&<div>{D.vehicles.map((v,vi)=>(<div key={v.id} style={{marginBottom:24,borderBottom:"1px solid #f0f0f0",paddingBottom:14}}>
+            <div style={{fontSize:15,fontWeight:800,marginBottom:8}}>{v.badge} - 트림옵션</div>
+            {v.trimOptions&&Object.keys(v.trimOptions).map(tk=>{var tName=v.trims.find(function(t){return t.id===tk});return(<div key={tk} style={{marginBottom:14,marginLeft:8}}>
+              <div style={{fontSize:13,fontWeight:700,color:"#2563EB",marginBottom:4}}>{tName?tName.name:tk}</div>
+              {(v.trimOptions[tk]||[]).map((o,oi)=>(<div key={o.id} style={{display:"flex",alignItems:"center",gap:4,marginBottom:3,marginLeft:8}}><input value={o.name} onChange={e=>up(d=>{d.vehicles[vi].trimOptions[tk][oi].name=e.target.value;})} style={{flex:1,...iS,fontSize:12}} /><input type="number" value={o.price} onChange={e=>up(d=>{d.vehicles[vi].trimOptions[tk][oi].price=Number(e.target.value)||0;})} style={{width:100,...iS,textAlign:"right",fontSize:12}} /><button onClick={()=>up(d=>{d.vehicles[vi].trimOptions[tk].splice(oi,1);})} style={dB}>✕</button></div>))}
+              <button onClick={()=>up(d=>{d.vehicles[vi].trimOptions[tk].push({id:uid(),name:"새 옵션",price:0});})} style={{...aB,marginLeft:8,fontSize:11}}>+ 옵션</button>
+            </div>);})}
+          </div>))}</div>}
+          {aTab==="colors"&&<div>{D.vehicles.map((v,vi)=>(<div key={v.id} style={{marginBottom:24,borderBottom:"1px solid #f0f0f0",paddingBottom:14}}>
+            <div style={{fontSize:15,fontWeight:800,marginBottom:8}}>{v.badge} - 색상</div>
+            {v.colors&&Object.keys(v.colors).map(ck=>(<div key={ck} style={{marginBottom:14,marginLeft:8}}>
+              <div style={{fontSize:13,fontWeight:700,color:"#7C3AED",marginBottom:4}}>외장: {ck}</div>
+              {(v.colors[ck]||[]).map((c,ci)=>(<div key={c.id} style={{display:"flex",alignItems:"center",gap:4,marginBottom:3,marginLeft:8}}><input value={c.name} onChange={e=>up(d=>{d.vehicles[vi].colors[ck][ci].name=e.target.value;})} style={{flex:1,...iS,fontSize:12}} /><input type="number" value={c.price} onChange={e=>up(d=>{d.vehicles[vi].colors[ck][ci].price=Number(e.target.value)||0;})} style={{width:100,...iS,textAlign:"right",fontSize:12}} /><button onClick={()=>up(d=>{d.vehicles[vi].colors[ck].splice(ci,1);})} style={dB}>✕</button></div>))}
+              <button onClick={()=>up(d=>{d.vehicles[vi].colors[ck].push({id:uid(),name:"새 색상",price:0});})} style={{...aB,marginLeft:8,fontSize:11}}>+ 색상</button>
+            </div>))}
+            {v.interiorColors&&<div style={{marginTop:10}}>{Object.keys(v.interiorColors).map(ik=>{var tName=v.trims.find(function(t){return t.id===ik});return(<div key={ik} style={{marginBottom:10,marginLeft:8}}>
+              <div style={{fontSize:13,fontWeight:700,color:"#92400E",marginBottom:4}}>내장: {tName?tName.name:ik}</div>
+              {(v.interiorColors[ik]||[]).map((c,ci)=>(<div key={c.id} style={{display:"flex",alignItems:"center",gap:4,marginBottom:3,marginLeft:8}}><input value={c.name} onChange={e=>up(d=>{d.vehicles[vi].interiorColors[ik][ci].name=e.target.value;})} style={{flex:1,...iS,fontSize:12}} /><input type="number" value={c.price} onChange={e=>up(d=>{d.vehicles[vi].interiorColors[ik][ci].price=Number(e.target.value)||0;})} style={{width:100,...iS,textAlign:"right",fontSize:12}} /><button onClick={()=>up(d=>{d.vehicles[vi].interiorColors[ik].splice(ci,1);})} style={dB}>✕</button></div>))}
+              <button onClick={()=>up(d=>{d.vehicles[vi].interiorColors[ik].push({id:uid(),name:"새 색상",price:0});})} style={{...aB,marginLeft:8,fontSize:11}}>+ 내장색상</button>
+            </div>);})}</div>}
+          </div>))}</div>}
+          {aTab==="base"&&<div>{D.vehicles.map((v,vi)=>(<div key={v.id} style={{marginBottom:24,borderBottom:"1px solid #f0f0f0",paddingBottom:14}}>
+            <div style={{fontSize:15,fontWeight:800,marginBottom:8}}>{v.badge} - 공통 선택품목</div>
+            {(v.baseOptions||[]).map((o,oi)=>(<div key={o.id} style={{display:"flex",alignItems:"center",gap:4,marginBottom:3,marginLeft:8}}><input value={o.name} onChange={e=>up(d=>{d.vehicles[vi].baseOptions[oi].name=e.target.value;})} style={{flex:1,...iS,fontSize:12}} /><input type="number" value={o.price} onChange={e=>up(d=>{d.vehicles[vi].baseOptions[oi].price=Number(e.target.value)||0;})} style={{width:100,...iS,textAlign:"right",fontSize:12}} /><button onClick={()=>up(d=>{d.vehicles[vi].baseOptions.splice(oi,1);})} style={dB}>✕</button></div>))}
+            <button onClick={()=>up(d=>{if(!d.vehicles[vi].baseOptions)d.vehicles[vi].baseOptions=[];d.vehicles[vi].baseOptions.push({id:uid(),name:"새 항목",price:0});})} style={{...aB,marginLeft:8,fontSize:12}}>+ 공통 선택</button>
+            {(v.commonSpecial||[]).length>0&&<div style={{marginTop:10}}>
+              <div style={{fontSize:13,fontWeight:700,color:GD,marginBottom:4,marginLeft:8}}>공통 특장</div>
+              {v.commonSpecial.map((o,oi)=>(<div key={o.id} style={{display:"flex",alignItems:"center",gap:4,marginBottom:3,marginLeft:16}}><input value={o.name} onChange={e=>up(d=>{d.vehicles[vi].commonSpecial[oi].name=e.target.value;})} style={{flex:1,...iS,fontSize:12}} /><input type="number" value={o.price} onChange={e=>up(d=>{d.vehicles[vi].commonSpecial[oi].price=Number(e.target.value)||0;})} style={{width:100,...iS,textAlign:"right",fontSize:12}} /><button onClick={()=>up(d=>{d.vehicles[vi].commonSpecial.splice(oi,1);})} style={dB}>✕</button></div>))}
+            </div>}
+          </div>))}</div>}
           {aTab==="models"&&<div>{D.vehicles.map((v,vi)=>(<div key={v.id} style={{marginBottom:20}}>
             <div style={{fontSize:15,fontWeight:800,marginBottom:8}}>{v.badge} - {v.name}</div>
             {v.models.map((m,mi)=>(<div key={m.id} style={{marginBottom:16,paddingBottom:10,borderBottom:"1px solid #f5f5f5"}}>
@@ -750,6 +780,7 @@ function App(){
           {aTab==="pw"&&<div>
             <h3 style={{fontSize:15,fontWeight:800,color:GD,marginBottom:14}}>비밀번호 변경</h3>
             <div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:13,color:"#999"}}>비밀번호</span><input type="text" value={D.adminPw} onChange={e=>up(d=>{d.adminPw=e.target.value;})} style={{width:180,...iS}} /></div>
+            <div style={{marginTop:20,padding:"12px 16px",background:"#EBF2FF",borderRadius:6,border:"1px solid #D0E0FF"}}><div style={{fontSize:13,fontWeight:700,color:"#1E40AF",marginBottom:4}}>📤 서버 데이터 초기 업로드</div><div style={{fontSize:12,color:"#666",marginBottom:8}}>현재 데이터를 Firebase에 처음 올릴 때 사용합니다</div><button onClick={()=>{if(window.confirm("현재 데이터를 서버에 업로드하시겠습니까?")){doSv(D);}}} style={{padding:"6px 14px",background:"#2563EB",color:"#fff",border:"none",borderRadius:5,fontSize:12,fontWeight:700,cursor:"pointer"}}>서버 업로드</button></div>
             <div style={{marginTop:20,padding:"12px 16px",background:"#FFF5F5",borderRadius:6,border:"1px solid #fee"}}><div style={{fontSize:13,fontWeight:700,color:"#c00",marginBottom:4}}>⚠️ 초기화</div><button onClick={()=>{if(window.confirm("모든 데이터를 초기화?")){doSv(DD);}}} style={{padding:"6px 14px",background:"#ef4444",color:"#fff",border:"none",borderRadius:5,fontSize:12,fontWeight:700,cursor:"pointer"}}>초기화</button></div>
           </div>}
         </div>
