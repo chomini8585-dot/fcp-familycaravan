@@ -733,16 +733,25 @@ function App(){
             {["name","ceo","bizNo","bizType","bizItem","phone","address"].map(k=>(<div key={k} style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}><span style={{width:70,fontSize:12,color:"#999",fontWeight:600,textAlign:"right"}}>{({name:"상호",ceo:"대표",bizNo:"등록번호",bizType:"업태",bizItem:"종목",phone:"전화",address:"주소"})[k]}</span><input value={D.company[k]} onChange={e=>up(d=>{d.company[k]=e.target.value;})} style={{flex:1,...iS}} /></div>))}
           </div>}
           {aTab==="vehicles"&&<div>{D.vehicles.map((v,vi)=>(<div key={v.id} style={{marginBottom:24,borderBottom:"1px solid #f0f0f0",paddingBottom:14}}>
-            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}><div style={{background:v.id==="carnival"?"#1a1a1a":v.id==="challenger"?"#DC2626":"#0369A1",color:"#fff",padding:"2px 10px",borderRadius:12,fontSize:11,fontWeight:800}}>{v.badge}</div><input value={v.name} onChange={e=>up(d=>{d.vehicles[vi].name=e.target.value;})} style={{fontSize:15,fontWeight:800,...iS,border:"none",padding:"3px 6px"}} /></div>
-            <div style={{fontSize:13,fontWeight:700,color:GD,marginBottom:6}}>트림</div>
-            {v.trims.map((t,ti)=>(<div key={t.id} style={{display:"flex",alignItems:"center",gap:6,marginBottom:4,marginLeft:8}}><input value={t.name} onChange={e=>up(d=>{d.vehicles[vi].trims[ti].name=e.target.value;})} style={{width:160,...iS,fontSize:13}} /><input type="number" value={t.price} onChange={e=>up(d=>{d.vehicles[vi].trims[ti].price=Number(e.target.value)||0;})} style={{width:120,...iS,textAlign:"right",fontSize:13}} /><span style={{fontSize:12,color:"#bbb"}}>원</span><button onClick={()=>up(d=>{d.vehicles[vi].trims.splice(ti,1);})} style={dB}>✕</button></div>))}
+            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+              <input value={v.badge||""} onChange={e=>up(d=>{d.vehicles[vi].badge=e.target.value;})} style={{width:100,...iS,fontSize:11,fontWeight:800,background:"#1a1a1a",color:"#fff",textAlign:"center",borderRadius:12}} />
+              <input value={v.name} onChange={e=>up(d=>{d.vehicles[vi].name=e.target.value;})} style={{fontSize:15,fontWeight:800,...iS,border:"none",padding:"3px 6px"}} />
+              {v.hasTax!==undefined&&<label style={{fontSize:11,color:"#999",display:"flex",alignItems:"center",gap:3}}><input type="checkbox" checked={!!v.hasTax} onChange={e=>up(d=>{d.vehicles[vi].hasTax=e.target.checked;})} />세금적용</label>}
+            </div>
+            <div style={{fontSize:13,fontWeight:700,color:GD,marginBottom:6}}>트림 ({v.trims.length}개)</div>
+            {v.trims.map((t,ti)=>(<div key={t.id} style={{display:"flex",alignItems:"center",gap:6,marginBottom:4,marginLeft:8}}><span style={{fontSize:11,color:"#bbb",width:20}}>{ti+1}</span><input value={t.name} onChange={e=>up(d=>{d.vehicles[vi].trims[ti].name=e.target.value;})} style={{width:180,...iS,fontSize:13}} /><input type="number" value={t.price} onChange={e=>up(d=>{d.vehicles[vi].trims[ti].price=Number(e.target.value)||0;})} style={{width:130,...iS,textAlign:"right",fontSize:13}} /><span style={{fontSize:12,color:"#bbb"}}>원</span><button onClick={()=>up(d=>{d.vehicles[vi].trims.splice(ti,1);})} style={dB}>✕</button></div>))}
             <button onClick={()=>up(d=>{d.vehicles[vi].trims.push({id:uid(),name:"새 트림",price:0});})} style={{...aB,marginLeft:8,fontSize:12}}>+ 트림</button>
           </div>))}</div>}
           {aTab==="options"&&<div>{D.vehicles.map((v,vi)=>(<div key={v.id} style={{marginBottom:24,borderBottom:"1px solid #f0f0f0",paddingBottom:14}}>
             <div style={{fontSize:15,fontWeight:800,marginBottom:8}}>{v.badge} - 트림옵션</div>
             {v.trimOptions&&Object.keys(v.trimOptions).map(tk=>{var tName=v.trims.find(function(t){return t.id===tk});return(<div key={tk} style={{marginBottom:14,marginLeft:8}}>
-              <div style={{fontSize:13,fontWeight:700,color:"#2563EB",marginBottom:4}}>{tName?tName.name:tk}</div>
-              {(v.trimOptions[tk]||[]).map((o,oi)=>(<div key={o.id} style={{display:"flex",alignItems:"center",gap:4,marginBottom:3,marginLeft:8}}><input value={o.name} onChange={e=>up(d=>{d.vehicles[vi].trimOptions[tk][oi].name=e.target.value;})} style={{flex:1,...iS,fontSize:12}} /><input type="number" value={o.price} onChange={e=>up(d=>{d.vehicles[vi].trimOptions[tk][oi].price=Number(e.target.value)||0;})} style={{width:100,...iS,textAlign:"right",fontSize:12}} /><button onClick={()=>up(d=>{d.vehicles[vi].trimOptions[tk].splice(oi,1);})} style={dB}>✕</button></div>))}
+              <div style={{fontSize:13,fontWeight:700,color:"#2563EB",marginBottom:4}}>{tName?tName.name:tk} ({(v.trimOptions[tk]||[]).length}개)</div>
+              {(v.trimOptions[tk]||[]).map((o,oi)=>(<div key={o.id} style={{display:"flex",alignItems:"center",gap:4,marginBottom:3,marginLeft:8}}>
+                <input value={o.name} onChange={e=>up(d=>{d.vehicles[vi].trimOptions[tk][oi].name=e.target.value;})} style={{flex:1,...iS,fontSize:12}} />
+                <input value={o.desc||""} onChange={e=>up(d=>{d.vehicles[vi].trimOptions[tk][oi].desc=e.target.value;})} placeholder="설명" style={{width:120,...iS,fontSize:11,color:"#999"}} />
+                <input type="number" value={o.price} onChange={e=>up(d=>{d.vehicles[vi].trimOptions[tk][oi].price=Number(e.target.value)||0;})} style={{width:100,...iS,textAlign:"right",fontSize:12}} />
+                <button onClick={()=>up(d=>{d.vehicles[vi].trimOptions[tk].splice(oi,1);})} style={dB}>✕</button>
+              </div>))}
               <button onClick={()=>up(d=>{d.vehicles[vi].trimOptions[tk].push({id:uid(),name:"새 옵션",price:0});})} style={{...aB,marginLeft:8,fontSize:11}}>+ 옵션</button>
             </div>);})}
           </div>))}</div>}
@@ -760,20 +769,43 @@ function App(){
             </div>);})}</div>}
           </div>))}</div>}
           {aTab==="base"&&<div>{D.vehicles.map((v,vi)=>(<div key={v.id} style={{marginBottom:24,borderBottom:"1px solid #f0f0f0",paddingBottom:14}}>
-            <div style={{fontSize:15,fontWeight:800,marginBottom:8}}>{v.badge} - 공통 선택품목</div>
-            {(v.baseOptions||[]).map((o,oi)=>(<div key={o.id} style={{display:"flex",alignItems:"center",gap:4,marginBottom:3,marginLeft:8}}><input value={o.name} onChange={e=>up(d=>{d.vehicles[vi].baseOptions[oi].name=e.target.value;})} style={{flex:1,...iS,fontSize:12}} /><input type="number" value={o.price} onChange={e=>up(d=>{d.vehicles[vi].baseOptions[oi].price=Number(e.target.value)||0;})} style={{width:100,...iS,textAlign:"right",fontSize:12}} /><button onClick={()=>up(d=>{d.vehicles[vi].baseOptions.splice(oi,1);})} style={dB}>✕</button></div>))}
+            <div style={{fontSize:15,fontWeight:800,marginBottom:8}}>{v.badge} - 공통 선택품목 ({(v.baseOptions||[]).length}개)</div>
+            {(v.baseOptions||[]).map((o,oi)=>(<div key={o.id} style={{display:"flex",alignItems:"center",gap:4,marginBottom:3,marginLeft:8}}>
+              <input value={o.name} onChange={e=>up(d=>{d.vehicles[vi].baseOptions[oi].name=e.target.value;})} style={{flex:1,...iS,fontSize:12}} />
+              <input value={o.desc||""} onChange={e=>up(d=>{d.vehicles[vi].baseOptions[oi].desc=e.target.value;})} placeholder="설명" style={{width:120,...iS,fontSize:11,color:"#999"}} />
+              <input type="number" value={o.price} onChange={e=>up(d=>{d.vehicles[vi].baseOptions[oi].price=Number(e.target.value)||0;})} style={{width:100,...iS,textAlign:"right",fontSize:12}} />
+              <button onClick={()=>up(d=>{d.vehicles[vi].baseOptions.splice(oi,1);})} style={dB}>✕</button>
+            </div>))}
             <button onClick={()=>up(d=>{if(!d.vehicles[vi].baseOptions)d.vehicles[vi].baseOptions=[];d.vehicles[vi].baseOptions.push({id:uid(),name:"새 항목",price:0});})} style={{...aB,marginLeft:8,fontSize:12}}>+ 공통 선택</button>
             {(v.commonSpecial||[]).length>0&&<div style={{marginTop:10}}>
-              <div style={{fontSize:13,fontWeight:700,color:GD,marginBottom:4,marginLeft:8}}>공통 특장</div>
-              {v.commonSpecial.map((o,oi)=>(<div key={o.id} style={{display:"flex",alignItems:"center",gap:4,marginBottom:3,marginLeft:16}}><input value={o.name} onChange={e=>up(d=>{d.vehicles[vi].commonSpecial[oi].name=e.target.value;})} style={{flex:1,...iS,fontSize:12}} /><input type="number" value={o.price} onChange={e=>up(d=>{d.vehicles[vi].commonSpecial[oi].price=Number(e.target.value)||0;})} style={{width:100,...iS,textAlign:"right",fontSize:12}} /><button onClick={()=>up(d=>{d.vehicles[vi].commonSpecial.splice(oi,1);})} style={dB}>✕</button></div>))}
+              <div style={{fontSize:13,fontWeight:700,color:GD,marginBottom:4,marginLeft:8}}>공통 특장 ({v.commonSpecial.length}개)</div>
+              {v.commonSpecial.map((o,oi)=>(<div key={o.id} style={{display:"flex",alignItems:"center",gap:4,marginBottom:3,marginLeft:16}}>
+                <input value={o.name} onChange={e=>up(d=>{d.vehicles[vi].commonSpecial[oi].name=e.target.value;})} style={{flex:1,...iS,fontSize:12}} />
+                <input value={o.desc||""} onChange={e=>up(d=>{d.vehicles[vi].commonSpecial[oi].desc=e.target.value;})} placeholder="설명" style={{width:120,...iS,fontSize:11,color:"#999"}} />
+                <input type="number" value={o.price} onChange={e=>up(d=>{d.vehicles[vi].commonSpecial[oi].price=Number(e.target.value)||0;})} style={{width:100,...iS,textAlign:"right",fontSize:12}} />
+                <label style={{fontSize:10,display:"flex",alignItems:"center",gap:2}}><input type="checkbox" checked={!!o.required} onChange={e=>up(d=>{d.vehicles[vi].commonSpecial[oi].required=e.target.checked;})} />필수</label>
+                <button onClick={()=>up(d=>{d.vehicles[vi].commonSpecial.splice(oi,1);})} style={dB}>✕</button>
+              </div>))}
+              <button onClick={()=>up(d=>{d.vehicles[vi].commonSpecial.push({id:uid(),name:"새 항목",desc:"",price:0});})} style={{...aB,marginLeft:16,fontSize:11}}>+ 공통 특장</button>
             </div>}
           </div>))}</div>}
           {aTab==="models"&&<div>{D.vehicles.map((v,vi)=>(<div key={v.id} style={{marginBottom:20}}>
             <div style={{fontSize:15,fontWeight:800,marginBottom:8}}>{v.badge} - {v.name}</div>
             {v.models.map((m,mi)=>(<div key={m.id} style={{marginBottom:16,paddingBottom:10,borderBottom:"1px solid #f5f5f5"}}>
               <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:6}}><div style={{width:4,height:12,borderRadius:2,background:m.color}} /><input value={m.name} onChange={e=>up(d=>{d.vehicles[vi].models[mi].name=e.target.value;})} style={{fontSize:14,fontWeight:800,...iS,border:"none",padding:"2px 6px"}} /><input value={m.subtitle} onChange={e=>up(d=>{d.vehicles[vi].models[mi].subtitle=e.target.value;})} style={{fontSize:12,...iS,width:80,border:"none",padding:"2px 6px",color:"#999"}} /><input type="color" value={m.color} onChange={e=>up(d=>{d.vehicles[vi].models[mi].color=e.target.value;})} style={{width:22,height:22,border:"none",cursor:"pointer"}} /><button onClick={()=>up(d=>{d.vehicles[vi].models.splice(mi,1);})} style={{...dB,marginLeft:"auto"}}>삭제</button></div>
-              {m.options.map((o,oi)=>(<div key={o.id} style={{display:"flex",alignItems:"center",gap:4,marginBottom:3,marginLeft:12}}><input value={o.name} onChange={e=>up(d=>{d.vehicles[vi].models[mi].options[oi].name=e.target.value;})} style={{flex:1,...iS,fontSize:12}} /><input type="number" value={o.price} onChange={e=>up(d=>{d.vehicles[vi].models[mi].options[oi].price=Number(e.target.value)||0;})} style={{width:100,...iS,textAlign:"right",fontSize:12}} /><button onClick={()=>up(d=>{d.vehicles[vi].models[mi].options.splice(oi,1);})} style={dB}>✕</button></div>))}
-              <button onClick={()=>up(d=>{d.vehicles[vi].models[mi].options.push({id:uid(),name:"새 옵션",desc:"",price:0});})} style={{...aB,marginLeft:12,fontSize:11}}>+ 옵션</button>
+              {m.options.map((o,oi)=>(<div key={o.id} style={{marginBottom:6,marginLeft:12,padding:"6px 8px",background:oi%2===0?"#fafafa":"#fff",borderRadius:6}}>
+                <div style={{display:"flex",alignItems:"center",gap:4,marginBottom:3}}>
+                  <input value={o.g||""} onChange={e=>up(d=>{d.vehicles[vi].models[mi].options[oi].g=e.target.value;})} placeholder="그룹" style={{width:70,...iS,fontSize:11,color:"#888"}} />
+                  <input value={o.name} onChange={e=>up(d=>{d.vehicles[vi].models[mi].options[oi].name=e.target.value;})} style={{flex:1,...iS,fontSize:12,fontWeight:700}} />
+                  <input type="number" value={o.price} onChange={e=>up(d=>{d.vehicles[vi].models[mi].options[oi].price=Number(e.target.value)||0;})} placeholder="가격" style={{width:100,...iS,textAlign:"right",fontSize:12}} />
+                  <button onClick={()=>up(d=>{d.vehicles[vi].models[mi].options.splice(oi,1);})} style={dB}>✕</button>
+                </div>
+                <div style={{display:"flex",alignItems:"center",gap:4}}>
+                  <input value={o.desc||""} onChange={e=>up(d=>{d.vehicles[vi].models[mi].options[oi].desc=e.target.value;})} placeholder="설명" style={{flex:1,...iS,fontSize:11,color:"#999"}} />
+                  <input type="number" value={o.originalPrice||""} onChange={e=>up(d=>{var v=Number(e.target.value)||0;if(v>0)d.vehicles[vi].models[mi].options[oi].originalPrice=v;else delete d.vehicles[vi].models[mi].options[oi].originalPrice;})} placeholder="원래가격(할인전)" style={{width:120,...iS,fontSize:11,color:"#c00",textAlign:"right"}} />
+                </div>
+              </div>))}
+              <button onClick={()=>up(d=>{d.vehicles[vi].models[mi].options.push({id:uid(),name:"새 옵션",desc:"",price:0,g:""});})} style={{...aB,marginLeft:12,fontSize:11}}>+ 옵션</button>
             </div>))}
             <button onClick={()=>up(d=>{d.vehicles[vi].models.push({id:uid(),name:"새 모델",subtitle:"",color:"#666",options:[]});})} style={{...aB,background:"#1a1a1a",color:"#fff"}}>+ 새 모델</button>
           </div>))}</div>}
