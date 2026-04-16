@@ -453,6 +453,7 @@ function App(){
               setDisc(s.disc||0);
               if(s.cust){try{setCust(s.cust);}catch(e){}}
               setStep(2);
+              window.history.replaceState({},'',window.location.pathname);
             }
           }).catch(function(){});
         } else if(p.get("v")&&p.get("m")){
@@ -621,7 +622,7 @@ function App(){
         </div>}
         {mainMenu==="used"&&<div>
           {!usedSub&&<div style={{maxWidth:600,margin:"0 auto"}}>
-            <div style={{marginBottom:20,display:"flex",justifyContent:"center",gap:8}}><button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{...bL,fontSize:13,borderColor:"#1b2f4e",color:"#1b2f4e"}}>🏠 포털 홈</button></div>
+            <div style={{marginBottom:20,display:"flex",justifyContent:"center",gap:8}}><button onClick={()=>{setMainMenu(null);setUsedSub(null);}} style={{...bL,fontSize:13}}>← 메인으로</button><button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{...bL,fontSize:13,borderColor:"#1b2f4e",color:"#1b2f4e"}}>🏠 포털 홈</button></div>
             <div style={{textAlign:"center",marginBottom:28}}>
               <div style={{fontSize:12,letterSpacing:6,color:"#999",fontWeight:600,marginBottom:6}}>USED CAR</div>
               <div style={{fontSize:24,fontWeight:900,color:"#1a1a1a"}}>중고차 업무</div>
@@ -657,6 +658,7 @@ function App(){
             return(<div style={{maxWidth:500,margin:"0 auto"}}>
               <div style={{display:"flex",gap:8,marginBottom:16,flexWrap:"wrap",justifyContent:"center"}}>
                 <button onClick={()=>setUsedSub(null)} style={{...bL,fontSize:13}}>← 중고차 업무</button>
+                <button onClick={()=>{setMainMenu(null);setUsedSub(null);}} style={{...bL,fontSize:13}}>← 메인으로</button>
                 <button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{...bL,fontSize:13,borderColor:"#1b2f4e",color:"#1b2f4e"}}>🏠 포털 홈</button>
                 <button onClick={doUcPrint} style={{background:"#1a1a1a",color:"#fff",border:"none",padding:"9px 20px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>🖨️ PDF 출력</button>
                 <button onClick={doUcJpg} style={{background:"#2563EB",color:"#fff",border:"none",padding:"9px 20px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>📷 JPG 저장</button>
@@ -767,6 +769,7 @@ function App(){
             return(<div style={{maxWidth:520,margin:"0 auto"}}>
               <div style={{display:"flex",gap:8,marginBottom:16,flexWrap:"wrap"}}>
                 <button onClick={()=>setUsedSub(null)} style={{...bL,fontSize:13}}>← 중고차 업무</button>
+                <button onClick={()=>{setMainMenu(null);setUsedSub(null);}} style={{...bL,fontSize:13}}>← 메인으로</button>
                 <button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{...bL,fontSize:13,borderColor:"#1b2f4e",color:"#1b2f4e"}}>🏠 포털 홈</button>
                 <button onClick={doTxPrint} style={{background:"#1E3A8A",color:"#fff",border:"none",padding:"9px 18px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>🖨️ 출력/PDF</button>
                 <button onClick={doTxJpg} style={{background:"#2563EB",color:"#fff",border:"none",padding:"9px 18px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>📷 JPG 저장</button>
@@ -1328,6 +1331,10 @@ const tdC={padding:"4px 8px",borderBottom:"1px solid #eee",color:"#222",fontWeig
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(React.createElement(App));
 </script>
-<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js');}</script>
+<script>
+/* BFCache 복원 시 강제 새로고침 → React 상태 항상 초기화 */
+window.addEventListener('pageshow',function(e){if(e.persisted){window.location.reload();}});
+if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js');}
+</script>
 </body>
 </html>
