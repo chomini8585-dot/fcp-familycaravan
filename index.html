@@ -594,7 +594,7 @@ function App(){
           <div style={{textAlign:"center"}}><button onClick={()=>{setAA(false);setAP("");setAE(false);setStep(3);}} style={{...bL,fontSize:12,color:"#ccc",borderColor:"#eee"}}>🔒 관리자</button></div>
         </div>}
         {mainMenu==="quote"&&<div>
-          <div style={{marginBottom:20,textAlign:"center"}}><button onClick={()=>setMainMenu(null)} style={{...bL,fontSize:13}}>← 메인으로</button></div>
+          <div style={{marginBottom:20,display:"flex",justifyContent:"center",gap:8}}><button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{...bL,fontSize:13,borderColor:"#1b2f4e",color:"#1b2f4e"}}>🏠 포털 홈</button></div>
         {(()=>{
           const groups=[];const seen={};
           D.vehicles.forEach(v=>{
@@ -621,7 +621,7 @@ function App(){
         </div>}
         {mainMenu==="used"&&<div>
           {!usedSub&&<div style={{maxWidth:600,margin:"0 auto"}}>
-            <div style={{marginBottom:20,textAlign:"center"}}><button onClick={()=>setUsedSub(null)} style={{...bL,fontSize:13}}>← 중고차 업무</button></div>
+            <div style={{marginBottom:20,display:"flex",justifyContent:"center",gap:8}}><button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{...bL,fontSize:13,borderColor:"#1b2f4e",color:"#1b2f4e"}}>🏠 포털 홈</button></div>
             <div style={{textAlign:"center",marginBottom:28}}>
               <div style={{fontSize:12,letterSpacing:6,color:"#999",fontWeight:600,marginBottom:6}}>USED CAR</div>
               <div style={{fontSize:24,fontWeight:900,color:"#1a1a1a"}}>중고차 업무</div>
@@ -657,6 +657,7 @@ function App(){
             return(<div style={{maxWidth:500,margin:"0 auto"}}>
               <div style={{display:"flex",gap:8,marginBottom:16,flexWrap:"wrap",justifyContent:"center"}}>
                 <button onClick={()=>setUsedSub(null)} style={{...bL,fontSize:13}}>← 중고차 업무</button>
+                <button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{...bL,fontSize:13,borderColor:"#1b2f4e",color:"#1b2f4e"}}>🏠 포털 홈</button>
                 <button onClick={doUcPrint} style={{background:"#1a1a1a",color:"#fff",border:"none",padding:"9px 20px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>🖨️ PDF 출력</button>
                 <button onClick={doUcJpg} style={{background:"#2563EB",color:"#fff",border:"none",padding:"9px 20px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>📷 JPG 저장</button>
               </div>
@@ -766,6 +767,7 @@ function App(){
             return(<div style={{maxWidth:520,margin:"0 auto"}}>
               <div style={{display:"flex",gap:8,marginBottom:16,flexWrap:"wrap"}}>
                 <button onClick={()=>setUsedSub(null)} style={{...bL,fontSize:13}}>← 중고차 업무</button>
+                <button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{...bL,fontSize:13,borderColor:"#1b2f4e",color:"#1b2f4e"}}>🏠 포털 홈</button>
                 <button onClick={doTxPrint} style={{background:"#1E3A8A",color:"#fff",border:"none",padding:"9px 18px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>🖨️ 출력/PDF</button>
                 <button onClick={doTxJpg} style={{background:"#2563EB",color:"#fff",border:"none",padding:"9px 18px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>📷 JPG 저장</button>
                 <button onClick={doTxLink} style={{background:"#16a34a",color:"#fff",border:"none",padding:"9px 18px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>🔗 링크 공유</button>
@@ -1275,7 +1277,7 @@ function App(){
     var ol=function(e){e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="0 2px 12px rgba(27,47,78,0.08)";};
     return(<div style={{minHeight:"100vh",background:"#f0f4f8",fontFamily:F,padding:"40px 20px"}}>{toastEl}<FL />
       <div style={{maxWidth:700,margin:"0 auto"}}>
-        <div style={{marginBottom:24}}><button onClick={()=>setStep(0)} style={bL}>← 메인으로</button></div>
+        <div style={{marginBottom:24,display:"flex",gap:8}}><button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{...bL,fontSize:13,borderColor:"#1b2f4e",color:"#1b2f4e"}}>🏠 포털 홈</button></div>
         <div style={{textAlign:"center",marginBottom:32}}>
           <div style={{fontSize:12,letterSpacing:6,color:"#999",fontWeight:600,marginBottom:6}}>PRICE LIST</div>
           <div style={{fontSize:26,fontWeight:900,color:"#1b2f4e"}}>가격표 출력 / 편집</div>
