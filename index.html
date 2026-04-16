@@ -425,7 +425,8 @@ function App(){
   const[ctNote,setCtNote]=useState("※ 취등록세 별도");const[ctEmail,setCtEmail]=useState("");const[ctHomePhone,setCtHomePhone]=useState("");
   const[ctCustomNote,setCtCustomNote]=useState("");
   const[ctName2,setCtName2]=useState("");const[ctPhone2,setCtPhone2]=useState("");const[ctAddr2,setCtAddr2]=useState("");const[ctSsn2,setCtSsn2]=useState("");const[ctEmail2,setCtEmail2]=useState("");const[ctHomePhone2,setCtHomePhone2]=useState("");
-  const[ucName,setUcName]=useState("");const[ucFeeOn,setUcFeeOn]=useState(true);const[ucMgmtOn,setUcMgmtOn]=useState(true);const[usedSub,setUsedSub]=useState(null);const[txPrice,setTxPrice]=useState(0);const[txStamp,setTxStamp]=useState(4000);const[txPerf,setTxPerf]=useState(0);const[txType,setTxType]=useState("sedan7");const[txRegion,setTxRegion]=useState("other");const[txSeat,setTxSeat]=useState("s6");const[txExempt,setTxExempt]=useState("none");const[ucInfo,setUcInfo]=useState("");const[ucPrice,setUcPrice]=useState(0);const[ucMgmt,setUcMgmt]=useState(0);const[ucPerf,setUcPerf]=useState(0);const[ucReg,setUcReg]=useState(5000);const[ucFeeRate]=useState(0.022);const[ucTaxRate]=useState(0.07);const[ucBondRate]=useState(0.08);
+  const[ucName,setUcName]=useState("");const[ucFeeOn,setUcFeeOn]=useState(true);const[ucMgmtOn,setUcMgmtOn]=useState(true);const[usedSub,setUsedSub]=useState(null);const[txPrice,setTxPrice]=useState(0);const[txStamp,setTxStamp]=useState(4000);const[txPerf,setTxPerf]=useState(0);const[txType,setTxType]=useState("sedan7");const[txRegion,setTxRegion]=useState("other");const[txSeat,setTxSeat]=useState("s6");const[txExempt,setTxExempt]=useState("none");const[ucInfo,setUcInfo]=useState("");const[ucPrice,setUcPrice]=useState(0);const[ucMgmt,setUcMgmt]=useState(440000);const[ucPerf,setUcPerf]=useState(0);const[ucReg,setUcReg]=useState(5000);const[ucFeeRate]=useState(0.022);const[ucTaxRate]=useState(0.07);const[ucBondRate]=useState(0.08);
+  const[ucVType,setUcVType]=useState("sedan7");const[ucSeat,setUcSeat]=useState("s6");const[ucRegion,setUcRegion]=useState("other");const[ucExempt,setUcExempt]=useState("none");
   const saveQuote=()=>{const veh=D.vehicles.find(v=>v.id===sV);const mdl=veh&&veh.models?veh.models.find(m=>m.id===sM):null;const trm=veh&&veh.trims?veh.trims.find(t=>t.id===sT):null;const data={customerName:cN||"미입력",customerPhone:cP||"",customerAddr:cAddr||"",vehicle:veh?veh.name:"",model:mdl?mdl.name:"",trim:trm?trm.name:"",total:tot(),vehicleTotal:vS(),specialTotal:sS(),discount:disc,note:cNo||"",createdAtLocal:new Date().toISOString()};return window.db.collection("quotes").add(data);};
   const doSaveQuote=()=>{if(!window.db){alert("Firebase 미연결");return;}saveQuote().then(()=>{alert("✅ 견적이 저장되었습니다!");loadQuotes();setStep(5);}).catch((e)=>{alert("❌ 저장 실패: "+e.message);});};
   const restoreQuote=function(q){if(!q.state)return alert("이전 버전 견적이라 복원할 수 없습니다.");var s=q.state;setSV(s.sV||null);setSM(s.sM||null);setST(s.sT||null);setSBO(s.sBO||[]);setSTO(s.sTO||[]);setSSO(s.sSO||[]);setSMO(s.sMO||[]);setMoQty(s.moQty||{});setSelColor(s.selColor||null);setSelIntColor(s.selIntColor||null);setCust(s.cust||[{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false}]);setCN(s.cN||"");setCP(s.cP||"");setCAddr(s.cAddr||"");setCNo(s.cNo||"");setDisc(s.disc||0);setStep(2);};
@@ -644,16 +645,34 @@ function App(){
           </div>}
           {usedSub==="quotation"&&(()=>{
             const ucRef=React.createRef();
+            /* ══ 취·등록세 계산기와 동일한 로직 ══ */
+            const TX={sedan7:{l:"승용(9인승 이하)",r:0.07},van5:{l:"승합(7인이상)",r:0.05},cargo5:{l:"화물차",r:0.05},kcar:{l:"경차(1600cc미만)",r:0.04}};
+            const BOND={seoul:{l:"서울",b:0.058},gyeonggi:{l:"경기/인천",b:0.04},other:{l:"기타 지역",b:0.02},freight:{l:"기타 지역 (화물)",b:0.01}};
+            const SEAT={s6:{l:"6인 이하"},s7:{l:"7인 이상"}};
+            const EX={none:{l:"일반"},c2:{l:"2자녀(다자녀)"},c3:{l:"3자녀 이상"},disabled:{l:"장애인·국가유공자"}};
             const base=ucPrice>0?Math.round(ucPrice/1.1):0;
-            const tax=Math.round(base*ucTaxRate);
-            const bond=Math.round(tax*ucBondRate);
+            const taxRaw=Math.round(base*(TX[ucVType]?.r||0.07));
+            let taxDiscount=0;
+            const is6=ucSeat==="s6";
+            if(ucExempt==="c2"){
+              if(is6){taxDiscount=taxRaw<=1400000?Math.round(taxRaw*0.5):700000;}
+              else{taxDiscount=Math.round(taxRaw*0.5);}
+            } else if(ucExempt==="c3"){
+              if(is6){taxDiscount=taxRaw<=1400000?taxRaw:1400000;}
+              else{taxDiscount=taxRaw<=2000000?taxRaw:Math.round(taxRaw*0.85);}
+            } else if(ucExempt==="disabled"){
+              taxDiscount=Math.min(taxRaw,1400000);
+            }
+            const tax=Math.max(0,taxRaw-taxDiscount);
+            const bond=Math.round(tax*(BOND[ucRegion]?.b||0.02));
             const fee=Math.round(ucPrice*ucFeeRate);
             const total=ucPrice+tax+bond+(ucMgmtOn?(ucMgmt||0):0)+(ucPerf||0)+(ucReg||0)+(ucFeeOn?fee:0);
             const uR={display:"flex",alignItems:"center",borderBottom:"1px solid #ddd",minHeight:44};
             const uL={width:"40%",padding:"10px 14px",fontSize:15,fontWeight:700,color:"#555",background:"#f8f8f8"};
             const uV={flex:1,padding:"10px 14px",fontSize:15,fontWeight:700,color:"#222"};
             const uIn={border:"none",outline:"none",fontSize:15,fontWeight:700,width:"100%",background:"transparent",padding:0,color:"#222"};
-            const doUcPrint=function(){try{var w=window.open("","_blank");if(w){w.document.write('<!DOCTYPE html><html><head><title>차량구입견적서</title><link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:"Pretendard Variable",sans-serif;background:#fff;color:#111}#wrap{width:100%;max-width:600px;margin:0 auto;padding:40px 30px}@media print{@page{margin:15mm;size:A4}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body><div id="wrap">'+ucRef.current.innerHTML+'</div><script>setTimeout(function(){window.print();},800);<\/script></body></html>');w.document.close();}}catch(e){alert("인쇄 실패");}};
+            const uSel={border:"none",outline:"none",fontSize:14,fontWeight:600,background:"transparent",color:"#222",width:"100%",cursor:"pointer"};
+            const doUcPrint=function(){try{var w=window.open("","_blank");if(w){w.document.write('<!DOCTYPE html><html><head><title>차량구입견적서</title><link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:"Pretendard Variable",sans-serif;background:#fff;color:#111}#wrap{width:100%;max-width:600px;margin:0 auto;padding:40px 30px}@media print{@page{margin:15mm;size:A4}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body><div id="wrap">'+ucRef.current.innerHTML+'</div><scr'+'ipt>setTimeout(function(){window.print();},800);<'+'/script></body></html>');w.document.close();}}catch(e){alert("인쇄 실패");}};
             const doUcJpg=function(){try{showToast("📷 이미지 생성 중...");var el=ucRef.current;el.style.minWidth="600px";setTimeout(function(){html2canvas(el,{scale:2,useCORS:true,backgroundColor:"#ffffff",windowWidth:600}).then(function(canvas){el.style.minWidth="";var isMob=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);if(isMob){var du=canvas.toDataURL("image/jpeg",0.95);var w=window.open("","_blank");if(w){w.document.write('<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>차량구입견적서</title><style>body{margin:0;padding:16px;background:#f5f5f5;text-align:center}img{max-width:100%;border-radius:8px}p{margin-top:16px;font-size:14px;color:#666}</style></head><body><p>이미지를 길게 눌러 저장하세요</p><img src="'+du+'" /></body></html>');w.document.close();}}else{canvas.toBlob(function(blob){var link=document.createElement("a");link.download="차량구입견적서_"+(ucInfo||"estimate")+".jpg";link.href=URL.createObjectURL(blob);link.click();showToast("📷 JPG 저장됨");},"image/jpeg",0.95);}});},100);}catch(e){alert("이미지 저장 실패");}};
             return(<div style={{maxWidth:500,margin:"0 auto"}}>
               <div style={{display:"flex",gap:8,marginBottom:16,flexWrap:"wrap",justifyContent:"center"}}>
@@ -668,7 +687,18 @@ function App(){
                 <div style={uR}><div style={uL}>고객명</div><div style={uV}><input type="text" value={ucName} onChange={e=>setUcName(e.target.value)} placeholder="고객명 입력" style={uIn} /></div></div>
                 <div style={uR}><div style={uL}>차량정보</div><div style={uV}><input type="text" value={ucInfo} onChange={e=>setUcInfo(e.target.value)} placeholder="차량번호 / 차종 입력" style={uIn} /></div></div>
                 <div style={uR}><div style={uL}>차량가격</div><div style={{...uV,display:"flex",alignItems:"center",gap:4}}><input type="text" value={ucPrice?fmt(ucPrice):""} onChange={e=>setUcPrice(Number(e.target.value.replace(/[^0-9]/g,""))||0)} placeholder="0" style={{...uIn,textAlign:"right"}} /><span style={{fontSize:15,color:"#aaa",fontWeight:700,flexShrink:0}}>원</span></div></div>
-                <div style={uR}><div style={uL}>취·등록세 (7%)</div><div style={{...uV,textAlign:"right"}}>{fmt(tax)}<span style={{fontSize:15,color:"#aaa",marginLeft:3}}>원</span></div></div>
+                <div style={uR}><div style={uL}>차종</div><div style={uV}><select value={ucVType} onChange={e=>setUcVType(e.target.value)} style={uSel}>{Object.entries(TX).map(([k,v])=><option key={k} value={k}>{v.l} ({(v.r*100).toFixed(0)}%)</option>)}</select></div></div>
+                <div style={uR}><div style={uL}>승차정원</div><div style={uV}><select value={ucSeat} onChange={e=>setUcSeat(e.target.value)} style={uSel}>{Object.entries(SEAT).map(([k,v])=><option key={k} value={k}>{v.l}</option>)}</select></div></div>
+                <div style={uR}><div style={uL}>지역 (공채기준)</div><div style={uV}><select value={ucRegion} onChange={e=>setUcRegion(e.target.value)} style={uSel}>{Object.entries(BOND).map(([k,v])=><option key={k} value={k}>{v.l} (공채 {(v.b*100).toFixed(1)}%)</option>)}</select></div></div>
+                <div style={uR}><div style={uL}>감면 구분</div><div style={uV}><select value={ucExempt} onChange={e=>setUcExempt(e.target.value)} style={uSel}>{Object.entries(EX).map(([k,v])=><option key={k} value={k}>{v.l}</option>)}</select></div></div>
+                <div style={{...uR,background:taxDiscount>0?"#fff7ed":""}}>
+                  <div style={{...uL,background:taxDiscount>0?"#fed7aa":"#f8f8f8"}}>취·등록세 ({(TX[ucVType]?.r*100||7).toFixed(0)}%)</div>
+                  <div style={{...uV,textAlign:"right"}}>
+                    {taxRaw>0&&taxDiscount>0&&<div style={{fontSize:12,color:"#aaa",textDecoration:"line-through"}}>{fmt(taxRaw)}원</div>}
+                    {fmt(tax)}<span style={{fontSize:15,color:"#aaa",marginLeft:3}}>원</span>
+                    {taxDiscount>0&&<div style={{fontSize:11,color:"#b91c1c",fontWeight:700,marginTop:2}}>-{fmt(taxDiscount)}원 감면</div>}
+                  </div>
+                </div>
                 <div style={uR}><div style={uL}>공채</div><div style={{...uV,textAlign:"right"}}>{fmt(bond)}<span style={{fontSize:15,color:"#aaa",marginLeft:3}}>원</span></div></div>
                 <div style={uR}><div style={{...uL,display:"flex",alignItems:"center",gap:8}}><div onClick={()=>setUcMgmtOn(v=>!v)} style={{width:18,height:18,borderRadius:4,border:ucMgmtOn?"2px solid #1a1a1a":"2px solid #ccc",background:ucMgmtOn?"#1a1a1a":"#fff",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0}}>{ucMgmtOn&&<span style={{color:"#fff",fontSize:12,fontWeight:900,lineHeight:1}}>✓</span>}</div><div><div>매도관리비</div><div style={{fontSize:10,color:"#aaa",fontWeight:400}}>(증인지포함)</div></div></div><div style={{...uV,display:"flex",alignItems:"center",gap:4,opacity:ucMgmtOn?1:0.35}}><input type="text" value={ucMgmt?fmt(ucMgmt):""} onChange={e=>setUcMgmt(Number(e.target.value.replace(/[^0-9]/g,""))||0)} placeholder="0" style={{...uIn,textAlign:"right"}} disabled={!ucMgmtOn} /><span style={{fontSize:15,color:"#aaa",fontWeight:700,flexShrink:0}}>원</span></div></div>
                 <div style={uR}><div style={uL}>성능보험비</div><div style={{...uV,display:"flex",alignItems:"center",gap:4}}><input type="text" value={ucPerf?fmt(ucPerf):""} onChange={e=>setUcPerf(Number(e.target.value.replace(/[^0-9]/g,""))||0)} placeholder="0" style={{...uIn,textAlign:"right"}} /><span style={{fontSize:15,color:"#aaa",fontWeight:700,flexShrink:0}}>원</span></div></div>
@@ -681,7 +711,7 @@ function App(){
           {usedSub==="tax"&&(()=>{
             /* ══ 엑셀 매도이전시_산출내역 기준 ══ */
             const TX={sedan7:{l:"승용(9인승 이하)",r:0.07},van5:{l:"승합(7인이상)",r:0.05},cargo5:{l:"화물차",r:0.05},kcar:{l:"경차(1600cc미만)",r:0.04}};
-            const BOND={seoul:{l:"서울",b:0.058},gyeonggi:{l:"경기/인천",b:0.04},other:{l:"기타 지역",b:0.02}};
+            const BOND={seoul:{l:"서울",b:0.058},gyeonggi:{l:"경기/인천",b:0.04},other:{l:"기타 지역",b:0.02},freight:{l:"기타 지역 (화물)",b:0.01}};
             const SEAT={s6:{l:"6인 이하"},s7:{l:"7인 이상"}};
             const EX={none:{l:"일반"},c2:{l:"2자녀(다자녀)"},c3:{l:"3자녀 이상"},disabled:{l:"장애인·국가유공자"}};
             const txBase=txPrice>0?Math.round(txPrice/1.1):0;
@@ -722,7 +752,7 @@ function App(){
                 ["─────────","─────────"],
                 ["과세표준 (VAT제외)",fmt(txBase)+"원"],
                 ["취득세 ("+((TX[txType]?.r||0.07)*100).toFixed(0)+"%)"+(txDiscount>0?" → 감면 -"+fmt(txDiscount)+"원":""),fmt(txFinal)+"원"],
-                ["공채 (취득세의"+((BOND[txRegion]?.b||0.02)*100).toFixed(1)+"%)",fmt(bond)+"원"],
+                ["공채",fmt(bond)+"원"],
                 ["대행수수료",fmt(fee)+"원"],
                 ["증인지",fmt(stamp)+"원"],
                 ["성능보험료",fmt(perf)+"원"],
@@ -796,7 +826,7 @@ function App(){
                     {txDiscount>0&&<Badge c="red" t={`-${fmt(txDiscount)}원 감면`}/>}
                   </div>
                 </div>
-                <div style={rR}><div style={rL}>공채 (취득세의 {((BOND[txRegion]?.b||0.02)*100).toFixed(1)}%)</div><div style={rV}>{fmt(bond)}{WON}</div></div>
+                <div style={rR}><div style={rL}>공채</div><div style={rV}>{fmt(bond)}{WON}</div></div>
                 <div style={{height:1,background:"#e5e7eb"}} />
                 <div style={rR}><div style={rL}>대행수수료</div><div style={rV}>{fmt(fee)}{WON}</div></div>
                 <div style={rR}><div style={rL}>증인지</div><div style={{flex:1,padding:"9px 10px 9px 4px",display:"flex",alignItems:"center",gap:4}}><input type="text" value={txStamp?fmt(txStamp):""} onChange={e=>setTxStamp(Number(e.target.value.replace(/[^0-9]/g,""))||0)} placeholder="0" style={{...rIn,textAlign:"right"}} />{WON}</div></div>
