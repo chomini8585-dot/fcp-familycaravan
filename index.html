@@ -473,6 +473,7 @@ function App(){
           const cu=p.get("cu");
           if(cu){try{setCust(JSON.parse(decodeURIComponent(cu)));}catch(e){}}
           setStep(1);
+          window.history.replaceState({},'',window.location.pathname);
         } else if(p.get("tab")==="tax"){
           if(p.get("tp"))setTxPrice(Number(p.get("tp")));
           if(p.get("tt"))setTxType(p.get("tt"));
@@ -482,6 +483,7 @@ function App(){
           if(p.get("tst"))setTxStamp(Number(p.get("tst")));
           if(p.get("tpf"))setTxPerf(Number(p.get("tpf")));
           setMainMenu("used");setUsedSub("tax");
+          window.history.replaceState({},'',window.location.pathname);
         }
       }catch(e){}
     });
@@ -592,7 +594,7 @@ function App(){
           <div style={{textAlign:"center"}}><button onClick={()=>{setAA(false);setAP("");setAE(false);setStep(3);}} style={{...bL,fontSize:12,color:"#ccc",borderColor:"#eee"}}>🔒 관리자</button></div>
         </div>}
         {mainMenu==="quote"&&<div>
-          <div style={{marginBottom:20,textAlign:"center"}}><button onClick={()=>setUsedSub(null)} style={{...bL,fontSize:13}}>← 중고차 업무</button></div>
+          <div style={{marginBottom:20,textAlign:"center"}}><button onClick={()=>setMainMenu(null)} style={{...bL,fontSize:13}}>← 메인으로</button></div>
         {(()=>{
           const groups=[];const seen={};
           D.vehicles.forEach(v=>{
