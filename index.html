@@ -76,14 +76,23 @@ const DD={
       ],
       baseOptions:[{id:"gasoline",name:"가솔린",price:0},{id:"hybrid",name:"하이브리드",price:4550000},{id:"taksong",name:"탁송료",price:150000}],
       colors:{
-        default:[{id:"cl1",name:"스노우 화이트 펄",price:80000},{id:"cl2",name:"블랙펄",price:0},{id:"cl3",name:"아이보리실버",price:0},{id:"cl4",name:"판테라메탈",price:0}],
-        xline:[{id:"cl1",name:"스노우 화이트 펄",price:80000},{id:"cl2",name:"블랙펄",price:0},{id:"cl5",name:"세라믹실버",price:0}],
+        default:[
+          {id:"cl1",name:"스노우화이트펄",hex:"#F2F2F2",price:80000},
+          {id:"cl3",name:"아이보리실버",hex:"#C4C4C4",price:0},
+          {id:"cl6",name:"오로라블랙펄",hex:"#353535",price:0},
+          {id:"cl4",name:"판테라메탈",hex:"#535356",price:0},
+        ],
+        xline:[
+          {id:"cl1",name:"스노우화이트펄",hex:"#F2F2F2",price:0},
+          {id:"cl2",name:"블랙펄",hex:"#1A1A1A",price:0},
+          {id:"cl5",name:"세라믹실버",hex:"#B0B4B8",price:0},
+        ],
       },
       interiorColors:{
-        prestige:[{id:"ic1",name:"토프",price:0}],
-        noblesse:[{id:"ic1",name:"토프",price:0},{id:"ic2",name:"코튼베이지",price:0}],
-        signature:[{id:"ic1",name:"토프",price:0},{id:"ic2",name:"코튼베이지",price:0},{id:"ic3",name:"네이비그레이",price:0}],
-        xline:[{id:"ic1",name:"토프",price:0},{id:"ic2",name:"코튼베이지",price:0},{id:"ic3",name:"네이비그레이",price:0}],
+        prestige:[{id:"ic1",name:"토프",hex:"#807B7D",price:0}],
+        noblesse:[{id:"ic1",name:"토프",hex:"#807B7D",price:0},{id:"ic2",name:"코튼베이지",hex:"#C0BAB7",price:0}],
+        signature:[{id:"ic1",name:"토프",hex:"#807B7D",price:0},{id:"ic2",name:"코튼베이지",hex:"#C0BAB7",price:0}],
+        xline:[{id:"ic1",name:"토프",hex:"#807B7D",price:0},{id:"ic2",name:"코튼베이지",hex:"#C0BAB7",price:0},{id:"ic4",name:"네이비베이지",hex:"#1A2240",hex2:"#C0BAB7",price:0}],
       },
       trimOptions:{
         prestige:[{id:"p1",name:"컨비니언스",price:1100000},{id:"p2",name:"스타일",price:1000000},{id:"p3",name:"12.3인치 클러스터",price:600000},{id:"p4",name:"드라이브 와이즈",price:1200000},{id:"p5",name:"모니터링 팩",price:900000}],
@@ -92,6 +101,29 @@ const DD={
         xline:[{id:"x1",name:"컴포트",price:1400000},{id:"x2",name:"스마트커넥트",price:750000},{id:"x3",name:"드라이브 와이즈",price:750000},{id:"x4",name:"모니터링 팩",price:1200000},{id:"x5",name:"HUD + 빌트인 캠2",price:1200000},{id:"x6",name:"BOSE프리미엄사운드",price:900000},{id:"x7",name:"X-Line 전용 사이드 스텝 / LED 테일게이트 램프",price:570000},{id:"x8",name:"듀얼 썬루프",price:800000}],
       },
       commonSpecial:[],
+      colors:{
+        passenger:[
+          {id:"pv5p_cw",name:"클리어화이트",hex:"#F3F3F3",price:0},
+          {id:"pv5p_sg",name:"스틸 그레이",hex:"#7B7A7F",price:0},
+          {id:"pv5p_ab",name:"오로라블랙펄",hex:"#161513",price:0},
+          {id:"pv5p_fb",name:"포레스트 블루",hex:"#607381",price:0},
+          {id:"pv5p_cg",name:"시티케이프 그린",hex:"#404F4C",price:0},
+          {id:"pv5p_sm",name:"소프트 민트",hex:"#757D7F",price:0},
+          {id:"pv5p_lg",name:"레이크하우스그레이",hex:"#242B31",price:0},
+        ],
+      },
+      interiorColors:{
+        pass_basic:[
+          {id:"pv5i_nv1",name:"네이비",hex:"#24282D",price:0},
+          {id:"pv5i_ng1",name:"네이비그레이",hex:"#24282D",hex2:"#7B7A7F",price:0},
+          {id:"pv5i_br1",name:"브라운",hex:"#4E4741",price:0},
+        ],
+        pass_plus:[
+          {id:"pv5i_nv2",name:"네이비",hex:"#24282D",price:0},
+          {id:"pv5i_ng2",name:"네이비그레이",hex:"#24282D",hex2:"#7B7A7F",price:0},
+          {id:"pv5i_br2",name:"브라운",hex:"#4E4741",price:0},
+        ],
+      },
       models:[
         {id:"fcp",name:"카니발 FCP",subtitle:"카니발 패키지",color:"#7C3AED",options:[
           {id:"fcp1",name:"1,100만원 패키지",desc:"1열3D매트, 1열 세미의전시트, 2열 3세대 의전시트, 3열 침대시트, 헤드가드너(7Cm Up), 천정등(메인등), 대리석플로어, 도어스커프",price:11000000,g:"기본 패키지"},
@@ -258,14 +290,23 @@ const DD={
       ],
       baseOptions:[{id:"ch_gas",name:"가솔린",price:0},{id:"ch_hybrid",name:"하이브리드",price:4550000},{id:"ch_taksong",name:"탁송비",price:190000}],
       colors:{
-        default:[{id:"cl1",name:"스노우 화이트 펄",price:80000},{id:"cl2",name:"블랙펄",price:0},{id:"cl3",name:"아이보리실버",price:0},{id:"cl4",name:"판테라메탈",price:0}],
-        ch_xline:[{id:"cl1",name:"스노우 화이트 펄",price:80000},{id:"cl2",name:"블랙펄",price:0},{id:"cl5",name:"세라믹실버",price:0}],
+        default:[
+          {id:"cl1",name:"스노우화이트펄",hex:"#F2F2F2",price:80000},
+          {id:"cl3",name:"아이보리실버",hex:"#C4C4C4",price:0},
+          {id:"cl6",name:"오로라블랙펄",hex:"#353535",price:0},
+          {id:"cl4",name:"판테라메탈",hex:"#535356",price:0},
+        ],
+        ch_xline:[
+          {id:"cl1",name:"스노우화이트펄",hex:"#F2F2F2",price:0},
+          {id:"cl2",name:"블랙펄",hex:"#1A1A1A",price:0},
+          {id:"cl5",name:"세라믹실버",hex:"#B0B4B8",price:0},
+        ],
       },
       interiorColors:{
-        ch_prestige:[{id:"ic1",name:"토프",price:0}],
-        ch_noblesse:[{id:"ic1",name:"토프",price:0},{id:"ic2",name:"코튼베이지",price:0}],
-        ch_signature:[{id:"ic1",name:"토프",price:0},{id:"ic2",name:"코튼베이지",price:0},{id:"ic3",name:"네이비그레이",price:0}],
-        ch_xline:[{id:"ic1",name:"토프",price:0},{id:"ic2",name:"코튼베이지",price:0},{id:"ic3",name:"네이비그레이",price:0}],
+        ch_prestige:[{id:"ic1",name:"토프",hex:"#807B7D",price:0}],
+        ch_noblesse:[{id:"ic1",name:"토프",hex:"#807B7D",price:0},{id:"ic2",name:"코튼베이지",hex:"#C0BAB7",price:0}],
+        ch_signature:[{id:"ic1",name:"토프",hex:"#807B7D",price:0},{id:"ic2",name:"코튼베이지",hex:"#C0BAB7",price:0}],
+        ch_xline:[{id:"ic1",name:"토프",hex:"#807B7D",price:0},{id:"ic2",name:"코튼베이지",hex:"#C0BAB7",price:0},{id:"ic4",name:"네이비베이지",hex:"#1A2240",hex2:"#C0BAB7",price:0}],
       },
       trimOptions:{
         ch_prestige:[{id:"chp1",name:"컨비니언스",price:1100000},{id:"chp2",name:"스타일",price:1000000},{id:"chp3",name:"12.3인치 클러스터",price:600000},{id:"chp4",name:"드라이브 와이즈",price:1200000},{id:"chp5",name:"모니터링 팩",price:900000}],
@@ -396,6 +437,93 @@ const F="'Pretendard Variable','Pretendard',-apple-system,'Noto Sans KR',sans-se
 function FL(){return null;}
 
 function ld(){return new Promise(function(resolve){if(!window.db){resolve(null);return;}window.db.collection("config").doc("vehicleData").get().then(function(doc){if(doc.exists){resolve(doc.data().data);}else{resolve(null);}}).catch(function(){resolve(null);});});}
+/* Firebase 데이터에 PV5 + 카니발 색상이 없으면 자동 주입 */
+function ensurePV5Colors(data){
+  if(!data||!data.vehicles)return data;
+  var pv5=data.vehicles.find(function(v){return v.id==="pv5";});
+  if(pv5){
+    if(!pv5.colors||!pv5.colors.passenger){
+      pv5.colors=pv5.colors||{};
+      pv5.colors.passenger=[
+        {id:"pv5p_cw",name:"클리어화이트",hex:"#F3F3F3",price:0},
+        {id:"pv5p_sg",name:"스틸 그레이",hex:"#7B7A7F",price:0},
+        {id:"pv5p_ab",name:"오로라블랙펄",hex:"#161513",price:0},
+        {id:"pv5p_fb",name:"포레스트 블루",hex:"#607381",price:0},
+        {id:"pv5p_cg",name:"시티케이프 그린",hex:"#404F4C",price:0},
+        {id:"pv5p_sm",name:"소프트 민트",hex:"#757D7F",price:0},
+        {id:"pv5p_lg",name:"레이크하우스그레이",hex:"#242B31",price:0},
+      ];
+    }
+    if(!pv5.interiorColors){pv5.interiorColors={};}
+    if(!pv5.interiorColors.pass_basic){
+      pv5.interiorColors.pass_basic=[
+        {id:"pv5i_nv1",name:"네이비",hex:"#24282D",price:0},
+        {id:"pv5i_ng1",name:"네이비그레이",hex:"#24282D",hex2:"#7B7A7F",price:0},
+        {id:"pv5i_br1",name:"브라운",hex:"#4E4741",price:0},
+      ];
+    }
+    if(!pv5.interiorColors.pass_plus){
+      pv5.interiorColors.pass_plus=[
+        {id:"pv5i_nv2",name:"네이비",hex:"#24282D",price:0},
+        {id:"pv5i_ng2",name:"네이비그레이",hex:"#24282D",hex2:"#7B7A7F",price:0},
+        {id:"pv5i_br2",name:"브라운",hex:"#4E4741",price:0},
+      ];
+    }
+  }
+  /* 카니발(carnival) 색상 주입 */
+  var carnival=data.vehicles.find(function(v){return v.id==="carnival";});
+  if(carnival){
+    var hasHex1=carnival.colors&&carnival.colors.default&&carnival.colors.default[0]&&carnival.colors.default[0].hex;
+    if(!hasHex1){
+      carnival.colors={
+        default:[
+          {id:"cl1",name:"스노우화이트펄",hex:"#F2F2F2",price:80000},
+          {id:"cl3",name:"아이보리실버",hex:"#C4C4C4",price:0},
+          {id:"cl6",name:"오로라블랙펄",hex:"#353535",price:0},
+          {id:"cl4",name:"판테라메탈",hex:"#535356",price:0},
+        ],
+        xline:[
+          {id:"cl1",name:"스노우화이트펄",hex:"#F2F2F2",price:0},
+          {id:"cl2",name:"블랙펄",hex:"#1A1A1A",price:0},
+          {id:"cl5",name:"세라믹실버",hex:"#B0B4B8",price:0},
+        ],
+      };
+      carnival.interiorColors={
+        prestige:[{id:"ic1",name:"토프",hex:"#807B7D",price:0}],
+        noblesse:[{id:"ic1",name:"토프",hex:"#807B7D",price:0},{id:"ic2",name:"코튼베이지",hex:"#C0BAB7",price:0}],
+        signature:[{id:"ic1",name:"토프",hex:"#807B7D",price:0},{id:"ic2",name:"코튼베이지",hex:"#C0BAB7",price:0}],
+        xline:[{id:"ic1",name:"토프",hex:"#807B7D",price:0},{id:"ic2",name:"코튼베이지",hex:"#C0BAB7",price:0},{id:"ic4",name:"네이비베이지",hex:"#1A2240",hex2:"#C0BAB7",price:0}],
+      };
+    }
+  }
+  /* 챌린저(challenger) 색상 주입 */
+  var ch=data.vehicles.find(function(v){return v.id==="challenger";});
+  if(ch){
+    var hasHex=ch.colors&&ch.colors.default&&ch.colors.default[0]&&ch.colors.default[0].hex;
+    if(!hasHex){
+      ch.colors={
+        default:[
+          {id:"cl1",name:"스노우화이트펄",hex:"#F2F2F2",price:80000},
+          {id:"cl3",name:"아이보리실버",hex:"#C4C4C4",price:0},
+          {id:"cl6",name:"오로라블랙펄",hex:"#353535",price:0},
+          {id:"cl4",name:"판테라메탈",hex:"#535356",price:0},
+        ],
+        ch_xline:[
+          {id:"cl1",name:"스노우화이트펄",hex:"#F2F2F2",price:0},
+          {id:"cl2",name:"블랙펄",hex:"#1A1A1A",price:0},
+          {id:"cl5",name:"세라믹실버",hex:"#B0B4B8",price:0},
+        ],
+      };
+      ch.interiorColors={
+        ch_prestige:[{id:"ic1",name:"토프",hex:"#807B7D",price:0}],
+        ch_noblesse:[{id:"ic1",name:"토프",hex:"#807B7D",price:0},{id:"ic2",name:"코튼베이지",hex:"#C0BAB7",price:0}],
+        ch_signature:[{id:"ic1",name:"토프",hex:"#807B7D",price:0},{id:"ic2",name:"코튼베이지",hex:"#C0BAB7",price:0}],
+        ch_xline:[{id:"ic1",name:"토프",hex:"#807B7D",price:0},{id:"ic2",name:"코튼베이지",hex:"#C0BAB7",price:0},{id:"ic4",name:"네이비베이지",hex:"#1A2240",hex2:"#C0BAB7",price:0}],
+      };
+    }
+  }
+  return data;
+}
 function sv(d){return new Promise(function(resolve){if(!window.db){resolve(false);return;}window.db.collection("config").doc("vehicleData").set({data:d,updatedAt:new Date().toISOString()}).then(function(){resolve(true);}).catch(function(){resolve(false);});});}
 
 function App(){
@@ -427,17 +555,43 @@ function App(){
   const[ctName2,setCtName2]=useState("");const[ctPhone2,setCtPhone2]=useState("");const[ctAddr2,setCtAddr2]=useState("");const[ctSsn2,setCtSsn2]=useState("");const[ctEmail2,setCtEmail2]=useState("");const[ctHomePhone2,setCtHomePhone2]=useState("");
   const[ucName,setUcName]=useState("");const[ucFeeOn,setUcFeeOn]=useState(true);const[ucMgmtOn,setUcMgmtOn]=useState(true);const[usedSub,setUsedSub]=useState(null);const[txPrice,setTxPrice]=useState(0);const[txStamp,setTxStamp]=useState(4000);const[txPerf,setTxPerf]=useState(0);const[txType,setTxType]=useState("sedan7");const[txRegion,setTxRegion]=useState("other");const[txSeat,setTxSeat]=useState("s6");const[txExempt,setTxExempt]=useState("none");const[ucInfo,setUcInfo]=useState("");const[ucPrice,setUcPrice]=useState(0);const[ucMgmt,setUcMgmt]=useState(440000);const[ucPerf,setUcPerf]=useState(0);const[ucReg,setUcReg]=useState(5000);const[ucFeeRate]=useState(0.022);const[ucTaxRate]=useState(0.07);const[ucBondRate]=useState(0.08);
   const[ucVType,setUcVType]=useState("sedan7");const[ucSeat,setUcSeat]=useState("s6");const[ucRegion,setUcRegion]=useState("other");const[ucExempt,setUcExempt]=useState("none");
+  const[ucQuoteList,setUcQuoteList]=useState([]);const[ucQListOpen,setUcQListOpen]=useState(false);const[ucQLoading,setUcQLoading]=useState(false);
+  const[txQuoteList,setTxQuoteList]=useState([]);const[txQListOpen,setTxQListOpen]=useState(false);const[txQLoading,setTxQLoading]=useState(false);
   const saveQuote=()=>{const veh=D.vehicles.find(v=>v.id===sV);const mdl=veh&&veh.models?veh.models.find(m=>m.id===sM):null;const trm=veh&&veh.trims?veh.trims.find(t=>t.id===sT):null;const data={customerName:cN||"미입력",customerPhone:cP||"",customerAddr:cAddr||"",vehicle:veh?veh.name:"",model:mdl?mdl.name:"",trim:trm?trm.name:"",total:tot(),vehicleTotal:vS(),specialTotal:sS(),discount:disc,note:cNo||"",createdAtLocal:new Date().toISOString()};return window.db.collection("quotes").add(data);};
   const doSaveQuote=()=>{if(!window.db){alert("Firebase 미연결");return;}saveQuote().then(()=>{alert("✅ 견적이 저장되었습니다!");loadQuotes();setStep(5);}).catch((e)=>{alert("❌ 저장 실패: "+e.message);});};
   const restoreQuote=function(q){if(!q.state)return alert("이전 버전 견적이라 복원할 수 없습니다.");var s=q.state;setSV(s.sV||null);setSM(s.sM||null);setST(s.sT||null);setSBO(s.sBO||[]);setSTO(s.sTO||[]);setSSO(s.sSO||[]);setSMO(s.sMO||[]);setMoQty(s.moQty||{});setSelColor(s.selColor||null);setSelIntColor(s.selIntColor||null);setCust(s.cust||[{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false}]);setCN(s.cN||"");setCP(s.cP||"");setCAddr(s.cAddr||"");setCNo(s.cNo||"");setDisc(s.disc||0);setStep(2);};
   const resetAll=function(){setSV(null);setSM(null);setST(null);setSBO([]);setSTO([]);setSSO([]);setSMO([]);setMoQty({});setSelColor(null);setSelIntColor(null);setCust([{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false}]);setCN("");setCP("");setCAddr("");setCNo("");setDisc(0);setMainMenu(null);setStep(0);};
   const loadQuotes=()=>{setQuotesLoading(true);window.db.collection("quotes").orderBy("createdAtLocal","desc").get().then((snap)=>{const list=[];snap.forEach(function(doc){list.push({id:doc.id,...doc.data()});});setQuotes(list);setQuotesLoading(false);}).catch((e)=>{console.error(e);showToast("불러오기 실패: "+e.message);setQuotesLoading(false);});};
   const deleteQuote=(id)=>{if(!confirm("이 견적을 삭제하시겠습니까?"))return;window.db.collection("quotes").doc(id).delete().then(()=>{setQuotes(prev=>prev.filter(q=>q.id!==id));showToast("🗑️ 삭제되었습니다.");}).catch(()=>{showToast("삭제 실패");});};
+  /* ── 차량구입견적서 저장/불러오기 ── */
+  const saveUcQuote=(data)=>{if(!window.db){showToast("Firebase 미연결");return;}
+    var clean=JSON.parse(JSON.stringify(data,function(k,v){return v===undefined?null:v;}));
+    window.db.collection("uc_quotes").add({...clean,createdAt:new Date().toISOString()})
+    .then(()=>{showToast("✅ 견적 저장됨!");loadUcQuotes();}).catch(e=>showToast("❌ 저장 실패: "+e.message));};
+  const loadUcQuotes=()=>{if(!window.db)return;setUcQLoading(true);
+    window.db.collection("uc_quotes").orderBy("createdAt","desc").limit(30).get()
+    .then(snap=>{const l=[];snap.forEach(d=>l.push({id:d.id,...d.data()}));setUcQuoteList(l);setUcQLoading(false);})
+    .catch(()=>setUcQLoading(false));};
+  const deleteUcQuote=(id)=>{if(!confirm("삭제하시겠습니까?"))return;
+    window.db.collection("uc_quotes").doc(id).delete()
+    .then(()=>{setUcQuoteList(p=>p.filter(q=>q.id!==id));showToast("🗑️ 삭제됨");}).catch(()=>showToast("삭제 실패"));};
+  /* ── 취·등록세 저장/불러오기 ── */
+  const saveTxQuote=(data)=>{if(!window.db){showToast("Firebase 미연결");return;}
+    var clean=JSON.parse(JSON.stringify(data,function(k,v){return v===undefined?null:v;}));
+    window.db.collection("tx_quotes").add({...clean,createdAt:new Date().toISOString()})
+    .then(()=>{showToast("✅ 견적 저장됨!");loadTxQuotes();}).catch(e=>showToast("❌ 저장 실패: "+e.message));};
+  const loadTxQuotes=()=>{if(!window.db)return;setTxQLoading(true);
+    window.db.collection("tx_quotes").orderBy("createdAt","desc").limit(30).get()
+    .then(snap=>{const l=[];snap.forEach(d=>l.push({id:d.id,...d.data()}));setTxQuoteList(l);setTxQLoading(false);})
+    .catch(()=>setTxQLoading(false));};
+  const deleteTxQuote=(id)=>{if(!confirm("삭제하시겠습니까?"))return;
+    window.db.collection("tx_quotes").doc(id).delete()
+    .then(()=>{setTxQuoteList(p=>p.filter(q=>q.id!==id));showToast("🗑️ 삭제됨");}).catch(()=>showToast("삭제 실패"));};
 
   // URL에서 견적 복원
   useEffect(()=>{
     ld().then(d=>{
-      if(d)setD(d);
+      if(d){d=ensurePV5Colors(d);setD(d);}
       setLoaded(true);
       try{
         const p=new URLSearchParams(window.location.search);
@@ -528,7 +682,7 @@ function App(){
   const tg=(l,s,id)=>s(p=>p.includes(id)?p.filter(x=>x!==id):[...p,id]);
   const vB=()=>trm?.price||0;
   const vBO=()=>veh?veh.baseOptions.filter(o=>sBO.includes(o.id)).reduce((a,o)=>a+o.price,0):0;
-  const vCL=()=>{if(!veh?.colors||!selColor)return 0;const cs=veh.colors;const allColors=[...(cs.default||[]),...(cs.xline||[]),...(cs.ch_xline||[]),...(cs.calli||[]),...(cs.brown||[])];const c=allColors.find(x=>x.id===selColor);return c?.price||0;};
+  const vCL=()=>{if(!veh?.colors||!selColor)return 0;const cs=veh.colors;const allColors=[...(cs.default||[]),...(cs.xline||[]),...(cs.ch_xline||[]),...(cs.calli||[]),...(cs.brown||[]),...(cs.passenger||[])];const c=allColors.find(x=>x.id===selColor);return c?.price||0;};
   const vTO=()=>veh?(veh.trimOptions[sT]||[]).filter(o=>sTO.includes(o.id)).reduce((a,o)=>a+o.price,0):0;
   const vS=()=>vB()+vBO()+vCL()+vTO();
   const sC=()=>veh?veh.commonSpecial.filter(o=>sSO.includes(o.id)).reduce((a,o)=>a+o.price,0):0;
@@ -596,7 +750,7 @@ function App(){
           <div style={{textAlign:"center"}}><button onClick={()=>{setAA(false);setAP("");setAE(false);setStep(3);}} style={{...bL,fontSize:12,color:"#ccc",borderColor:"#eee"}}>🔒 관리자</button></div>
         </div>}
         {mainMenu==="quote"&&<div>
-          <div style={{marginBottom:20,display:"flex",justifyContent:"center",gap:8}}><button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{...bL,fontSize:13,borderColor:"#1b2f4e",color:"#1b2f4e"}}>🏠 포털 홈</button></div>
+          <div style={{marginBottom:20,display:"flex",justifyContent:"center",gap:8}}><button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{...bL,fontSize:13}}>🏠 포털 홈</button></div>
         {(()=>{
           const groups=[];const seen={};
           D.vehicles.forEach(v=>{
@@ -623,7 +777,7 @@ function App(){
         </div>}
         {mainMenu==="used"&&<div>
           {!usedSub&&<div style={{maxWidth:600,margin:"0 auto"}}>
-            <div style={{marginBottom:20,display:"flex",justifyContent:"center",gap:8}}><button onClick={()=>{setMainMenu(null);setUsedSub(null);}} style={{...bL,fontSize:13}}>← 메인으로</button><button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{...bL,fontSize:13,borderColor:"#1b2f4e",color:"#1b2f4e"}}>🏠 포털 홈</button></div>
+            <div style={{marginBottom:20,display:"flex",justifyContent:"center",gap:8}}><button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{...bL,fontSize:13}}>🏠 포털 홈</button></div>
             <div style={{textAlign:"center",marginBottom:28}}>
               <div style={{fontSize:12,letterSpacing:6,color:"#999",fontWeight:600,marginBottom:6}}>USED CAR</div>
               <div style={{fontSize:24,fontWeight:900,color:"#1a1a1a"}}>중고차 업무</div>
@@ -673,15 +827,35 @@ function App(){
             const uIn={border:"none",outline:"none",fontSize:15,fontWeight:700,width:"100%",background:"transparent",padding:0,color:"#222"};
             const uSel={border:"none",outline:"none",fontSize:14,fontWeight:600,background:"transparent",color:"#222",width:"100%",cursor:"pointer"};
             const doUcPrint=function(){try{var w=window.open("","_blank");if(w){w.document.write('<!DOCTYPE html><html><head><title>차량구입견적서</title><link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:"Pretendard Variable",sans-serif;background:#fff;color:#111}#wrap{width:100%;max-width:600px;margin:0 auto;padding:40px 30px}@media print{@page{margin:15mm;size:A4}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body><div id="wrap">'+ucRef.current.innerHTML+'</div><scr'+'ipt>setTimeout(function(){window.print();},800);<'+'/script></body></html>');w.document.close();}}catch(e){alert("인쇄 실패");}};
-            const doUcJpg=function(){try{showToast("📷 이미지 생성 중...");var el=ucRef.current;el.style.minWidth="600px";setTimeout(function(){html2canvas(el,{scale:2,useCORS:true,backgroundColor:"#ffffff",windowWidth:600}).then(function(canvas){el.style.minWidth="";var isMob=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);if(isMob){var du=canvas.toDataURL("image/jpeg",0.95);var w=window.open("","_blank");if(w){w.document.write('<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>차량구입견적서</title><style>body{margin:0;padding:16px;background:#f5f5f5;text-align:center}img{max-width:100%;border-radius:8px}p{margin-top:16px;font-size:14px;color:#666}</style></head><body><p>이미지를 길게 눌러 저장하세요</p><img src="'+du+'" /></body></html>');w.document.close();}}else{canvas.toBlob(function(blob){var link=document.createElement("a");link.download="차량구입견적서_"+(ucInfo||"estimate")+".jpg";link.href=URL.createObjectURL(blob);link.click();showToast("📷 JPG 저장됨");},"image/jpeg",0.95);}});},100);}catch(e){alert("이미지 저장 실패");}};
+            const doUcJpg=function(){try{showToast("📷 이미지 생성 중...");var el=ucRef.current;el.style.minWidth="600px";setTimeout(function(){html2canvas(el,{scale:2,useCORS:true,backgroundColor:"#ffffff",windowWidth:600}).then(function(canvas){el.style.minWidth="";var isMob=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);if(isMob){var du=canvas.toDataURL("image/jpeg",0.95);var w=window.open("","_blank");if(w){w.document.write('<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>차량구입견적서</title><style>body{margin:0;padding:16px;background:#f5f5f5;text-align:center}img{max-width:100%;border-radius:8px}p{margin-top:16px;font-size:14px;color:#666}</style></head><body><p>이미지를 길게 눌러 저장하세요</p><img src="'+du+'" /></body></html>');w.document.close();}}else{canvas.toBlob(function(blob){var link=document.createElement("a");link.download="차량구입견적서_"+(ucInfo||"estimate")+"_"+new Date().toISOString().slice(0,19).replace(/[:T]/g,"")+".jpg";link.href=URL.createObjectURL(blob);link.click();showToast("📷 JPG 저장됨");},"image/jpeg",0.95);}});},100);}catch(e){alert("이미지 저장 실패");}};
             return(<div style={{maxWidth:500,margin:"0 auto"}}>
               <div style={{display:"flex",gap:8,marginBottom:16,flexWrap:"wrap",justifyContent:"center"}}>
                 <button onClick={()=>setUsedSub(null)} style={{...bL,fontSize:13}}>← 중고차 업무</button>
-                <button onClick={()=>{setMainMenu(null);setUsedSub(null);}} style={{...bL,fontSize:13}}>← 메인으로</button>
-                <button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{...bL,fontSize:13,borderColor:"#1b2f4e",color:"#1b2f4e"}}>🏠 포털 홈</button>
+                <button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{...bL,fontSize:13}}>🏠 포털 홈</button>
                 <button onClick={doUcPrint} style={{background:"#1a1a1a",color:"#fff",border:"none",padding:"9px 20px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>🖨️ PDF 출력</button>
                 <button onClick={doUcJpg} style={{background:"#2563EB",color:"#fff",border:"none",padding:"9px 20px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>📷 JPG 저장</button>
+                <button onClick={()=>{saveUcQuote({customerName:ucName,vehicleInfo:ucInfo,vehiclePrice:ucPrice,vehicleType:TX[ucVType]?.l,seat:SEAT[ucSeat]?.l,region:BOND[ucRegion]?.l,exempt:EX[ucExempt]?.l,tax,taxDiscount,bond,mgmt:ucMgmtOn?ucMgmt:0,mgmtOn:ucMgmtOn,perf:ucPerf,reg:ucReg,fee:ucFeeOn?fee:0,feeOn:ucFeeOn,total});}} style={{background:"#16a34a",color:"#fff",border:"none",padding:"9px 20px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>💾 저장</button>
+                <button onClick={()=>{setUcQListOpen(v=>!v);if(!ucQListOpen)loadUcQuotes();}} style={{background:ucQListOpen?"#f0fdf4":"#fff",border:"1px solid #16a34a",color:"#16a34a",padding:"9px 16px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>📋 리스트 {ucQuoteList.length>0?`(${ucQuoteList.length})`:""}
+                </button>
               </div>
+              {ucQListOpen&&<div style={{background:"#fff",borderRadius:12,boxShadow:"0 2px 16px rgba(0,0,0,0.06)",marginBottom:16,overflow:"hidden"}}>
+                <div style={{padding:"12px 16px",background:"#f0fdf4",borderBottom:"1px solid #bbf7d0",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                  <span style={{fontWeight:800,fontSize:14,color:"#166534"}}>📋 저장된 차량구입 견적 ({ucQuoteList.length}건)</span>
+                  <button onClick={loadUcQuotes} style={{...bL,fontSize:12}}>🔄 새로고침</button>
+                </div>
+                {ucQLoading?<div style={{padding:24,textAlign:"center",color:"#999"}}>불러오는 중...</div>:
+                ucQuoteList.length===0?<div style={{padding:32,textAlign:"center",color:"#bbb"}}>저장된 견적이 없습니다.</div>:
+                <div style={{maxHeight:340,overflowY:"auto"}}>
+                  {ucQuoteList.map(q=><div key={q.id} style={{padding:"10px 16px",borderBottom:"1px solid #f0f0f0",display:"flex",justifyContent:"space-between",alignItems:"center",gap:8,cursor:"pointer"}} onClick={()=>{setUcName(q.customerName||"");setUcInfo(q.vehicleInfo||"");setUcPrice(q.vehiclePrice||0);const tk=Object.entries(TX).find(([k,v])=>v.l===q.vehicleType);if(tk)setUcVType(tk[0]);const sk=Object.entries(SEAT).find(([k,v])=>v.l===q.seat);if(sk)setUcSeat(sk[0]);const rk=Object.entries(BOND).find(([k,v])=>v.l===q.region);if(rk)setUcRegion(rk[0]);const ek=Object.entries(EX).find(([k,v])=>v.l===q.exempt);if(ek)setUcExempt(ek[0]);setUcMgmt(q.mgmt||440000);setUcMgmtOn(q.mgmtOn!==false);setUcPerf(q.perf||0);setUcReg(q.reg||5000);setUcFeeOn(q.feeOn!==false);setUcQListOpen(false);showToast("📋 불러왔습니다!");}}>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontSize:13,fontWeight:700,color:"#1a1a1a"}}>{q.customerName||"(이름없음)"} — {q.vehicleInfo||"차량정보 없음"}</div>
+                      <div style={{fontSize:11,color:"#999",marginTop:2}}>{q.vehicleType||""} / {q.region||""} / {q.exempt||"일반"} / 총 {(q.total||0).toLocaleString()}원</div>
+                      <div style={{fontSize:10,color:"#aaa",marginTop:1}}>탭하여 불러오기 · {q.createdAt?new Date(q.createdAt).toLocaleString("ko-KR"):""}</div>
+                    </div>
+                    <button onClick={e=>{e.stopPropagation();deleteUcQuote(q.id);}} style={{background:"none",border:"1px solid #fcc",color:"#c00",borderRadius:4,padding:"3px 8px",fontSize:11,cursor:"pointer",flexShrink:0}}>삭제</button>
+                  </div>)}
+                </div>}
+              </div>}
               <div ref={ucRef} style={{background:"#fff",borderRadius:12,boxShadow:"0 2px 16px rgba(0,0,0,0.06)",overflow:"hidden"}}>
                 <div style={{padding:"24px 20px",textAlign:"center",borderBottom:"2px solid #1a1a1a"}}><div style={{fontSize:22,fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center",gap:10}}><svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 10.5L6.8 4h10.4L20 10.5" stroke="#111" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/><rect x="1.5" y="10.5" width="21" height="7" rx="2" stroke="#111" strokeWidth="1.6"/><path d="M1.5 14.5h21" stroke="#111" strokeWidth="1.2" strokeDasharray="2 1.5"/><circle cx="6.5" cy="19.5" r="2" stroke="#111" strokeWidth="1.6"/><circle cx="17.5" cy="19.5" r="2" stroke="#111" strokeWidth="1.6"/><path d="M8.5 19.5h7" stroke="#111" strokeWidth="1.6"/></svg>차량구입 견적서</div><div style={{fontSize:12,color:"#999",marginTop:4}}>{new Date().getFullYear()}년 {String(new Date().getMonth()+1).padStart(2,"0")}월 {String(new Date().getDate()).padStart(2,"0")}일</div></div>
                 <div style={uR}><div style={uL}>고객명</div><div style={uV}><input type="text" value={ucName} onChange={e=>setUcName(e.target.value)} placeholder="고객명 입력" style={uIn} /></div></div>
@@ -776,7 +950,7 @@ function App(){
                       var w=window.open("","_blank");
                       if(w){w.document.write('<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>이전비계산서</title><style>body{margin:0;padding:16px;background:#f5f5f5;text-align:center}img{max-width:100%;border-radius:8px}p{margin-top:16px;font-size:14px;color:#666}</style></head><body><p>이미지를 길게 눌러 저장하세요</p><img src="'+du+'" /></body></html>');w.document.close();}
                     }else{
-                      canvas.toBlob(function(blob){var link=document.createElement("a");link.download="취등록세계산서.jpg";link.href=URL.createObjectURL(blob);link.click();showToast("📷 JPG 저장됨");},"image/jpeg",0.95);
+                      canvas.toBlob(function(blob){var link=document.createElement("a");link.download="취등록세계산서_"+new Date().toISOString().slice(0,19).replace(/[:T]/g,"")+".jpg";link.href=URL.createObjectURL(blob);link.click();showToast("📷 JPG 저장됨");},"image/jpeg",0.95);
                     }
                   });
                 },100);
@@ -799,12 +973,31 @@ function App(){
             return(<div style={{maxWidth:520,margin:"0 auto"}}>
               <div style={{display:"flex",gap:8,marginBottom:16,flexWrap:"wrap"}}>
                 <button onClick={()=>setUsedSub(null)} style={{...bL,fontSize:13}}>← 중고차 업무</button>
-                <button onClick={()=>{setMainMenu(null);setUsedSub(null);}} style={{...bL,fontSize:13}}>← 메인으로</button>
-                <button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{...bL,fontSize:13,borderColor:"#1b2f4e",color:"#1b2f4e"}}>🏠 포털 홈</button>
+                <button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{...bL,fontSize:13}}>🏠 포털 홈</button>
                 <button onClick={doTxPrint} style={{background:"#1E3A8A",color:"#fff",border:"none",padding:"9px 18px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>🖨️ 출력/PDF</button>
                 <button onClick={doTxJpg} style={{background:"#2563EB",color:"#fff",border:"none",padding:"9px 18px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>📷 JPG 저장</button>
                 <button onClick={doTxLink} style={{background:"#16a34a",color:"#fff",border:"none",padding:"9px 18px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>🔗 링크 공유</button>
+                <button onClick={()=>{saveTxQuote({vehiclePrice:txPrice,vehicleType:TX[txType]?.l,seat:SEAT[txSeat]?.l,region:BOND[txRegion]?.l,exempt:EX[txExempt]?.l,txBase,taxRaw:txRaw,taxDiscount:txDiscount,tax:txFinal,bond,fee,stamp,perf,total});}} style={{background:"#16a34a",color:"#fff",border:"none",padding:"9px 18px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>💾 저장</button>
+                <button onClick={()=>{setTxQListOpen(v=>!v);if(!txQListOpen)loadTxQuotes();}} style={{background:txQListOpen?"#f0fdf4":"#fff",border:"1px solid #16a34a",color:"#16a34a",padding:"9px 14px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>📋 리스트 {txQuoteList.length>0?`(${txQuoteList.length})`:""}</button>
               </div>
+              {txQListOpen&&<div style={{background:"#fff",borderRadius:12,boxShadow:"0 2px 16px rgba(0,0,0,0.06)",marginBottom:16,overflow:"hidden"}}>
+                <div style={{padding:"12px 16px",background:"#f0fdf4",borderBottom:"1px solid #bbf7d0",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                  <span style={{fontWeight:800,fontSize:14,color:"#166534"}}>📋 저장된 취·등록세 견적 ({txQuoteList.length}건)</span>
+                  <button onClick={loadTxQuotes} style={{...bL,fontSize:12}}>🔄 새로고침</button>
+                </div>
+                {txQLoading?<div style={{padding:24,textAlign:"center",color:"#999"}}>불러오는 중...</div>:
+                txQuoteList.length===0?<div style={{padding:32,textAlign:"center",color:"#bbb"}}>저장된 견적이 없습니다.</div>:
+                <div style={{maxHeight:340,overflowY:"auto"}}>
+                  {txQuoteList.map(q=><div key={q.id} style={{padding:"10px 16px",borderBottom:"1px solid #f0f0f0",display:"flex",justifyContent:"space-between",alignItems:"center",gap:8,cursor:"pointer"}} onClick={()=>{setTxPrice(q.vehiclePrice||0);const tk=Object.entries(TX).find(([k,v])=>v.l===q.vehicleType);if(tk)setTxType(tk[0]);const sk=Object.entries(SEAT).find(([k,v])=>v.l===q.seat);if(sk)setTxSeat(sk[0]);const rk=Object.entries(BOND).find(([k,v])=>v.l===q.region);if(rk)setTxRegion(rk[0]);const ek=Object.entries(EX).find(([k,v])=>v.l===q.exempt);if(ek)setTxExempt(ek[0]);setTxStamp(q.stamp||4000);setTxPerf(q.perf||0);setTxQListOpen(false);showToast("📋 불러왔습니다!");}}>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontSize:13,fontWeight:700,color:"#1a1a1a"}}>{(q.vehiclePrice||0).toLocaleString()}원 — {q.vehicleType||""}</div>
+                      <div style={{fontSize:11,color:"#999",marginTop:2}}>{q.region||""} / {q.exempt||"일반"} / 이전비 합계 {(q.total||0).toLocaleString()}원</div>
+                      <div style={{fontSize:10,color:"#aaa",marginTop:1}}>탭하여 불러오기 · {q.createdAt?new Date(q.createdAt).toLocaleString("ko-KR"):""}</div>
+                    </div>
+                    <button onClick={e=>{e.stopPropagation();deleteTxQuote(q.id);}} style={{background:"none",border:"1px solid #fcc",color:"#c00",borderRadius:4,padding:"3px 8px",fontSize:11,cursor:"pointer",flexShrink:0}}>삭제</button>
+                  </div>)}
+                </div>}
+              </div>}
               <div ref={txRef} style={{background:"#fff",borderRadius:12,boxShadow:"0 2px 16px rgba(0,0,0,0.06)",overflow:"hidden"}}>
                 <div style={{padding:"18px 20px",textAlign:"center",background:"#1E3A8A"}}>
                   <div style={{fontSize:19,fontWeight:900,color:"#fff"}}>🧮 취·등록세 이전비 계산기</div>
@@ -869,10 +1062,18 @@ function App(){
             <GL t="기본차량 (차량가)" c={BL} />
             <Sc t="트림 선택 (선택사항)" ic="🚗" bg="#F5F8FF">
               {veh?.id==="ch_santafe"&&<div style={{display:"flex",gap:6,marginBottom:10}}>{[{k:"sf_g",l:"가솔린 2.5T"},{k:"sf_h",l:"하이브리드 1.5T"},{k:"sf_ha",l:"하이브리드 AWD"}].map(tb=><button key={tb.k} onClick={()=>{setTrimTab(tb.k);setST(null);setSTO([]);setSelColor(null);setSelIntColor(null);}} style={{padding:"6px 14px",borderRadius:20,border:"none",cursor:"pointer",fontSize:12,fontWeight:700,background:trimTab===tb.k?"#2563EB":"#E0EDFF",color:trimTab===tb.k?"#fff":"#2563EB"}}>{tb.l}</button>)}</div>}
-              <div className="resp-grid-2col" style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:8}}>{(veh?.id==="ch_santafe"?veh.trims.filter(t=>t.id.startsWith(trimTab)):veh?.trims||[]).map(t=><TC key={t.id} t={t} sel={sT===t.id} oc={()=>{if(sT===t.id){setST(null);setSTO([]);}else{setST(t.id);setSTO([]);setSelColor(null);setSelIntColor(null);}}} />)}</div>
+              <div className="resp-grid-2col" style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:8}}>{(()=>{
+                if(veh?.id==="ch_santafe") return veh.trims.filter(t=>t.id.startsWith(trimTab));
+                if(veh?.id==="pv5"){
+                  if(sM&&sM.includes("cargo")) return veh.trims.filter(t=>t.id.startsWith("cargo_"));
+                  if(sM&&sM.includes("pass"))  return veh.trims.filter(t=>t.id.startsWith("pass_"));
+                  return veh.trims.filter(t=>t.id.startsWith("pass_"));
+                }
+                return veh?.trims||[];
+              })().map(t=><TC key={t.id} t={t} sel={sT===t.id} oc={()=>{if(sT===t.id){setST(null);setSTO([]);}else{setST(t.id);setSTO([]);setSelColor(null);setSelIntColor(null);}}} />)}</div>
             </Sc>
-            {veh?.colors&&<Sc t="외장 색상" ic="🎨" bg="#F5F8FF">{(()=>{const cs=veh.colors;if(sT==="xline"||sT==="ch_xline") return cs.xline||cs.ch_xline||cs.default||[];if(sT&&(sT.includes("calli")||sT.includes("ink"))) return cs.calli||cs.default||[];if(sT&&sT.includes("brown")) return cs.brown||cs.default||[];return cs.default||[];})().map(c=>(<div key={c.id} onClick={()=>setSelColor(selColor===c.id?null:c.id)} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 10px",borderRadius:7,cursor:"pointer",background:selColor===c.id?"#E0EDFF":"transparent",marginBottom:3}}><div style={{width:17,height:17,borderRadius:99,flexShrink:0,border:selColor===c.id?"3px solid #2563EB":"2px solid #ccc",background:selColor===c.id?"#2563EB":"transparent",display:"flex",alignItems:"center",justifyContent:"center"}}>{selColor===c.id&&<div style={{width:7,height:7,borderRadius:99,background:"#fff"}} />}</div><div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:selColor===c.id?"#1E40AF":"#555"}}>{c.name}</div></div><div style={{fontSize:13,fontWeight:700,color:selColor===c.id?"#1E40AF":"#888"}}>{c.price>0?fmt(c.price)+"원":"0원"}</div></div>))}</Sc>}
-            {veh?.interiorColors&&sT&&(veh.interiorColors[sT]||[]).length>0&&<Sc t="내장 색상" ic="🪑" bg="#F5F8FF">{(veh.interiorColors[sT]||[]).map(c=>(<div key={c.id} onClick={()=>setSelIntColor(selIntColor===c.id?null:c.id)} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 10px",borderRadius:7,cursor:"pointer",background:selIntColor===c.id?"#E0EDFF":"transparent",marginBottom:3}}><div style={{width:17,height:17,borderRadius:99,flexShrink:0,border:selIntColor===c.id?"3px solid #2563EB":"2px solid #ccc",background:selIntColor===c.id?"#2563EB":"transparent",display:"flex",alignItems:"center",justifyContent:"center"}}>{selIntColor===c.id&&<div style={{width:7,height:7,borderRadius:99,background:"#fff"}} />}</div><div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:selIntColor===c.id?"#1E40AF":"#555"}}>{c.name}</div></div><div style={{fontSize:13,fontWeight:700,color:selIntColor===c.id?"#1E40AF":"#888"}}>{c.price>0?fmt(c.price)+"원":"0원"}</div></div>))}</Sc>}
+            {veh?.colors&&<Sc t="외장 색상" ic="🎨" bg="#F5F8FF"><div style={{display:"flex",flexWrap:"wrap",gap:0,paddingTop:4}}>{(()=>{const cs=veh.colors;if(sT&&sT.startsWith("pass_")) return cs.passenger||cs.default||[];if(sT==="xline"||sT==="ch_xline") return cs.xline||cs.ch_xline||cs.default||[];if(sT&&(sT.includes("calli")||sT.includes("ink"))) return cs.calli||cs.default||[];if(sT&&sT.includes("brown")) return cs.brown||cs.default||[];return cs.default||[];})().map(c=>c.hex?(<div key={c.id} onClick={()=>setSelColor(selColor===c.id?null:c.id)} style={{display:"inline-flex",flexDirection:"column",alignItems:"center",cursor:"pointer",margin:"0 6px 10px",width:54}}><div style={{width:48,height:48,borderRadius:8,background:c.hex2?`linear-gradient(to right, ${c.hex} 0%, ${c.hex} 50%, ${c.hex2} 50%, ${c.hex2} 100%)`:c.hex,border:selColor===c.id?"3px solid #2563EB":"2px solid #ddd",boxShadow:selColor===c.id?"0 0 0 2px #93c5fd":"none",transition:"all 0.15s",flexShrink:0}} /><div style={{fontSize:10,color:selColor===c.id?"#1D4ED8":"#555",fontWeight:selColor===c.id?700:500,marginTop:4,textAlign:"center",lineHeight:1.3,wordBreak:"keep-all"}}>{c.name}</div>{c.price>0&&<div style={{fontSize:10,color:"#888",marginTop:1}}>{fmt(c.price)}원</div>}</div>):(<div key={c.id} onClick={()=>setSelColor(selColor===c.id?null:c.id)} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 10px",borderRadius:7,cursor:"pointer",background:selColor===c.id?"#E0EDFF":"transparent",marginBottom:3}}><div style={{width:17,height:17,borderRadius:99,flexShrink:0,border:selColor===c.id?"3px solid #2563EB":"2px solid #ccc",background:selColor===c.id?"#2563EB":"transparent",display:"flex",alignItems:"center",justifyContent:"center"}}>{selColor===c.id&&<div style={{width:7,height:7,borderRadius:99,background:"#fff"}} />}</div><div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:selColor===c.id?"#1E40AF":"#555"}}>{c.name}</div></div><div style={{fontSize:13,fontWeight:700,color:selColor===c.id?"#1E40AF":"#888"}}>{c.price>0?fmt(c.price)+"원":"0원"}</div></div>))}</div></Sc>}
+            {veh?.interiorColors&&sT&&(veh.interiorColors[sT]||[]).length>0&&<Sc t="내장 색상" ic="🪑" bg="#F5F8FF"><div style={{display:"flex",flexWrap:"wrap",gap:0,paddingTop:4}}>{(veh.interiorColors[sT]||[]).map(c=>c.hex?(<div key={c.id} onClick={()=>setSelIntColor(selIntColor===c.id?null:c.id)} style={{display:"inline-flex",flexDirection:"column",alignItems:"center",cursor:"pointer",margin:"0 6px 10px",width:54}}><div style={{width:48,height:48,borderRadius:8,background:c.hex2?`linear-gradient(to right, ${c.hex} 0%, ${c.hex} 50%, ${c.hex2} 50%, ${c.hex2} 100%)`:c.hex,border:selIntColor===c.id?"3px solid #2563EB":"2px solid #ddd",boxShadow:selIntColor===c.id?"0 0 0 2px #93c5fd":"none",transition:"all 0.15s",flexShrink:0}} /><div style={{fontSize:10,color:selIntColor===c.id?"#1D4ED8":"#555",fontWeight:selIntColor===c.id?700:500,marginTop:4,textAlign:"center",lineHeight:1.3,wordBreak:"keep-all"}}>{c.name}</div>{c.price>0&&<div style={{fontSize:10,color:"#888",marginTop:1}}>{fmt(c.price)}원</div>}</div>):(<div key={c.id} onClick={()=>setSelIntColor(selIntColor===c.id?null:c.id)} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 10px",borderRadius:7,cursor:"pointer",background:selIntColor===c.id?"#E0EDFF":"transparent",marginBottom:3}}><div style={{width:17,height:17,borderRadius:99,flexShrink:0,border:selIntColor===c.id?"3px solid #2563EB":"2px solid #ccc",background:selIntColor===c.id?"#2563EB":"transparent",display:"flex",alignItems:"center",justifyContent:"center"}}>{selIntColor===c.id&&<div style={{width:7,height:7,borderRadius:99,background:"#fff"}} />}</div><div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:selIntColor===c.id?"#1E40AF":"#555"}}>{c.name}</div></div><div style={{fontSize:13,fontWeight:700,color:selIntColor===c.id?"#1E40AF":"#888"}}>{c.price>0?fmt(c.price)+"원":"0원"}</div></div>))}</div></Sc>}
             {veh?.baseOptions.length>0&&<Sc t="공통 선택품목" ic="⚙️" bg="#F5F8FF">{veh.baseOptions.map(o=><OR key={o.id} it={o} ck={sBO.includes(o.id)} tg={()=>tg(sBO,setSBO,o.id)} />)}</Sc>}
             {(veh?.trimOptions[sT]||[]).length>0&&<Sc t={`${trm?.name} 선택품목`} ic="🔧" bg="#F5F8FF">{(veh.trimOptions[sT]||[]).map(o=><OR key={o.id} it={o} ck={sTO.includes(o.id)} tg={()=>tg(sTO,setSTO,o.id)} />)}</Sc>}
             {veh?.commonSpecial.length>0&&<Sc t="공통 선택품목" ic="📦" bg="#F5F8FF">{veh.commonSpecial.map(o=><OR key={o.id} it={o} ck={sSO.includes(o.id)} tg={()=>tg(sSO,setSSO,o.id)} />)}</Sc>}
@@ -917,8 +1118,6 @@ function App(){
     if(!veh||!mdl) return(<div style={{minHeight:"100vh",background:"#f5f5f5",padding:"40px",fontFamily:F,textAlign:"center"}}><FL /><div style={{marginTop:100,color:"#999"}}>모델 정보를 찾을 수 없습니다.</div><button onClick={resetAll} style={{...bL,marginTop:20}}>처음으로</button></div>);
     const vI=[];if(trm){vI.push({name:`${veh?.name} ${trm?.name}`,desc:"차량가",price:vB()});}
     veh?.baseOptions.filter(o=>sBO.includes(o.id)).forEach(o=>vI.push({name:o.name,desc:"공통 선택",price:o.price}));
-    if(veh?.colors&&selColor){const allC=[...(veh.colors.default||[]),...(veh.colors.xline||[])];const sc=allC.find(x=>x.id===selColor);if(sc)vI.push({name:"외장 색상: "+sc.name,desc:"외장 색상",price:sc.price});}
-    if(veh?.interiorColors&&selIntColor&&sT){const ic=(veh.interiorColors[sT]||[]).find(x=>x.id===selIntColor);if(ic)vI.push({name:"내장 색상: "+ic.name,desc:"내장 색상",price:ic.price});}
     if(sT)(veh?.trimOptions[sT]||[]).filter(o=>sTO.includes(o.id)).forEach(o=>vI.push({name:o.name,desc:"차량옵션",price:o.price}));
     const sI=[];veh?.commonSpecial.filter(o=>sSO.includes(o.id)).forEach(o=>sI.push({name:o.name,desc:"공통 특장",price:o.price}));
     mdl?.options.filter(o=>sMO.includes(o.id)).forEach(o=>{const q=moQty[o.id]||1;sI.push({name:q>1?o.name+" x"+q:o.name,desc:o.desc||"특장",price:o.price*q,originalPrice:o.originalPrice});});
@@ -927,7 +1126,7 @@ function App(){
     const CI=D.company;
     const doPr=()=>{try{const w=window.open("","_blank");if(w){w.document.write(`<!DOCTYPE html><html><head><title>견적서</title><link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Pretendard Variable',sans-serif;background:#fff;color:#111}table{border-collapse:collapse;width:100%}#wrap{padding:20px 24px}@media print{@page{margin:8mm;size:A4}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}#wrap{page-break-inside:avoid;break-inside:avoid}}</style></head><body><div id="wrap">${pr.current.innerHTML}</div><script>window.addEventListener('load',function(){setTimeout(function(){var el=document.getElementById('wrap');var pageHpx=277*3.78;var scale=1;if(el.scrollHeight>pageHpx){scale=pageHpx/el.scrollHeight;}if(scale<1){el.style.zoom=scale;}window.print();},800);});<\/script></body></html>`);w.document.close();}else{alert("팝업이 차단되었습니다. 팝업을 허용해주세요.");}}catch(e){alert("인쇄 기능을 사용할 수 없습니다.");}};
     const isMob=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    const doJpg=async()=>{try{showToast("📷 이미지 생성 중...");const el=pr.current;const wraps=el.querySelectorAll('.resp-table-wrap');const origStyles=[];wraps.forEach(w=>{origStyles.push(w.style.overflow);w.style.overflow='visible';});const origW=el.style.minWidth;el.style.minWidth='820px';await new Promise(r=>setTimeout(r,100));const canvas=await html2canvas(el,{scale:2,useCORS:true,backgroundColor:"#ffffff",scrollX:0,scrollY:0,windowWidth:820});el.style.minWidth=origW;wraps.forEach((w,i)=>{w.style.overflow=origStyles[i]||'';});if(isMob){const dataUrl=canvas.toDataURL("image/jpeg",0.95);const w=window.open("","_blank");if(w){w.document.write('<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>견적서</title><style>body{margin:0;padding:16px;background:#f5f5f5;text-align:center}img{max-width:100%;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.1)}p{margin-top:16px;font-family:sans-serif;font-size:14px;color:#666}</style></head><body><p>이미지를 길게 눌러 저장하세요</p><img src="'+dataUrl+'" /><p style="margin-top:24px;font-size:12px;color:#bbb">패밀리카라반 견적시스템</p></body></html>');w.document.close();}else{showToast("팝업을 허용해주세요");}}else{canvas.toBlob(blob=>{const link=document.createElement("a");link.download="견적서_"+(mdl?.name||"quote")+"_"+new Date().toISOString().slice(0,10)+".jpg";link.href=URL.createObjectURL(blob);link.click();showToast("📷 JPG가 저장되었습니다.");},"image/jpeg",0.95);}}catch(e){alert("이미지 저장에 실패했습니다.");}};
+    const doJpg=async()=>{try{showToast("📷 이미지 생성 중...");const el=pr.current;const wraps=el.querySelectorAll('.resp-table-wrap');const origStyles=[];wraps.forEach(w=>{origStyles.push(w.style.overflow);w.style.overflow='visible';});const origW=el.style.minWidth;el.style.minWidth='820px';await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));await new Promise(r=>setTimeout(r,300));const canvas=await html2canvas(el,{scale:2,useCORS:true,backgroundColor:"#ffffff",scrollX:0,scrollY:0,windowWidth:820});el.style.minWidth=origW;wraps.forEach((w,i)=>{w.style.overflow=origStyles[i]||'';});if(isMob){const dataUrl=canvas.toDataURL("image/jpeg",0.95);const w=window.open("","_blank");if(w){w.document.write('<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>견적서</title><style>body{margin:0;padding:16px;background:#f5f5f5;text-align:center}img{max-width:100%;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.1)}p{margin-top:16px;font-family:sans-serif;font-size:14px;color:#666}</style></head><body><p>이미지를 길게 눌러 저장하세요</p><img src="'+dataUrl+'" /><p style="margin-top:24px;font-size:12px;color:#bbb">패밀리카라반 견적시스템</p></body></html>');w.document.close();}else{showToast("팝업을 허용해주세요");}}else{canvas.toBlob(blob=>{const link=document.createElement("a");link.download="견적서_"+(mdl?.name||"quote")+"_"+new Date().toISOString().slice(0,19).replace(/[:T]/g,"")+".jpg";link.href=URL.createObjectURL(blob);link.click();showToast("📷 JPG가 저장되었습니다.");},"image/jpeg",0.95);}}catch(e){alert("이미지 저장에 실패했습니다.");}};
     const hasV=vS()>0;const hasS=sS()>0;const barTotal=vS()+sS()+(disc>0?disc:0);
     return(
     <div style={{minHeight:"100vh",background:"#f5f5f5",padding:"20px 14px",fontFamily:F}}>{toastEl}<FL />
@@ -958,6 +1157,27 @@ function App(){
             </div>
             <div className="resp-grid-2col" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:20}}><IB l="고객 정보" a={cN||"—"} b={cP||"—"} c={cAddr} /><IB l="차량 / 모델" a={trm?`${veh?.name} ${trm.name}`:`${veh?.name} (트림 미선택)`} b={`${mdl?.name} (${mdl?.subtitle})`} /></div>
             <div style={{flex:1,display:"flex",flexDirection:"column"}}>
+            {(()=>{
+              const cs=veh?.colors;let extColor=null;
+              if(cs&&selColor){const all=[...(cs.default||[]),...(cs.xline||[]),...(cs.ch_xline||[]),...(cs.calli||[]),...(cs.brown||[]),...(cs.passenger||[])];extColor=all.find(x=>x.id===selColor);}
+              let intColor=null;
+              if(veh?.interiorColors&&selIntColor&&sT){intColor=(veh.interiorColors[sT]||[]).find(x=>x.id===selIntColor);}
+              if(!extColor&&!intColor)return null;
+              return(<div style={{background:"#f8fafc",border:"1px solid #e5e7eb",borderRadius:10,padding:"12px 16px",marginBottom:12,display:"flex",alignItems:"center",gap:24,flexWrap:"wrap"}}>
+                {extColor&&<div style={{display:"flex",alignItems:"center",gap:10}}>
+                  <div style={{fontSize:11,color:"#999",fontWeight:700,letterSpacing:1}}>🎨 외장</div>
+                  {extColor.hex&&<div style={{width:28,height:28,borderRadius:6,background:extColor.hex2?`linear-gradient(to right, ${extColor.hex} 0%, ${extColor.hex} 50%, ${extColor.hex2} 50%, ${extColor.hex2} 100%)`:extColor.hex,border:"1px solid #ddd",flexShrink:0}} />}
+                  <div style={{fontSize:13,fontWeight:700,color:"#1a1a1a"}}>{extColor.name}</div>
+                  {extColor.price>0&&<div style={{fontSize:12,color:"#666"}}>({fmt(extColor.price)}원)</div>}
+                </div>}
+                {intColor&&<div style={{display:"flex",alignItems:"center",gap:10}}>
+                  <div style={{fontSize:11,color:"#999",fontWeight:700,letterSpacing:1}}>🪑 내장</div>
+                  {intColor.hex&&<div style={{width:28,height:28,borderRadius:6,background:intColor.hex2?`linear-gradient(to right, ${intColor.hex} 0%, ${intColor.hex} 50%, ${intColor.hex2} 50%, ${intColor.hex2} 100%)`:intColor.hex,border:"1px solid #ddd",flexShrink:0}} />}
+                  <div style={{fontSize:13,fontWeight:700,color:"#1a1a1a"}}>{intColor.name}</div>
+                  {intColor.price>0&&<div style={{fontSize:12,color:"#666"}}>({fmt(intColor.price)}원)</div>}
+                </div>}
+              </div>);
+            })()}
             {vI.length>0&&<><PH t="기본차량" c={BL} />
             <div className="resp-table-wrap"><table style={{minWidth:500}}><thead><tr style={{background:"#f4f6f9"}}><Th w="5%">No</Th><Th w="48%" a="left">항목</Th><Th w="20%" a="left">비고</Th><Th w="27%" a="right">금액</Th></tr></thead><tbody>
               {vI.map((it,i)=><tr key={i} style={{borderBottom:"1px solid #f0f0f0"}}><Td c="#ccc">{i+1}</Td><Td b>{it.name}</Td><Td c="#aaa" s={9.5}>{it.desc}</Td><Td a="right" b m>{fmt(it.price)}원</Td></tr>)}
@@ -1253,7 +1473,7 @@ function App(){
     const dateCell={...cs,textAlign:"center"};
     const fmtW=function(v){return v>0?fmt(v)+" 원정":"원정";};
     const doPrintCt=function(){try{var w=window.open("","_blank");if(w){w.document.write('<!DOCTYPE html><html><head><title>매매계약서</title><link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:"Pretendard Variable",sans-serif;background:#fff;color:#111}table{border-collapse:collapse;width:100%;table-layout:fixed}td{word-break:break-all;overflow:hidden}#wrap{padding:12px 16px}@media print{@page{margin:8mm;size:A4}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body><div id="wrap">'+ctRef.current.innerHTML+'</div><script>setTimeout(function(){var el=document.getElementById("wrap");var pH=277*3.78;var s=el.scrollHeight>pH?pH/el.scrollHeight:1;if(s<1)el.style.zoom=s;window.print();},800);<\/script></body></html>');w.document.close();}}catch(e){alert("인쇄 실패");}};
-    const doCtJpg=function(){try{showToast("📷 이미지 생성 중...");var el=ctRef.current;el.style.minWidth="820px";setTimeout(function(){html2canvas(el,{scale:2,useCORS:true,backgroundColor:"#ffffff",windowWidth:820}).then(function(canvas){el.style.minWidth="";var isMob=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);if(isMob){var du=canvas.toDataURL("image/jpeg",0.95);var w=window.open("","_blank");if(w){w.document.write('<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>계약서</title><style>body{margin:0;padding:16px;background:#f5f5f5;text-align:center}img{max-width:100%;border-radius:8px}p{margin-top:16px;font-size:14px;color:#666}</style></head><body><p>이미지를 길게 눌러 저장하세요</p><img src="'+du+'" /></body></html>');w.document.close();}}else{canvas.toBlob(function(blob){var link=document.createElement("a");link.download="계약서_"+(ctName||"contract")+"_"+yy+mm+dd+".jpg";link.href=URL.createObjectURL(blob);link.click();showToast("📷 JPG 저장됨");},"image/jpeg",0.95);}});},100);}catch(e){alert("이미지 저장 실패");}};
+    const doCtJpg=function(){try{showToast("📷 이미지 생성 중...");var el=ctRef.current;el.style.minWidth="820px";setTimeout(function(){html2canvas(el,{scale:2,useCORS:true,backgroundColor:"#ffffff",windowWidth:820}).then(function(canvas){el.style.minWidth="";var isMob=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);if(isMob){var du=canvas.toDataURL("image/jpeg",0.95);var w=window.open("","_blank");if(w){w.document.write('<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>계약서</title><style>body{margin:0;padding:16px;background:#f5f5f5;text-align:center}img{max-width:100%;border-radius:8px}p{margin-top:16px;font-size:14px;color:#666}</style></head><body><p>이미지를 길게 눌러 저장하세요</p><img src="'+du+'" /></body></html>');w.document.close();}}else{canvas.toBlob(function(blob){var link=document.createElement("a");link.download="계약서_"+(ctName||"contract")+"_"+yy+mm+dd+"_"+new Date().toISOString().slice(11,19).replace(/:/g,"")+".jpg";link.href=URL.createObjectURL(blob);link.click();showToast("📷 JPG 저장됨");},"image/jpeg",0.95);}});},100);}catch(e){alert("이미지 저장 실패");}};
     const phoneFormat=function(v,setter){var d=v.replace(/[^0-9]/g,"").slice(0,11);if(d.length<=3)setter(d);else if(d.length<=7)setter(d.slice(0,3)+"-"+d.slice(3));else setter(d.slice(0,3)+"-"+d.slice(3,7)+"-"+d.slice(7));};
     return(<div style={{minHeight:"100vh",background:"#f5f5f5",padding:"20px 14px",fontFamily:F}}>{toastEl}<FL /><div style={{maxWidth:820,margin:"0 auto"}}>
       <div className="resp-btn-wrap" style={{display:"flex",gap:8,marginBottom:16,flexWrap:"wrap"}}><button onClick={()=>setStep(2)} style={bL}>← 견적서로</button><button onClick={doPrintCt} style={{background:"#1a1a1a",color:"#fff",border:"none",padding:"9px 20px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>🖨️ PDF 출력</button><button onClick={doCtJpg} style={{background:"#2563EB",color:"#fff",border:"none",padding:"9px 20px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>📷 JPG 저장</button><button onClick={resetAll} style={bL}>처음으로</button></div>
@@ -1310,7 +1530,7 @@ function App(){
     var ol=function(e){e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="0 2px 12px rgba(27,47,78,0.08)";};
     return(<div style={{minHeight:"100vh",background:"#f0f4f8",fontFamily:F,padding:"40px 20px"}}>{toastEl}<FL />
       <div style={{maxWidth:700,margin:"0 auto"}}>
-        <div style={{marginBottom:24,display:"flex",gap:8}}><button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{...bL,fontSize:13,borderColor:"#1b2f4e",color:"#1b2f4e"}}>🏠 포털 홈</button></div>
+        <div style={{marginBottom:24,display:"flex",gap:8}}><button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{...bL,fontSize:13}}>🏠 포털 홈</button></div>
         <div style={{textAlign:"center",marginBottom:32}}>
           <div style={{fontSize:12,letterSpacing:6,color:"#999",fontWeight:600,marginBottom:6}}>PRICE LIST</div>
           <div style={{fontSize:26,fontWeight:900,color:"#1b2f4e"}}>가격표 출력 / 편집</div>
