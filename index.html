@@ -16,28 +16,51 @@
 <meta name="apple-mobile-web-app-title" content="패밀리카라반" />
 <meta name="mobile-web-app-capable" content="yes" />
 <link rel="manifest" href="manifest.json" />
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
+<link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://firestore.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
-try{
-  firebase.initializeApp({
-    apiKey:"AIzaSyCXR8kWsVT6kNZMmDHBd20daYsRXJSYs40",
-    authDomain:"familycaravan-c9a5f.firebaseapp.com",
-    projectId:"familycaravan-c9a5f",
-    storageBucket:"familycaravan-c9a5f.firebasestorage.app",
-    messagingSenderId:"1080053181285",
-    appId:"1:1080053181285:web:a4c8f1567e07f938c54f8c"
+/* html2canvas 지연 로드 - 첫 JPG 저장 클릭 시에만 로드 */
+window._h2cReady=null;
+window.loadH2C=function(){
+  if(window._h2cReady)return window._h2cReady;
+  if(window.html2canvas){window._h2cReady=Promise.resolve();return window._h2cReady;}
+  window._h2cReady=new Promise(function(res,rej){
+    var s=document.createElement("script");
+    s.src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+    s.onload=res;s.onerror=rej;
+    document.head.appendChild(s);
   });
-  window.db=firebase.firestore();
-}catch(e){
-  console.warn("Firebase 초기화 실패 - 오프라인 모드:",e.message);
-  window.db=null;
-}
+  return window._h2cReady;
+};
+/* Firebase 초기화 - defer 스크립트 로드 후 실행 */
+window.addEventListener("DOMContentLoaded",function(){
+  setTimeout(function(){
+    try{
+      if(typeof firebase==="undefined"){window.db=null;return;}
+      firebase.initializeApp({
+        apiKey:"AIzaSyCXR8kWsVT6kNZMmDHBd20daYsRXJSYs40",
+        authDomain:"familycaravan-c9a5f.firebaseapp.com",
+        projectId:"familycaravan-c9a5f",
+        storageBucket:"familycaravan-c9a5f.firebasestorage.app",
+        messagingSenderId:"1080053181285",
+        appId:"1:1080053181285:web:a4c8f1567e07f938c54f8c"
+      });
+      window.db=firebase.firestore();
+    }catch(e){
+      console.warn("Firebase 초기화 실패 - 오프라인 모드:",e.message);
+      window.db=null;
+    }
+  },0);
+});
 </script>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -54,6 +77,27 @@ try{
     .resp-btn-wrap button { width:100% !important; }
     .resp-print-pad table { min-width:0 !important; font-size:12px !important; }
     .resp-print-pad table th, .resp-print-pad table td { padding:5px 6px !important; }
+    /* 엔터프라이즈 헤더/모듈 모바일 최적화 */
+    .ent-header-row { padding:10px 14px !important; }
+    .ent-header-title { font-size:14px !important; }
+    .ent-header-erp { font-size:9px !important; letter-spacing:2px !important; }
+    .ent-header-logo { width:32px !important; height:32px !important; }
+    .ent-header-status { display:none !important; }
+    .ent-header-time { font-size:10px !important; }
+    .ent-body { padding:14px 14px 40px !important; }
+    .ent-module-card { padding:14px 14px !important; }
+    .ent-module-name { font-size:15px !important; }
+    .ent-module-desc { font-size:11px !important; min-height:auto !important; }
+    .ent-toolbar { flex-wrap:wrap !important; gap:6px !important; }
+    .ent-toolbar button { font-size:11px !important; padding:7px 10px !important; }
+    .ent-section-title { font-size:14px !important; }
+    /* 차량 그룹 카드 모바일 */
+    .resp-grid-models { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:8px !important; }
+  }
+  @media (max-width:420px) {
+    .resp-grid-models { grid-template-columns:1fr !important; }
+    .ent-header-erp { display:none !important; }
+    .ent-body { padding:10px 10px 30px !important; }
   }
 </style>
 </head>
@@ -731,6 +775,8 @@ function App(){
   const[selSeatColor,setSelSeatColor]=useState(null);
   const[cust,setCust]=useState([{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false}]);
   const[cN,setCN]=useState("");const[cP,setCP]=useState("");const[cAddr,setCAddr]=useState("");const[cNo,setCNo]=useState("");const[disc,setDisc]=useState(0);
+  /* PV5 결제 일정 (계약금/중도금/잔금) - 메모리만, 저장X */
+  const[paySchedule,setPaySchedule]=useState({d1:"",a1:0,d2:"",a2:0,d3:"",a3:0});
   const[sMsg,setSMsg]=useState("");const[toast,setToast]=useState("");const pr=useRef(null);const brRef=useRef(null);
   const[installPrompt,setInstallPrompt]=useState(null);const[showInstall,setShowInstall]=useState(false);const[installDismissed,setInstallDismissed]=useState(false);
   const isStandalone=window.matchMedia('(display-mode:standalone)').matches||window.navigator.standalone;
@@ -958,20 +1004,20 @@ function App(){
   if(step===0) return(<div style={{minHeight:"100vh",background:"#F4F6F9",fontFamily:F,color:"#1F2937"}}>{toastEl}<FL />
       {/* ===== 엔터프라이즈 헤더 바 ===== */}
       <div style={{background:"#0F172A",borderBottom:"3px solid #1E40AF"}}>
-        <div style={{maxWidth:1280,margin:"0 auto",padding:"14px 28px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:16,flexWrap:"wrap"}}>
+        <div className="ent-header-row" style={{maxWidth:1280,margin:"0 auto",padding:"14px 28px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:16,flexWrap:"wrap"}}>
           <div style={{display:"flex",alignItems:"center",gap:14}}>
-            <img src={LOGO} alt="logo" style={{width:40,height:40,objectFit:"contain",background:"#fff",borderRadius:6,padding:4}} />
+            <img src={LOGO} alt="logo" className="ent-header-logo" style={{width:40,height:40,objectFit:"contain",background:"#fff",borderRadius:6,padding:4}} />
             <div>
-              <div style={{fontSize:10,letterSpacing:3,color:"#93C5FD",fontWeight:700}}>FAMILY CARAVAN ERP</div>
-              <div style={{fontSize:17,fontWeight:800,color:"#fff",marginTop:1}}>(주) 패밀리카라반 업무 포털</div>
+              <div className="ent-header-erp" style={{fontSize:10,letterSpacing:3,color:"#93C5FD",fontWeight:700}}>FAMILY CARAVAN ERP</div>
+              <div className="ent-header-title" style={{fontSize:17,fontWeight:800,color:"#fff",marginTop:1}}>(주) 패밀리카라반 업무 포털</div>
             </div>
           </div>
           <div style={{display:"flex",alignItems:"center",gap:14,flexWrap:"wrap"}}>
-            <div style={{display:"flex",alignItems:"center",gap:6,fontSize:11,color:"#94A3B8"}}>
+            <div className="ent-header-status" style={{display:"flex",alignItems:"center",gap:6,fontSize:11,color:"#94A3B8"}}>
               <div style={{width:7,height:7,borderRadius:"50%",background:"#22C55E"}}></div>
               <span>시스템 정상</span>
             </div>
-            <div style={{fontSize:11,color:"#94A3B8",fontVariantNumeric:"tabular-nums"}}>{(()=>{const d=new Date();return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;})()}</div>
+            <div className="ent-header-time" style={{fontSize:11,color:"#94A3B8",fontVariantNumeric:"tabular-nums"}}>{(()=>{const d=new Date();return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;})()}</div>
             <button onClick={function(){loadQuotes();setStep(5);}} style={{background:"#1E40AF",color:"#fff",border:"none",padding:"7px 14px",borderRadius:4,fontSize:12,fontWeight:700,cursor:"pointer"}}>전체 견적 이력</button>
             {!GATE_DISABLED&&<div style={{display:"flex",alignItems:"center",gap:6,padding:"5px 10px",background:gateRole==="master"?"#7C3AED":"#475569",borderRadius:4,fontSize:10,fontWeight:800,color:"#fff",letterSpacing:1}}>
               {gateRole==="master"?"👑 MASTER":"🔧 SUB"}
@@ -982,7 +1028,7 @@ function App(){
         </div>
       </div>
 
-      <div style={{maxWidth:1280,margin:"0 auto",padding:"28px 28px 60px"}}>
+      <div className="ent-body" style={{maxWidth:1280,margin:"0 auto",padding:"28px 28px 60px"}}>
         {!mainMenu&&<>
           {/* ===== 브레드크럼 ===== */}
           <div style={{fontSize:11,color:"#64748B",marginBottom:18,letterSpacing:1,fontWeight:600}}>HOME · 업무 모듈 선택</div>
@@ -1078,51 +1124,86 @@ function App(){
           </div>
         </>}
         {mainMenu==="quote"&&<div>
-          <div style={{marginBottom:20,display:"flex",justifyContent:"center",gap:8}}><button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{...bL,fontSize:13}}>🏠 포털 홈</button></div>
-        {(()=>{
-          const groups=[];const seen={};
-          D.vehicles.forEach(v=>{
-            if(!seen[v.badge]){seen[v.badge]=[];groups.push(v.badge);}
-            seen[v.badge].push(v);
-          });
-          return groups.map(badge=>{
-            const vehs=seen[badge];
-            const first=vehs[0];
-            return(<div key={badge} style={{marginBottom:40}}>
-              <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginBottom:14}}>
-                <div style={{background:first.id==="carnival"?"#1a1a1a":badge==="CHALLENGER"?"#DC2626":first.id==="pv5"?"#0369A1":"#555",color:"#fff",padding:"3px 14px",borderRadius:20,fontSize:12,fontWeight:800,letterSpacing:2}}>{badge}</div>
-                <div style={{fontSize:19,fontWeight:800,color:"#333"}}>{vehs[0].name}</div>
-              </div>
-              <div style={{display:"flex",flexWrap:"wrap",gap:10,justifyContent:"center",maxWidth:560,margin:"0 auto"}}>
-                {vehs.flatMap(v=>v.models.map(m=><MC key={m.id} m={m} onClick={()=>{setSV(v.id);setSM(m.id);setST(null);setSSO(v.commonSpecial.filter(o=>o.required).map(o=>o.id));setSBO([]);setSTO([]);setSMO([]);setMoQty({});setSelColor(null);setSelIntColor(null);setSelSeatColor(null);setTrimTab(v.id==="ch_santafe"?"sf_g":"all");setDisc(0);setCust([{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false}]);setStep(1);}} />))}
-              </div>
-            </div>);
-          });
-        })()}
-        <div style={{textAlign:"center",marginTop:30,display:"flex",justifyContent:"center",gap:12}}>
-          <button onClick={()=>{const all=[];D.vehicles.forEach(v=>v.models.forEach(m=>all.push(v.id+"__"+m.id)));setBrSel(all);setStep(4);}} style={{background:"#1a1a1a",color:"#fff",border:"none",padding:"12px 28px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>📋 특장 가격 브로셔</button>
-        </div>
+          {/* 브레드크럼 */}
+          <div style={{fontSize:11,color:"#64748B",marginBottom:18,letterSpacing:1,fontWeight:600,display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
+            <span onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{cursor:"pointer",textDecoration:"underline"}}>HOME</span>
+            <span>·</span>
+            <span style={{color:"#1E40AF",fontWeight:800}}>QT-01 견적 프로그램</span>
+          </div>
+          {/* 모듈 헤더 */}
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16,paddingBottom:12,borderBottom:"2px solid #E2E8F0",flexWrap:"wrap",gap:10}}>
+            <div>
+              <div style={{fontSize:10,letterSpacing:2,color:"#1E40AF",fontWeight:800,fontFamily:"monospace",marginBottom:3}}>QT-01 · QUOTE</div>
+              <div style={{fontSize:18,fontWeight:800,color:"#0F172A"}}>견적 프로그램</div>
+              <div style={{fontSize:11,color:"#64748B",marginTop:2}}>차량 모델을 선택하여 견적을 작성하세요</div>
+            </div>
+            <div style={{display:"flex",gap:6,alignItems:"center",flexWrap:"wrap"}}>
+              <button onClick={()=>{const all=[];D.vehicles.forEach(v=>v.models.forEach(m=>all.push(v.id+"__"+m.id)));setBrSel(all);setStep(4);}} style={{background:"#fff",color:"#1E40AF",border:"1px solid #1E40AF",padding:"8px 14px",borderRadius:5,cursor:"pointer",fontSize:12,fontWeight:700}}>📋 특장 가격 브로셔</button>
+              <button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{background:"transparent",color:"#64748B",border:"1px solid #CBD5E1",padding:"8px 14px",borderRadius:5,cursor:"pointer",fontSize:12,fontWeight:600}}>🏠 포털 홈</button>
+            </div>
+          </div>
+          {/* 차량 그룹 */}
+          {(()=>{
+            const groups=[];const seen={};
+            D.vehicles.forEach(v=>{
+              if(!seen[v.badge]){seen[v.badge]=[];groups.push(v.badge);}
+              seen[v.badge].push(v);
+            });
+            return groups.map((badge,idx)=>{
+              const vehs=seen[badge];
+              const first=vehs[0];
+              const accent=first.id==="carnival"?"#0F172A":badge==="CHALLENGER"?"#DC2626":first.id==="pv5"?"#0369A1":"#475569";
+              return(<div key={badge} style={{marginBottom:24,background:"#fff",border:"1px solid #E2E8F0",borderRadius:6,padding:"18px 20px",borderLeft:`4px solid ${accent}`}}>
+                <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14,flexWrap:"wrap"}}>
+                  <div style={{background:accent,color:"#fff",padding:"3px 10px",borderRadius:3,fontSize:10,fontWeight:800,letterSpacing:2,fontFamily:"monospace"}}>{badge}</div>
+                  <div style={{fontSize:15,fontWeight:800,color:"#0F172A"}}>{vehs[0].name}</div>
+                  <div style={{flex:1,height:1,background:"#E2E8F0",minWidth:20}}></div>
+                  <div style={{fontSize:10,color:"#94A3B8",fontWeight:600}}>{vehs.reduce((a,v)=>a+v.models.length,0)} MODEL</div>
+                </div>
+                <div className="resp-grid-models" style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(155px,1fr))",gap:10}}>
+                  {vehs.flatMap(v=>v.models.map(m=><MC key={m.id} m={m} onClick={()=>{setSV(v.id);setSM(m.id);setST(null);setSSO(v.commonSpecial.filter(o=>o.required).map(o=>o.id));setSBO([]);setSTO([]);setSMO([]);setMoQty({});setSelColor(null);setSelIntColor(null);setSelSeatColor(null);setTrimTab(v.id==="ch_santafe"?"sf_g":"all");setDisc(0);setCust([{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false}]);setStep(1);}} />))}
+                </div>
+              </div>);
+            });
+          })()}
         </div>}
         {mainMenu==="used"&&<div>
-          {!usedSub&&<div style={{maxWidth:600,margin:"0 auto"}}>
-            <div style={{marginBottom:20,display:"flex",justifyContent:"center",gap:8}}><button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{...bL,fontSize:13}}>🏠 포털 홈</button></div>
-            <div style={{textAlign:"center",marginBottom:28}}>
-              <div style={{fontSize:12,letterSpacing:6,color:"#999",fontWeight:600,marginBottom:6}}>USED CAR</div>
-              <div style={{fontSize:24,fontWeight:900,color:"#1a1a1a"}}>중고차 업무</div>
+          {!usedSub&&<div>
+            {/* 브레드크럼 */}
+            <div style={{fontSize:11,color:"#64748B",marginBottom:18,letterSpacing:1,fontWeight:600,display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
+              <span onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{cursor:"pointer",textDecoration:"underline"}}>HOME</span>
+              <span>·</span>
+              <span style={{color:"#059669",fontWeight:800}}>UC-02 중고차 업무</span>
             </div>
-            <div style={{display:"flex",gap:16,justifyContent:"center",flexWrap:"wrap"}}>
-              <div onClick={()=>setUsedSub("quotation")} style={{width:240,background:"#fff",border:"2px solid #eee",borderRadius:14,padding:"28px 20px",cursor:"pointer",transition:"all 0.2s",textAlign:"center",boxShadow:"0 2px 12px rgba(0,0,0,0.04)"}} onMouseEnter={function(e){e.currentTarget.style.borderColor="#1a1a1a";e.currentTarget.style.transform="translateY(-3px)";}} onMouseLeave={function(e){e.currentTarget.style.borderColor="#eee";e.currentTarget.style.transform="none";}}>
-                <div style={{fontSize:36,marginBottom:10}}>📋</div>
-                <div style={{fontSize:17,fontWeight:900,color:"#1a1a1a",marginBottom:6}}>차량구입 견적서</div>
-                <div style={{fontSize:12,color:"#999",lineHeight:1.5}}>구입 비용 계산 및<br/>견적서 PDF/JPG 출력</div>
-                <div style={{marginTop:12,color:"#555",fontSize:12,fontWeight:700}}>시작하기 →</div>
+            {/* 모듈 헤더 */}
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16,paddingBottom:12,borderBottom:"2px solid #E2E8F0",flexWrap:"wrap",gap:10}}>
+              <div>
+                <div style={{fontSize:10,letterSpacing:2,color:"#059669",fontWeight:800,fontFamily:"monospace",marginBottom:3}}>UC-02 · USED</div>
+                <div style={{fontSize:18,fontWeight:800,color:"#0F172A"}}>중고차 업무</div>
+                <div style={{fontSize:11,color:"#64748B",marginTop:2}}>차량구입 견적서 / 취·등록세 이전비 계산기</div>
               </div>
-              <div onClick={()=>setUsedSub("tax")} style={{width:240,background:"#fff",border:"2px solid #eee",borderRadius:14,padding:"28px 20px",cursor:"pointer",transition:"all 0.2s",textAlign:"center",boxShadow:"0 2px 12px rgba(0,0,0,0.04)"}} onMouseEnter={function(e){e.currentTarget.style.borderColor="#1a1a1a";e.currentTarget.style.transform="translateY(-3px)";}} onMouseLeave={function(e){e.currentTarget.style.borderColor="#eee";e.currentTarget.style.transform="none";}}>
-                <div style={{fontSize:36,marginBottom:10}}>🧮</div>
-                <div style={{fontSize:17,fontWeight:900,color:"#1a1a1a",marginBottom:6}}>취·등록세 계산</div>
-                <div style={{fontSize:12,color:"#999",lineHeight:1.5}}>차종·지역별 취득세<br/>공채·수수료 자동 계산</div>
-                <div style={{marginTop:12,color:"#555",fontSize:12,fontWeight:700}}>계산하기 →</div>
+              <div style={{display:"flex",gap:6}}>
+                <button onClick={()=>{setMainMenu(null);setUsedSub(null);setStep(0);}} style={{background:"transparent",color:"#64748B",border:"1px solid #CBD5E1",padding:"8px 14px",borderRadius:5,cursor:"pointer",fontSize:12,fontWeight:600}}>🏠 포털 홈</button>
               </div>
+            </div>
+            {/* 서브 모듈 그리드 */}
+            <div className="resp-grid-2col" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:14}}>
+              {[
+                {id:"quotation",code:"UC-02-A",name:"차량구입 견적서",desc:"구입 비용 계산 및 견적서 PDF/JPG 출력",emoji:"📋",color:"#059669"},
+                {id:"tax",code:"UC-02-B",name:"취·등록세 계산",desc:"차종·지역별 취득세 / 공채·수수료 자동 계산",emoji:"🧮",color:"#0369A1"},
+              ].map(m=>(<div key={m.id} onClick={()=>setUsedSub(m.id)} style={{background:"#fff",border:"1px solid #E2E8F0",borderRadius:6,padding:"18px 20px",cursor:"pointer",transition:"all 0.15s",position:"relative",overflow:"hidden"}} onMouseEnter={e=>{e.currentTarget.style.borderColor=m.color;e.currentTarget.style.boxShadow="0 4px 12px rgba(0,0,0,0.06)";e.currentTarget.style.transform="translateY(-1px)";}} onMouseLeave={e=>{e.currentTarget.style.borderColor="#E2E8F0";e.currentTarget.style.boxShadow="none";e.currentTarget.style.transform="none";}}>
+                <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:m.color}}></div>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}>
+                  <div style={{fontSize:10,fontWeight:800,color:m.color,letterSpacing:2,fontFamily:"monospace"}}>{m.code}</div>
+                  <div style={{fontSize:22}}>{m.emoji}</div>
+                </div>
+                <div style={{fontSize:16,fontWeight:800,color:"#0F172A",marginBottom:6}}>{m.name}</div>
+                <div style={{fontSize:12,color:"#64748B",lineHeight:1.5,marginBottom:14,minHeight:36}}>{m.desc}</div>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",paddingTop:10,borderTop:"1px solid #F1F5F9"}}>
+                  <span style={{fontSize:11,color:"#94A3B8",fontWeight:600}}>ACTIVE</span>
+                  <span style={{fontSize:12,color:m.color,fontWeight:700}}>열기 →</span>
+                </div>
+              </div>))}
             </div>
           </div>}
           {usedSub==="quotation"&&(()=>{
@@ -1146,7 +1227,7 @@ function App(){
               taxDiscount=Math.min(taxRaw,1400000);
             }
             const tax=Math.max(0,taxRaw-taxDiscount);
-            const bond=Math.round(tax*(BOND[ucRegion]?.b||0.02));
+            const bond=Math.round(tax*(BOND[ucRegion]?.b||0.02)+ucPrice*0.01);
             const fee=Math.round(ucPrice*ucFeeRate);
             const total=ucPrice+tax+bond+(ucMgmtOn?(ucMgmt||0):0)+(ucPerf||0)+(ucReg||0)+(ucFeeOn?fee:0);
             const uR={display:"flex",alignItems:"center",borderBottom:"1px solid #ddd",minHeight:44};
@@ -1155,7 +1236,7 @@ function App(){
             const uIn={border:"none",outline:"none",fontSize:15,fontWeight:700,width:"100%",background:"transparent",padding:0,color:"#222"};
             const uSel={border:"none",outline:"none",fontSize:14,fontWeight:600,background:"transparent",color:"#222",width:"100%",cursor:"pointer"};
             const doUcPrint=function(){try{var w=window.open("","_blank");if(w){w.document.write('<!DOCTYPE html><html><head><title>차량구입견적서</title><link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:"Pretendard Variable",sans-serif;background:#fff;color:#111}#wrap{width:100%;max-width:600px;margin:0 auto;padding:40px 30px}@media print{@page{margin:15mm;size:A4}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body><div id="wrap">'+ucRef.current.innerHTML+'</div><scr'+'ipt>setTimeout(function(){window.print();},800);<'+'/script></body></html>');w.document.close();}}catch(e){alert("인쇄 실패");}};
-            const doUcJpg=function(){try{showToast("📷 이미지 생성 중...");var el=ucRef.current;el.style.minWidth="600px";setTimeout(function(){html2canvas(el,{scale:2,useCORS:true,backgroundColor:"#ffffff",windowWidth:600}).then(function(canvas){el.style.minWidth="";var isMob=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);if(isMob){var du=canvas.toDataURL("image/jpeg",0.95);var w=window.open("","_blank");if(w){w.document.write('<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>차량구입견적서</title><style>body{margin:0;padding:16px;background:#f5f5f5;text-align:center}img{max-width:100%;border-radius:8px}p{margin-top:16px;font-size:14px;color:#666}</style></head><body><p>이미지를 길게 눌러 저장하세요</p><img src="'+du+'" /></body></html>');w.document.close();}}else{canvas.toBlob(function(blob){var link=document.createElement("a");link.download="차량구입견적서_"+(ucInfo||"estimate")+"_"+new Date().toISOString().slice(0,19).replace(/[:T]/g,"")+".jpg";link.href=URL.createObjectURL(blob);link.click();showToast("📷 JPG 저장됨");},"image/jpeg",0.95);}});},100);}catch(e){alert("이미지 저장 실패");}};
+            const doUcJpg=function(){try{showToast("📷 이미지 생성 중...");var el=ucRef.current;el.style.minWidth="600px";setTimeout(function(){window.loadH2C().then(function(){return html2canvas(el,{scale:2,useCORS:true,backgroundColor:"#ffffff",windowWidth:600});}).then(function(canvas){el.style.minWidth="";var isMob=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);if(isMob){var du=canvas.toDataURL("image/jpeg",0.95);var w=window.open("","_blank");if(w){w.document.write('<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>차량구입견적서</title><style>body{margin:0;padding:16px;background:#f5f5f5;text-align:center}img{max-width:100%;border-radius:8px}p{margin-top:16px;font-size:14px;color:#666}</style></head><body><p>이미지를 길게 눌러 저장하세요</p><img src="'+du+'" /></body></html>');w.document.close();}}else{canvas.toBlob(function(blob){var link=document.createElement("a");link.download="차량구입견적서_"+(ucInfo||"estimate")+"_"+new Date().toISOString().slice(0,19).replace(/[:T]/g,"")+".jpg";link.href=URL.createObjectURL(blob);link.click();showToast("📷 JPG 저장됨");},"image/jpeg",0.95);}});},100);}catch(e){alert("이미지 저장 실패");}};
             return(<div style={{maxWidth:500,margin:"0 auto"}}>
               <div style={{display:"flex",gap:8,marginBottom:16,flexWrap:"wrap",justifyContent:"center"}}>
                 <button onClick={()=>setUsedSub(null)} style={{...bL,fontSize:13}}>← 중고차 업무</button>
@@ -1186,9 +1267,10 @@ function App(){
               </div>}
               <div ref={ucRef} style={{background:"#fff",borderRadius:12,boxShadow:"0 2px 16px rgba(0,0,0,0.06)",overflow:"hidden"}}>
                 <div style={{padding:"24px 20px",textAlign:"center",borderBottom:"2px solid #1a1a1a"}}><div style={{fontSize:22,fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center",gap:10}}><svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 10.5L6.8 4h10.4L20 10.5" stroke="#111" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/><rect x="1.5" y="10.5" width="21" height="7" rx="2" stroke="#111" strokeWidth="1.6"/><path d="M1.5 14.5h21" stroke="#111" strokeWidth="1.2" strokeDasharray="2 1.5"/><circle cx="6.5" cy="19.5" r="2" stroke="#111" strokeWidth="1.6"/><circle cx="17.5" cy="19.5" r="2" stroke="#111" strokeWidth="1.6"/><path d="M8.5 19.5h7" stroke="#111" strokeWidth="1.6"/></svg>차량구입 견적서</div><div style={{fontSize:12,color:"#999",marginTop:4}}>{new Date().getFullYear()}년 {String(new Date().getMonth()+1).padStart(2,"0")}월 {String(new Date().getDate()).padStart(2,"0")}일</div></div>
-                <div style={uR}><div style={uL}>고객명</div><div style={uV}><input type="text" value={ucName} onChange={e=>setUcName(e.target.value)} placeholder="고객명 입력" style={uIn} /></div></div>
-                <div style={uR}><div style={uL}>차량정보</div><div style={uV}><input type="text" value={ucInfo} onChange={e=>setUcInfo(e.target.value)} placeholder="차량번호 / 차종 입력" style={uIn} /></div></div>
-                <div style={uR}><div style={uL}>차량가격</div><div style={{...uV,display:"flex",alignItems:"center",gap:4}}><input type="text" value={ucPrice?fmt(ucPrice):""} onChange={e=>setUcPrice(Number(e.target.value.replace(/[^0-9]/g,""))||0)} placeholder="0" style={{...uIn,textAlign:"right"}} /><span style={{fontSize:15,color:"#aaa",fontWeight:700,flexShrink:0}}>원</span></div></div>
+                <div style={{padding:"12px 16px 4px",background:"#FEF2F2",borderTop:"3px solid #DC2626"}}><div style={{fontSize:11,color:"#DC2626",fontWeight:800,letterSpacing:2,marginBottom:4}}>👤 고객 · 차량 정보</div></div>
+                <div style={{...uR,background:"#FEF2F2",borderBottom:"1px solid #FCA5A5"}}><div style={{...uL,background:"#FEE2E2",color:"#991B1B"}}>고객명</div><div style={{...uV,color:"#1a1a1a"}}><input type="text" value={ucName} onChange={e=>setUcName(e.target.value)} placeholder="고객명 입력" style={{...uIn,color:"#1a1a1a"}} /></div></div>
+                <div style={{...uR,background:"#FEF2F2",borderBottom:"1px solid #FCA5A5"}}><div style={{...uL,background:"#FEE2E2",color:"#991B1B"}}>차량정보</div><div style={{...uV,color:"#1a1a1a"}}><input type="text" value={ucInfo} onChange={e=>setUcInfo(e.target.value)} placeholder="차량번호 / 차종 입력" style={{...uIn,color:"#1a1a1a"}} /></div></div>
+                <div style={{...uR,background:"#FEF2F2",borderBottom:"2px solid #DC2626"}}><div style={{...uL,background:"#FEE2E2",color:"#991B1B"}}>차량가격</div><div style={{...uV,display:"flex",alignItems:"center",gap:4,color:"#1a1a1a"}}><input type="text" value={ucPrice?fmt(ucPrice):""} onChange={e=>setUcPrice(Number(e.target.value.replace(/[^0-9]/g,""))||0)} placeholder="0" style={{...uIn,textAlign:"right",color:"#1a1a1a"}} /><span style={{fontSize:15,color:"#991B1B",fontWeight:700,flexShrink:0}}>원</span></div></div>
                 <div style={uR}><div style={uL}>차종</div><div style={uV}><select value={ucVType} onChange={e=>setUcVType(e.target.value)} style={uSel}>{Object.entries(TX).map(([k,v])=><option key={k} value={k}>{v.l} ({(v.r*100).toFixed(0)}%)</option>)}</select></div></div>
                 <div style={uR}><div style={uL}>승차정원</div><div style={uV}><select value={ucSeat} onChange={e=>setUcSeat(e.target.value)} style={uSel}>{Object.entries(SEAT).map(([k,v])=><option key={k} value={k}>{v.l}</option>)}</select></div></div>
                 <div style={uR}><div style={uL}>지역 (공채기준)</div><div style={uV}><select value={ucRegion} onChange={e=>setUcRegion(e.target.value)} style={uSel}>{Object.entries(BOND).map(([k,v])=><option key={k} value={k}>{v.l} (공채 {(v.b*100).toFixed(1)}%)</option>)}</select></div></div>
@@ -1202,7 +1284,7 @@ function App(){
                   </div>
                 </div>
                 <div style={uR}><div style={uL}>공채</div><div style={{...uV,textAlign:"right"}}>{fmt(bond)}<span style={{fontSize:15,color:"#aaa",marginLeft:3}}>원</span></div></div>
-                <div style={uR}><div style={{...uL,display:"flex",alignItems:"center",gap:8}}><div onClick={()=>setUcMgmtOn(v=>!v)} style={{width:18,height:18,borderRadius:4,border:ucMgmtOn?"2px solid #1a1a1a":"2px solid #ccc",background:ucMgmtOn?"#1a1a1a":"#fff",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0}}>{ucMgmtOn&&<span style={{color:"#fff",fontSize:12,fontWeight:900,lineHeight:1}}>✓</span>}</div><div><div>매도관리비</div><div style={{fontSize:10,color:"#aaa",fontWeight:400}}>(증인지포함)</div></div></div><div style={{...uV,display:"flex",alignItems:"center",gap:4,opacity:ucMgmtOn?1:0.35}}><input type="text" value={ucMgmt?fmt(ucMgmt):""} onChange={e=>setUcMgmt(Number(e.target.value.replace(/[^0-9]/g,""))||0)} placeholder="0" style={{...uIn,textAlign:"right"}} disabled={!ucMgmtOn} /><span style={{fontSize:15,color:"#aaa",fontWeight:700,flexShrink:0}}>원</span></div></div>
+                <div style={uR}><div style={{...uL,display:"flex",alignItems:"center",gap:8}}><div onClick={()=>setUcMgmtOn(v=>!v)} style={{width:18,height:18,borderRadius:4,border:ucMgmtOn?"2px solid #1a1a1a":"2px solid #ccc",background:ucMgmtOn?"#1a1a1a":"#fff",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0}}>{ucMgmtOn&&<span style={{color:"#fff",fontSize:12,fontWeight:900,lineHeight:1}}>✓</span>}</div><div><div>법정서식대행료</div><div style={{fontSize:10,color:"#aaa",fontWeight:400}}>(증인지포함)</div></div></div><div style={{...uV,display:"flex",alignItems:"center",gap:4,opacity:ucMgmtOn?1:0.35}}><input type="text" value={ucMgmt?fmt(ucMgmt):""} onChange={e=>setUcMgmt(Number(e.target.value.replace(/[^0-9]/g,""))||0)} placeholder="0" style={{...uIn,textAlign:"right"}} disabled={!ucMgmtOn} /><span style={{fontSize:15,color:"#aaa",fontWeight:700,flexShrink:0}}>원</span></div></div>
                 <div style={uR}><div style={uL}>성능보험비</div><div style={{...uV,display:"flex",alignItems:"center",gap:4}}><input type="text" value={ucPerf?fmt(ucPerf):""} onChange={e=>setUcPerf(Number(e.target.value.replace(/[^0-9]/g,""))||0)} placeholder="0" style={{...uIn,textAlign:"right"}} /><span style={{fontSize:15,color:"#aaa",fontWeight:700,flexShrink:0}}>원</span></div></div>
                 <div style={uR}><div style={uL}>등기비</div><div style={{...uV,display:"flex",alignItems:"center",gap:4}}><input type="text" value={ucReg?fmt(ucReg):""} onChange={e=>setUcReg(Number(e.target.value.replace(/[^0-9]/g,""))||0)} placeholder="0" style={{...uIn,textAlign:"right"}} /><span style={{fontSize:15,color:"#aaa",fontWeight:700,flexShrink:0}}>원</span></div></div>
                 <div style={uR}><div style={{...uL,display:"flex",alignItems:"center",gap:8}}><div onClick={()=>setUcFeeOn(v=>!v)} style={{width:18,height:18,borderRadius:4,border:ucFeeOn?"2px solid #1a1a1a":"2px solid #ccc",background:ucFeeOn?"#1a1a1a":"#fff",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0}}>{ucFeeOn&&<span style={{color:"#fff",fontSize:12,fontWeight:900,lineHeight:1}}>✓</span>}</div><div>수수료 (2.2%)</div></div><div style={{...uV,textAlign:"right",opacity:ucFeeOn?1:0.35}}>{fmt(ucFeeOn?fee:0)}<span style={{fontSize:15,color:"#aaa",marginLeft:3}}>원</span></div></div>
@@ -1270,7 +1352,7 @@ function App(){
                 var el=txRef.current;
                 el.style.minWidth="520px";
                 setTimeout(function(){
-                  html2canvas(el,{scale:2,useCORS:true,backgroundColor:"#ffffff",windowWidth:520}).then(function(canvas){
+                  window.loadH2C().then(function(){return html2canvas(el,{scale:2,useCORS:true,backgroundColor:"#ffffff",windowWidth:520});}).then(function(canvas){
                     el.style.minWidth="";
                     var isMob=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
                     if(isMob){
@@ -1453,9 +1535,9 @@ function App(){
     cust.filter(c=>c.on&&c.n&&c.p!==0).forEach((c,ci)=>sI.push({id:"cust_"+ci,name:c.n,desc:"추가",price:c.p,custIdx:ci}));
     const ds=(()=>{const t=new Date();return`${t.getFullYear()}년 ${t.getMonth()+1}월 ${t.getDate()}일`;})();
     const CI=D.company;
-    const doPr=()=>{try{const w=window.open("","_blank");if(w){w.document.write(`<!DOCTYPE html><html><head><title>견적서</title><link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Pretendard Variable',sans-serif;background:#fff;color:#111}table{border-collapse:collapse;width:100%}#wrap{padding:20px 24px}@media print{@page{margin:8mm;size:A4}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}#wrap{page-break-inside:avoid;break-inside:avoid}}</style></head><body><div id="wrap">${pr.current.innerHTML}</div><script>window.addEventListener('load',function(){setTimeout(function(){var el=document.getElementById('wrap');var pageHpx=277*3.78;var scale=1;if(el.scrollHeight>pageHpx){scale=pageHpx/el.scrollHeight;}if(scale<1){el.style.zoom=scale;}window.print();},800);});<\/script></body></html>`);w.document.close();}else{alert("팝업이 차단되었습니다. 팝업을 허용해주세요.");}}catch(e){alert("인쇄 기능을 사용할 수 없습니다.");}};
+    const doPr=()=>{try{const w=window.open("","_blank");if(w){w.document.write(`<!DOCTYPE html><html><head><title>견적서</title><link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Pretendard Variable',sans-serif;background:#fff;color:#111;width:210mm;display:flex;justify-content:center}table{border-collapse:collapse;width:100%}#wrap{width:794px;padding:0;transform-origin:top center;margin:0 auto}#inner{padding:18px 22px}input[type=date],input[type=text]{border:none;padding:0;font:inherit;background:transparent;color:inherit}@media print{html,body{width:210mm;height:297mm;overflow:hidden;margin:0}@page{margin:0;size:A4 portrait}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}#wrap{page-break-inside:avoid;break-inside:avoid;page-break-after:avoid;page-break-before:avoid;margin:0 auto!important}body{display:block}}</style></head><body><div id="wrap"><div id="inner">${pr.current.innerHTML}</div></div><script>window.addEventListener('load',function(){setTimeout(function(){var wrap=document.getElementById('wrap');var inner=document.getElementById('inner');var ph=inner.scrollHeight;var maxH=1115;var sc=ph>maxH?(maxH/ph):1;if(sc<1){wrap.style.transform='scale('+sc+')';wrap.style.transformOrigin='top center';wrap.style.width=(794)+'px';wrap.style.height=(ph*sc)+'px';document.body.style.height=(ph*sc)+'px';}window.print();},700);});<\/script></body></html>`);w.document.close();}else{alert("팝업이 차단되었습니다. 팝업을 허용해주세요.");}}catch(e){alert("인쇄 기능을 사용할 수 없습니다.");}};
     const isMob=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    const doJpg=async()=>{try{showToast("📷 이미지 생성 중...");const el=pr.current;const wraps=el.querySelectorAll('.resp-table-wrap');const origStyles=[];wraps.forEach(w=>{origStyles.push(w.style.overflow);w.style.overflow='visible';});const origW=el.style.minWidth;el.style.minWidth='820px';await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));await new Promise(r=>setTimeout(r,300));const canvas=await html2canvas(el,{scale:2,useCORS:true,backgroundColor:"#ffffff",scrollX:0,scrollY:0,windowWidth:820});el.style.minWidth=origW;wraps.forEach((w,i)=>{w.style.overflow=origStyles[i]||'';});if(isMob){const dataUrl=canvas.toDataURL("image/jpeg",0.95);const w=window.open("","_blank");if(w){w.document.write('<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>견적서</title><style>body{margin:0;padding:16px;background:#f5f5f5;text-align:center}img{max-width:100%;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.1)}p{margin-top:16px;font-family:sans-serif;font-size:14px;color:#666}</style></head><body><p>이미지를 길게 눌러 저장하세요</p><img src="'+dataUrl+'" /><p style="margin-top:24px;font-size:12px;color:#bbb">패밀리카라반 견적시스템</p></body></html>');w.document.close();}else{showToast("팝업을 허용해주세요");}}else{canvas.toBlob(blob=>{const link=document.createElement("a");link.download="견적서_"+(mdl?.name||"quote")+"_"+new Date().toISOString().slice(0,19).replace(/[:T]/g,"")+".jpg";link.href=URL.createObjectURL(blob);link.click();showToast("📷 JPG가 저장되었습니다.");},"image/jpeg",0.95);}}catch(e){alert("이미지 저장에 실패했습니다.");}};
+    const doJpg=async()=>{try{showToast("📷 이미지 생성 중...");const el=pr.current;const wraps=el.querySelectorAll('.resp-table-wrap');const origStyles=[];wraps.forEach(w=>{origStyles.push(w.style.overflow);w.style.overflow='visible';});const origW=el.style.minWidth;el.style.minWidth='820px';await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));await new Promise(r=>setTimeout(r,300));await window.loadH2C();const canvas=await html2canvas(el,{scale:2,useCORS:true,backgroundColor:"#ffffff",scrollX:0,scrollY:0,windowWidth:820});el.style.minWidth=origW;wraps.forEach((w,i)=>{w.style.overflow=origStyles[i]||'';});if(isMob){const dataUrl=canvas.toDataURL("image/jpeg",0.95);const w=window.open("","_blank");if(w){w.document.write('<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>견적서</title><style>body{margin:0;padding:16px;background:#f5f5f5;text-align:center}img{max-width:100%;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.1)}p{margin-top:16px;font-family:sans-serif;font-size:14px;color:#666}</style></head><body><p>이미지를 길게 눌러 저장하세요</p><img src="'+dataUrl+'" /><p style="margin-top:24px;font-size:12px;color:#bbb">패밀리카라반 견적시스템</p></body></html>');w.document.close();}else{showToast("팝업을 허용해주세요");}}else{canvas.toBlob(blob=>{const link=document.createElement("a");link.download="견적서_"+(mdl?.name||"quote")+"_"+new Date().toISOString().slice(0,19).replace(/[:T]/g,"")+".jpg";link.href=URL.createObjectURL(blob);link.click();showToast("📷 JPG가 저장되었습니다.");},"image/jpeg",0.95);}}catch(e){alert("이미지 저장에 실패했습니다.");}};
     const hasV=vS()>0;const hasS=sS()>0;const barTotal=vS()+sS()+(disc>0?disc:0);
     return(
     <div style={{minHeight:"100vh",background:"#f5f5f5",padding:"20px 14px",fontFamily:F}}>{toastEl}<FL />
@@ -1537,8 +1619,43 @@ function App(){
             </div>
             <div style={{marginTop:"auto"}}>
             <div style={{background:"#1a1a1a",borderRadius:8,padding:"14px 20px",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:22.0,fontWeight:800,color:"#fff"}}>총 견적 금액</div><div style={{fontSize:14.0,color:"rgba(255,255,255,0.6)",marginTop:2}}>◆ VAT 포함</div></div><div style={{fontSize:26,fontWeight:900,color:"#fff"}}>{fmt(tot())}<span style={{fontSize:14.0,color:"rgba(255,255,255,0.6)",marginLeft:3}}>원</span></div></div>
+            {sV==="pv5"&&<div style={{marginTop:10,border:"1.5px solid #1a1a1a",borderRadius:8,overflow:"hidden"}}>
+              <div style={{background:"#1a1a1a",color:"#fff",padding:"7px 14px",fontSize:12.5,fontWeight:800,letterSpacing:1.5,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                <span>💰 결제 일정</span>
+                <span style={{fontSize:10,color:"rgba(255,255,255,0.6)",fontWeight:600}}>날짜와 금액을 기재하세요</span>
+              </div>
+              <div style={{display:"grid",gridTemplateColumns:"110px 1fr 1fr",gap:0,fontSize:13}}>
+                <div style={{padding:"9px 12px",background:"#f4f6f9",borderBottom:"1px solid #e5e7eb",fontWeight:700,color:"#1a1a1a"}}>구분</div>
+                <div style={{padding:"9px 12px",background:"#f4f6f9",borderBottom:"1px solid #e5e7eb",fontWeight:700,color:"#1a1a1a",textAlign:"center"}}>날짜</div>
+                <div style={{padding:"9px 12px",background:"#f4f6f9",borderBottom:"1px solid #e5e7eb",fontWeight:700,color:"#1a1a1a",textAlign:"right"}}>금액</div>
+                {[
+                  {k:"1",label:"계약금",dKey:"d1",aKey:"a1"},
+                  {k:"2",label:"중도금",dKey:"d2",aKey:"a2"},
+                  {k:"3",label:"잔금",dKey:"d3",aKey:"a3"},
+                ].map((row,i)=>{
+                  /* 잔금(a3): 사용자가 직접 입력 안 했으면 총액-계약금-중도금 자동 표시 */
+                  const isBalance=row.aKey==="a3";
+                  const autoBal=Math.max(0,tot()-paySchedule.a1-paySchedule.a2);
+                  const displayAmount=isBalance&&paySchedule.a3===0?autoBal:paySchedule[row.aKey];
+                  return(<React.Fragment key={row.k}>
+                  <div style={{padding:"7px 12px",borderBottom:i<2?"1px solid #f0f0f0":"none",fontWeight:700,color:"#1a1a1a",display:"flex",alignItems:"center",gap:6}}><span style={{display:"inline-block",width:18,height:18,borderRadius:"50%",background:"#1a1a1a",color:"#fff",fontSize:10,fontWeight:800,lineHeight:"18px",textAlign:"center"}}>{row.k}</span>{row.label}{isBalance&&paySchedule.a3===0&&autoBal>0&&<span style={{fontSize:9,color:"#16a34a",fontWeight:700,marginLeft:4,padding:"1px 5px",background:"#dcfce7",borderRadius:3}}>자동</span>}</div>
+                  <div style={{padding:"4px 8px",borderBottom:i<2?"1px solid #f0f0f0":"none",borderLeft:"1px solid #f0f0f0"}}>
+                    <input type="date" value={paySchedule[row.dKey]} onChange={e=>setPaySchedule(p=>({...p,[row.dKey]:e.target.value}))} style={{width:"100%",border:"none",fontSize:13,fontFamily:"inherit",outline:"none",padding:"4px 6px",textAlign:"center",background:"transparent",color:"#1a1a1a",fontWeight:600}} />
+                  </div>
+                  <div style={{padding:"4px 8px",borderBottom:i<2?"1px solid #f0f0f0":"none",borderLeft:"1px solid #f0f0f0",display:"flex",alignItems:"center",gap:4}}>
+                    <input type="text" value={displayAmount?fmt(displayAmount):""} onChange={e=>setPaySchedule(p=>({...p,[row.aKey]:Number(e.target.value.replace(/[^0-9]/g,""))||0}))} placeholder="0" style={{flex:1,border:"none",fontSize:13,fontFamily:"inherit",outline:"none",padding:"4px 6px",textAlign:"right",background:"transparent",color:"#1a1a1a",fontWeight:700,fontVariantNumeric:"tabular-nums"}} />
+                    <span style={{fontSize:11,color:"#888",fontWeight:600}}>원</span>
+                  </div>
+                </React.Fragment>);})}
+                {(()=>{const a3eff=paySchedule.a3===0?Math.max(0,tot()-paySchedule.a1-paySchedule.a2):paySchedule.a3;const sum=paySchedule.a1+paySchedule.a2+a3eff;return sum>0&&<>
+                  <div style={{padding:"7px 12px",borderTop:"2px solid #1a1a1a",fontWeight:800,color:"#1a1a1a",background:"#fafafa"}}>합계</div>
+                  <div style={{padding:"7px 12px",borderTop:"2px solid #1a1a1a",borderLeft:"1px solid #f0f0f0",background:"#fafafa"}}></div>
+                  <div style={{padding:"7px 12px",borderTop:"2px solid #1a1a1a",borderLeft:"1px solid #f0f0f0",textAlign:"right",fontWeight:900,color:sum===tot()?"#16a34a":"#dc2626",background:"#fafafa",fontSize:14}}>{fmt(sum)}원{sum!==tot()&&<span style={{fontSize:10,marginLeft:6,fontWeight:600}}>(차액 {fmt(tot()-sum)}원)</span>}</div>
+                </>;})()}
+              </div>
+            </div>}
             {barTotal>0&&<div style={{display:"flex",marginTop:6,borderRadius:3,overflow:"hidden",height:4}}>{hasV&&<div style={{flex:vS(),background:BL}} />}{hasS&&<div style={{flex:sS(),background:GD}} />}{disc>0&&<div style={{flex:disc,background:"#ef4444"}} />}</div>}
-            {cNo&&<div style={{marginTop:14,padding:"8px 12px",background:"#fafafa",borderRadius:4,borderLeft:"3px solid #1a1a1a"}}><div style={{fontSize:12.0,color:GD,letterSpacing:2,marginBottom:2,fontWeight:700}}>비고</div><div style={{fontSize:14.0,color:"#555",lineHeight:1.5}}>{cNo}</div></div>}
+            {cNo&&<div style={{marginTop:14,padding:"8px 12px",background:"#fafafa",borderRadius:4,borderLeft:"3px solid #1a1a1a"}}><div style={{fontSize:12.0,color:GD,letterSpacing:2,marginBottom:2,fontWeight:700}}>비고</div><div style={{fontSize:14.0,color:"#1a1a1a",fontWeight:600,lineHeight:1.5}}>{cNo}</div></div>}
             <div style={{marginTop:20,paddingTop:12,borderTop:"1px solid #eee",textAlign:"center"}}><div style={{fontSize:13.0,color:"#ccc"}}>본 견적서는 발행일로부터 30일간 유효합니다 · VAT 포함</div><div style={{fontSize:13.0,color:"#ccc",marginTop:2}}>{CI.name} | {CI.ceo} | {CI.phone} | {CI.address}</div></div>
             </div>
           </div>
@@ -1672,7 +1789,7 @@ function App(){
     const allModels=[];D.vehicles.forEach(v=>v.models.forEach(m=>allModels.push({vid:v.id,mid:m.id,veh:v,mdl:m,key:v.id+"__"+m.id})));
     const selBr=allModels.find(x=>brSel.includes(x.key));
     const doBrPrint=()=>{if(!selBr||!brRef.current)return;try{const w=window.open("","_blank");if(w){w.document.write('<!DOCTYPE html><html><head><title>'+selBr.mdl.name.replace("\n"," ")+' 특장 가격표</title><link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:"Pretendard Variable",sans-serif;background:#fff;color:#111;padding:24px 32px}table{border-collapse:collapse;width:100%}@media print{body{padding:10px}@page{margin:10mm;size:A4}}</style></head><body>'+brRef.current.innerHTML+'</body></html>');w.document.close();setTimeout(()=>w.print(),600);}}catch(e){}};
-    const doBrJpg=async()=>{if(!selBr||!brRef.current)return;try{showToast("\ud83d\udcf7 이미지 생성 중...");const isMob=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);const canvas=await html2canvas(brRef.current,{scale:2,useCORS:true,backgroundColor:"#ffffff",scrollX:0,scrollY:0,windowWidth:820});if(isMob){const dataUrl=canvas.toDataURL("image/jpeg",0.95);const w=window.open("","_blank");if(w){w.document.write('<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>가격표</title><style>body{margin:0;padding:16px;background:#f5f5f5;text-align:center}img{max-width:100%;border-radius:8px}p{margin-top:16px;font-family:sans-serif;font-size:14px;color:#666}</style></head><body><p>이미지를 길게 눌러 저장하세요</p><img src="'+dataUrl+'" /></body></html>');w.document.close();}}else{canvas.toBlob(blob=>{const link=document.createElement("a");link.download=selBr.mdl.name.replace("\n","_")+"_특장가격표.jpg";link.href=URL.createObjectURL(blob);link.click();showToast("\ud83d\udcf7 JPG가 저장되었습니다.");},"image/jpeg",0.95);}}catch(e){}};
+    const doBrJpg=async()=>{if(!selBr||!brRef.current)return;try{showToast("\ud83d\udcf7 이미지 생성 중...");const isMob=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);await window.loadH2C();const canvas=await html2canvas(brRef.current,{scale:2,useCORS:true,backgroundColor:"#ffffff",scrollX:0,scrollY:0,windowWidth:820});if(isMob){const dataUrl=canvas.toDataURL("image/jpeg",0.95);const w=window.open("","_blank");if(w){w.document.write('<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>가격표</title><style>body{margin:0;padding:16px;background:#f5f5f5;text-align:center}img{max-width:100%;border-radius:8px}p{margin-top:16px;font-family:sans-serif;font-size:14px;color:#666}</style></head><body><p>이미지를 길게 눌러 저장하세요</p><img src="'+dataUrl+'" /></body></html>');w.document.close();}}else{canvas.toBlob(blob=>{const link=document.createElement("a");link.download=selBr.mdl.name.replace("\n","_")+"_특장가격표.jpg";link.href=URL.createObjectURL(blob);link.click();showToast("\ud83d\udcf7 JPG가 저장되었습니다.");},"image/jpeg",0.95);}}catch(e){}};
     const CI=D.company;
     return(
     <div style={{minHeight:"100vh",background:"#f5f5f5",padding:"20px 14px",fontFamily:F}}>{toastEl}<FL />
@@ -1811,7 +1928,7 @@ function App(){
     const dateCell={...cs,textAlign:"center"};
     const fmtW=function(v){return v>0?fmt(v)+" 원정":"원정";};
     const doPrintCt=function(){try{var w=window.open("","_blank");if(w){w.document.write('<!DOCTYPE html><html><head><title>매매계약서</title><link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:"Pretendard Variable",sans-serif;background:#fff;color:#111}table{border-collapse:collapse;width:100%;table-layout:fixed}td{word-break:break-all;overflow:hidden}#wrap{padding:12px 16px}@media print{@page{margin:8mm;size:A4}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body><div id="wrap">'+ctRef.current.innerHTML+'</div><script>setTimeout(function(){var el=document.getElementById("wrap");var pH=277*3.78;var s=el.scrollHeight>pH?pH/el.scrollHeight:1;if(s<1)el.style.zoom=s;window.print();},800);<\/script></body></html>');w.document.close();}}catch(e){alert("인쇄 실패");}};
-    const doCtJpg=function(){try{showToast("📷 이미지 생성 중...");var el=ctRef.current;el.style.minWidth="820px";setTimeout(function(){html2canvas(el,{scale:2,useCORS:true,backgroundColor:"#ffffff",windowWidth:820}).then(function(canvas){el.style.minWidth="";var isMob=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);if(isMob){var du=canvas.toDataURL("image/jpeg",0.95);var w=window.open("","_blank");if(w){w.document.write('<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>계약서</title><style>body{margin:0;padding:16px;background:#f5f5f5;text-align:center}img{max-width:100%;border-radius:8px}p{margin-top:16px;font-size:14px;color:#666}</style></head><body><p>이미지를 길게 눌러 저장하세요</p><img src="'+du+'" /></body></html>');w.document.close();}}else{canvas.toBlob(function(blob){var link=document.createElement("a");link.download="계약서_"+(ctName||"contract")+"_"+yy+mm+dd+"_"+new Date().toISOString().slice(11,19).replace(/:/g,"")+".jpg";link.href=URL.createObjectURL(blob);link.click();showToast("📷 JPG 저장됨");},"image/jpeg",0.95);}});},100);}catch(e){alert("이미지 저장 실패");}};
+    const doCtJpg=function(){try{showToast("📷 이미지 생성 중...");var el=ctRef.current;el.style.minWidth="820px";setTimeout(function(){window.loadH2C().then(function(){return html2canvas(el,{scale:2,useCORS:true,backgroundColor:"#ffffff",windowWidth:820});}).then(function(canvas){el.style.minWidth="";var isMob=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);if(isMob){var du=canvas.toDataURL("image/jpeg",0.95);var w=window.open("","_blank");if(w){w.document.write('<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>계약서</title><style>body{margin:0;padding:16px;background:#f5f5f5;text-align:center}img{max-width:100%;border-radius:8px}p{margin-top:16px;font-size:14px;color:#666}</style></head><body><p>이미지를 길게 눌러 저장하세요</p><img src="'+du+'" /></body></html>');w.document.close();}}else{canvas.toBlob(function(blob){var link=document.createElement("a");link.download="계약서_"+(ctName||"contract")+"_"+yy+mm+dd+"_"+new Date().toISOString().slice(11,19).replace(/:/g,"")+".jpg";link.href=URL.createObjectURL(blob);link.click();showToast("📷 JPG 저장됨");},"image/jpeg",0.95);}});},100);}catch(e){alert("이미지 저장 실패");}};
     const phoneFormat=function(v,setter){var d=v.replace(/[^0-9]/g,"").slice(0,11);if(d.length<=3)setter(d);else if(d.length<=7)setter(d.slice(0,3)+"-"+d.slice(3));else setter(d.slice(0,3)+"-"+d.slice(3,7)+"-"+d.slice(7));};
     return(<div style={{minHeight:"100vh",background:"#f5f5f5",padding:"20px 14px",fontFamily:F}}>{toastEl}<FL /><div style={{maxWidth:820,margin:"0 auto"}}>
       <div className="resp-btn-wrap" style={{display:"flex",gap:8,marginBottom:16,flexWrap:"wrap"}}><button onClick={()=>setStep(2)} style={bL}>← 견적서로</button><button onClick={doPrintCt} style={{background:"#1a1a1a",color:"#fff",border:"none",padding:"9px 20px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>🖨️ PDF 출력</button><button onClick={doCtJpg} style={{background:"#2563EB",color:"#fff",border:"none",padding:"9px 20px",borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:800}}>📷 JPG 저장</button><button onClick={resetAll} style={bL}>처음으로</button></div>
@@ -1984,7 +2101,7 @@ function TC({t,sel,oc}){return(<div onClick={oc} style={{padding:"10px 12px",bor
 function OR({it,ck,tg,lk,sd}){const neg=it.price<0;return(<div onClick={lk?undefined:tg} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 8px",borderRadius:6,cursor:lk?"default":"pointer",background:ck?(neg?"#FEF2F2":"#fafafa"):"transparent",marginBottom:2}}><div style={{width:15,height:15,borderRadius:3,flexShrink:0,border:ck?(neg?"2px solid #ef4444":"2px solid #1a1a1a"):"2px solid #aaa",background:ck?(neg?"#ef4444":"#1a1a1a"):"transparent",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#fff",fontWeight:900}}>{ck&&"✓"}</div><div style={{flex:1,minWidth:0}}><div style={{fontSize:13,fontWeight:600,color:ck?(neg?"#ef4444":"#1a1a1a"):"#555"}}>{it.name}</div>{sd&&it.desc&&<div style={{fontSize:11.5,color:"#888",marginTop:1,lineHeight:1.3}}>{it.desc}</div>}</div><div style={{textAlign:"right",flexShrink:0}}>{it.originalPrice>0&&<div style={{fontSize:11,color:"#999",textDecoration:"line-through"}}>{fmt(it.originalPrice)}</div>}<div style={{fontSize:13.5,fontWeight:700,color:neg?(ck?"#ef4444":"#e88"):(ck?"#1a1a1a":"#888")}}>{fmt(it.price)}원</div></div></div>);}
 function SL({l,v,d}){return(<div style={{display:"flex",justifyContent:"space-between",padding:"4px 0",fontSize:16}}><span style={{color:"#666"}}>{l}</span><span style={{color:d?"#ef4444":"#333",fontWeight:600}}>{d&&"-"}{fmt(Math.abs(v))}원</span></div>);}
 function PH({t,c,mt}){return(<div style={{display:"flex",alignItems:"center",gap:6,padding:"6px 0 4px",marginTop:mt||0}}><div style={{width:4,height:12,borderRadius:2,background:c}} /><div style={{fontSize:15,fontWeight:900,color:"#333"}}>{t}</div><div style={{flex:1,height:1,background:"#eee"}} /></div>);}
-function IB({l,a,b,c}){return(<div style={{background:"#fafafa",borderRadius:4,padding:"9px 12px",border:"1px solid #f0f0f0"}}><div style={{fontSize:12,color:GD,letterSpacing:2,marginBottom:4,fontWeight:700}}>{l}</div><div style={{fontSize:16,fontWeight:700,color:"#1a1a1a"}}>{a}</div><div style={{fontSize:14,color:"#999",marginTop:1}}>{b}</div>{c&&<div style={{fontSize:13,color:"#888",marginTop:2}}>{c}</div>}</div>);}
+function IB({l,a,b,c}){return(<div style={{background:"#FEF2F2",borderRadius:6,padding:"10px 14px",border:"2px solid #DC2626",boxShadow:"0 1px 4px rgba(220,38,38,0.08)"}}><div style={{fontSize:11,color:"#DC2626",letterSpacing:2,marginBottom:5,fontWeight:800}}>{l}</div><div style={{fontSize:16,fontWeight:800,color:"#1a1a1a"}}>{a}</div><div style={{fontSize:14,color:"#1a1a1a",fontWeight:600,marginTop:2}}>{b}</div>{c&&<div style={{fontSize:13,color:"#444",fontWeight:500,marginTop:2}}>{c}</div>}</div>);}
 function Th({children,w,a="center"}){return<th style={{padding:"6px 10px",textAlign:a,fontSize:15.5,fontWeight:700,color:"#777",width:w}}>{children}</th>;}
 function Td({children,a="left",b,c,s,m}){return<td style={{padding:"6px 10px",textAlign:a,fontSize:s?s+2:12.5,fontWeight:b?700:400,color:c||"#333",fontVariantNumeric:m?"tabular-nums":undefined}}>{children}</td>;}
 function EP({id,price,origPrice,qty,override,setOverride}){
