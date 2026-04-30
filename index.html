@@ -729,24 +729,10 @@ function App(){
       </div>
       <nav style={{flex:1,padding:"14px 0"}}>
         {[
-          {label:"HOME",isHeader:true},
-          {label:"메인 대시보드",icon:"📊",onClick:()=>{setMainMenu(null);setUsedSub(null);setStep(0);setSideOpen(false);},match:step===0&&!mainMenu},
+          {label:"전체 메뉴 보기 (HOME)",icon:"🏠",onClick:()=>{setMainMenu(null);setUsedSub(null);setStep(0);setSideOpen(false);},match:step===0&&!mainMenu,emphasize:true},
           {label:"업무 모듈",isHeader:true},
           {label:"견적 프로그램",icon:"📋",code:"#1E40AF",onClick:()=>{setMainMenu("quote");setUsedSub(null);setStep(0);setSideOpen(false);},match:step===0&&mainMenu==="quote"},
-          ...D.vehicles.map(v=>({label:"  · "+v.name,sub:true,onClick:()=>{
-            const m=v.models[0];if(!m)return;
-            setSV(v.id);setSM(m.id);setST(null);
-            setSSO(v.commonSpecial.filter(o=>o.required).map(o=>o.id));
-            setSBO([]);setSTO([]);setSMO([]);setMoQty({});
-            setSelColor(null);setSelIntColor(null);setSelSeatColor(null);
-            setTrimTab(v.id==="ch_santafe"?"sf_g":"all");
-            setDisc(0);
-            setCust([{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false}]);
-            setStep(1);setSideOpen(false);
-          },match:false})),
           {label:"중고차 업무",icon:"🚗",code:"#059669",onClick:()=>{setMainMenu("used");setUsedSub(null);setStep(0);setSideOpen(false);},match:step===0&&mainMenu==="used"&&!usedSub},
-          {label:"  · 차량구입 견적서",sub:true,onClick:()=>{setMainMenu("used");setUsedSub("quotation");setStep(0);setSideOpen(false);},match:step===0&&usedSub==="quotation"},
-          {label:"  · 취·등록세 계산",sub:true,onClick:()=>{setMainMenu("used");setUsedSub("tax");setStep(0);setSideOpen(false);},match:step===0&&usedSub==="tax"},
           {label:"가격표 편집",icon:"💰",code:"#7C3AED",onClick:()=>{setAutoOpenPL(null);setStep(7);setSideOpen(false);},match:step===7},
           {label:"브로셔 출력",icon:"📄",code:"#EA580C",onClick:()=>{const all=[];D.vehicles.forEach(v=>v.models.forEach(m=>all.push(v.id+"__"+m.id)));setBrSel(all);setStep(4);setSideOpen(false);},match:step===4},
           {label:"기록",isHeader:true},
@@ -754,13 +740,14 @@ function App(){
           {label:"시스템",isHeader:true},
           {label:"관리자 모드",icon:"🔒",onClick:()=>{setAA(false);setAP("");setAE(false);setStep(3);setSideOpen(false);},match:step===3},
         ].map((item,i)=>{
-          if(item.isHeader)return(<div key={i} style={{padding:"14px 18px 6px",fontSize:9,fontWeight:800,color:"#64748B",letterSpacing:2}}>{item.label}</div>);
+          if(item.isHeader)return(<div key={i} style={{padding:"16px 18px 6px",fontSize:11,fontWeight:800,color:"#94A3B8",letterSpacing:2.5,textTransform:"uppercase"}}>{item.label}</div>);
           const isActive=!!item.match;
+          const emp=item.emphasize;
           return(<button key={i} onClick={item.onClick}
-            style={{width:"100%",background:isActive?"#1E40AF":"transparent",border:"none",color:isActive?"#fff":"#CBD5E1",padding:item.sub?"6px 18px 6px 32px":"9px 18px",fontSize:item.sub?11:12.5,fontWeight:item.sub?500:700,textAlign:"left",cursor:"pointer",display:"flex",alignItems:"center",gap:8,borderLeft:item.code?`3px solid ${item.code}`:"3px solid transparent",fontFamily:"inherit",transition:"background 0.1s"}}
-            onMouseEnter={e=>{if(!isActive)e.currentTarget.style.background="#1E293B";}}
-            onMouseLeave={e=>{if(!isActive)e.currentTarget.style.background="transparent";}}>
-            {item.icon&&<span style={{fontSize:item.sub?10:13}}>{item.icon}</span>}
+            style={{width:"100%",background:isActive?"#1E40AF":(emp?"rgba(59,130,246,0.12)":"transparent"),border:"none",color:isActive?"#fff":(emp?"#fff":"#CBD5E1"),padding:item.sub?"6px 18px 6px 32px":(emp?"12px 18px":"9px 18px"),fontSize:item.sub?11:(emp?13.5:12.5),fontWeight:item.sub?500:(emp?900:700),textAlign:"left",cursor:"pointer",display:"flex",alignItems:"center",gap:8,borderLeft:item.code?`3px solid ${item.code}`:(emp?"3px solid #3B82F6":"3px solid transparent"),fontFamily:"inherit",transition:"background 0.1s",letterSpacing:emp?0.3:0,marginBottom:emp?6:0}}
+            onMouseEnter={e=>{if(!isActive)e.currentTarget.style.background=emp?"rgba(59,130,246,0.22)":"#1E293B";}}
+            onMouseLeave={e=>{if(!isActive)e.currentTarget.style.background=emp?"rgba(59,130,246,0.12)":"transparent";}}>
+            {item.icon&&<span style={{fontSize:item.sub?10:(emp?15:13)}}>{item.icon}</span>}
             <span>{item.label}</span>
           </button>);
         })}
@@ -1151,22 +1138,55 @@ function App(){
           </div>
 
           <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:14,marginBottom:28}}>
-            {[
-              {id:"quote",code:"QT-01",name:"견적 프로그램",desc:"카니발 · PV5 · CHALLENGER 특장차량 견적 작성 및 계약서",tag:"QUOTE",color:"#1E40AF",click:()=>setMainMenu("quote")},
-              {id:"used",code:"UC-02",name:"중고차 업무",desc:"차량구입 견적서 · 취·등록세 이전비 계산기",tag:"USED",color:"#059669",click:()=>setMainMenu("used")},
-              {id:"price",code:"PL-03",name:"가격표 편집",desc:"PV5 카고 · 패신저 특장 가격표 편집 · 인쇄",tag:"PRICE",color:"#7C3AED",click:()=>setStep(7)},
-              {id:"brochure",code:"BR-04",name:"브로셔 출력",desc:"차량별 특장 가격 브로셔 일괄 출력",tag:"BROCHURE",color:"#EA580C",click:()=>{const all=[];D.vehicles.forEach(v=>v.models.forEach(m=>all.push(v.id+"__"+m.id)));setBrSel(all);setStep(4);}},
-            ].map(m=>(<div key={m.id} onClick={m.click} style={{background:"#fff",border:"1px solid #E2E8F0",borderRadius:6,padding:"18px 20px",cursor:"pointer",transition:"all 0.15s",position:"relative",overflow:"hidden"}} onMouseEnter={e=>{e.currentTarget.style.borderColor=m.color;e.currentTarget.style.boxShadow=`0 4px 12px rgba(0,0,0,0.06)`;e.currentTarget.style.transform="translateY(-1px)";}} onMouseLeave={e=>{e.currentTarget.style.borderColor="#E2E8F0";e.currentTarget.style.boxShadow="none";e.currentTarget.style.transform="none";}}>
+            {(()=>{
+              /* 견적 프로그램 서브 = 모든 차량의 모든 모델 목록 */
+              const quoteSubs=[];
+              D.vehicles.forEach(v=>{
+                v.models.forEach(m=>{
+                  quoteSubs.push({
+                    name:m.name.replace(/\n/g," "),
+                    badge:v.badge||v.name,
+                    onClick:e=>{
+                      e.stopPropagation();
+                      setSV(v.id);setSM(m.id);setST(null);
+                      setSSO(v.commonSpecial.filter(o=>o.required).map(o=>o.id));
+                      setSBO([]);setSTO([]);setSMO([]);setMoQty({});
+                      setSelColor(null);setSelIntColor(null);setSelSeatColor(null);
+                      setTrimTab(v.id==="ch_santafe"?"sf_g":"all");
+                      setDisc(0);
+                      setCust([{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false},{n:"",p:0,on:false}]);
+                      setStep(1);
+                    }
+                  });
+                });
+              });
+              return [
+                {id:"quote",code:"QT-01",name:"견적 프로그램",desc:"카니발 · PV5 · CHALLENGER 특장차량 견적 작성 및 계약서",tag:"QUOTE",color:"#1E40AF",click:()=>setMainMenu("quote"),subs:quoteSubs},
+                {id:"used",code:"UC-02",name:"중고차 업무",desc:"차량구입 견적서 · 취·등록세 이전비 계산기",tag:"USED",color:"#059669",click:()=>setMainMenu("used"),subs:[
+                  {name:"차량구입 견적서",onClick:e=>{e.stopPropagation();setMainMenu("used");setUsedSub("quotation");}},
+                  {name:"취·등록세 계산",onClick:e=>{e.stopPropagation();setMainMenu("used");setUsedSub("tax");}},
+                ]},
+                {id:"price",code:"PL-03",name:"가격표 편집",desc:"PV5 · 카니발 · 챌린저 가격표 편집 · 인쇄",tag:"PRICE",color:"#7C3AED",click:()=>{setAutoOpenPL(null);setStep(7);},subs:null},
+                {id:"brochure",code:"BR-04",name:"브로셔 출력",desc:"차량별 특장 가격 브로셔 일괄 출력",tag:"BROCHURE",color:"#EA580C",click:()=>{const all=[];D.vehicles.forEach(v=>v.models.forEach(m=>all.push(v.id+"__"+m.id)));setBrSel(all);setStep(4);},subs:null},
+              ];
+            })().map(m=>(<div key={m.id} onClick={m.click} style={{background:"#fff",border:"1px solid #E2E8F0",borderRadius:6,padding:"18px 20px",cursor:"pointer",transition:"all 0.15s",position:"relative",overflow:"hidden",display:"flex",flexDirection:"column"}} onMouseEnter={e=>{e.currentTarget.style.borderColor=m.color;e.currentTarget.style.boxShadow=`0 4px 12px rgba(0,0,0,0.06)`;e.currentTarget.style.transform="translateY(-1px)";}} onMouseLeave={e=>{e.currentTarget.style.borderColor="#E2E8F0";e.currentTarget.style.boxShadow="none";e.currentTarget.style.transform="none";}}>
               <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:m.color}}></div>
               <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}>
                 <div style={{fontSize:10,fontWeight:800,color:m.color,letterSpacing:2,fontFamily:"monospace"}}>{m.code}</div>
                 <div style={{fontSize:9,fontWeight:700,letterSpacing:1,color:m.color,background:m.color+"15",padding:"2px 6px",borderRadius:3}}>{m.tag}</div>
               </div>
               <div style={{fontSize:16,fontWeight:800,color:"#0F172A",marginBottom:6}}>{m.name}</div>
-              <div style={{fontSize:12,color:"#64748B",lineHeight:1.5,marginBottom:14,minHeight:36}}>{m.desc}</div>
+              <div style={{fontSize:12,color:"#64748B",lineHeight:1.5,marginBottom:m.subs?10:14}}>{m.desc}</div>
+              {m.subs&&<div style={{borderTop:"1px solid #F1F5F9",paddingTop:8,marginBottom:10,flex:1,maxHeight:200,overflowY:"auto"}}>
+                {m.subs.map((s,si)=>(<div key={si} onClick={s.onClick} style={{padding:"6px 8px",fontSize:12,color:"#475569",cursor:"pointer",borderRadius:4,display:"flex",alignItems:"center",gap:6,fontWeight:500}} onMouseEnter={e=>{e.currentTarget.style.background=m.color+"10";e.currentTarget.style.color=m.color;}} onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.color="#475569";}}>
+                  <span style={{fontSize:9,color:m.color}}>▸</span>
+                  {s.badge&&<span style={{fontSize:9,fontWeight:700,letterSpacing:1,color:m.color,background:m.color+"15",padding:"1px 5px",borderRadius:2,minWidth:62,textAlign:"center"}}>{s.badge}</span>}
+                  <span style={{flex:1}}>{s.name}</span>
+                </div>))}
+              </div>}
               <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",paddingTop:10,borderTop:"1px solid #F1F5F9"}}>
                 <span style={{fontSize:11,color:"#94A3B8",fontWeight:600}}>ACTIVE</span>
-                <span style={{fontSize:12,color:m.color,fontWeight:700}}>열기 →</span>
+                <span style={{fontSize:12,color:m.color,fontWeight:700}}>{m.subs?"전체 보기 →":"열기 →"}</span>
               </div>
             </div>))}
           </div>
