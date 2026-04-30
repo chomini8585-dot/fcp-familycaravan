@@ -360,7 +360,7 @@ function App(){
   /* 중고차 수익 관리 (UC-02-C) */
   const[profitList,setProfitList]=useState([]);const[profitLoading,setProfitLoading]=useState(false);const[showProfitTrash,setShowProfitTrash]=useState(false);
   const[profitFormOpen,setProfitFormOpen]=useState(false);const[editingProfitId,setEditingProfitId]=useState(null);const[expandedProfitId,setExpandedProfitId]=useState(null);
-  const PROFIT_BLANK={saleType:"purchase",customerName:"",plate:"",vehicleName:"",buyPrice:0,sellPrice:0,brokerFee:0,installmentFee:0,costs:[{label:"탁송",amount:0},{label:"정비",amount:0},{label:"광택",amount:0},{label:"기타",amount:0}],memo:""};
+  const PROFIT_BLANK={saleType:"purchase",customerName:"",plate:"",vehicleName:"",buyPrice:0,sellPrice:0,brokerFee:0,installmentFee:0,saleFee:0,costs:[{label:"탁송",amount:0},{label:"정비",amount:0},{label:"광택",amount:0},{label:"기타",amount:0}],memo:""};
   const[profitForm,setProfitForm]=useState(PROFIT_BLANK);
   const saveQuote=()=>{const veh=D.vehicles.find(v=>v.id===sV);const mdl=veh&&veh.models?veh.models.find(m=>m.id===sM):null;const trm=veh&&veh.trims?veh.trims.find(t=>t.id===sT):null;const data={customerName:cN||"미입력",customerPhone:cP||"",customerAddr:cAddr||"",vehicle:veh?veh.name:"",model:mdl?mdl.name:"",trim:trm?trm.name:"",total:tot(),vehicleTotal:vS(),specialTotal:sS(),discount:disc,note:cNo||"",createdAtLocal:new Date().toISOString()};return window.db.collection("quotes").add(data);};
   const doSaveQuote=()=>{if(!window.db){alert("Firebase 미연결");return;}saveQuote().then(()=>{alert("✅ 견적이 저장되었습니다!");loadQuotes();setStep(5);}).catch((e)=>{alert("❌ 저장 실패: "+e.message);});};
@@ -409,7 +409,7 @@ function App(){
   const calcProfit=(p)=>{
     var haba=(p.sellPrice||0)-(p.buyPrice||0);
     var costSum=(p.costs||[]).reduce(function(a,c){return a+(Number(c.amount)||0);},0);
-    var profit=(p.brokerFee||0)+(p.installmentFee||0)+haba-costSum;
+    var profit=(p.brokerFee||0)+(p.installmentFee||0)+(p.saleFee||0)+haba-costSum;
     return {haba:haba,costSum:costSum,profit:profit};
   };
   const loadProfits=()=>{if(!window.db)return;setProfitLoading(true);
@@ -433,7 +433,7 @@ function App(){
     window.db.collection("uc_profits").doc(id).delete()
     .then(()=>{setProfitList(p=>p.filter(q=>q.id!==id));showToast("❌ 영구 삭제됨");}).catch(e=>{console.error("[permaDeleteProfit]",e);showToast("삭제 실패");});};
   const editProfit=(p)=>{
-    setProfitForm({saleType:p.saleType||"purchase",customerName:p.customerName||"",plate:p.plate||"",vehicleName:p.vehicleName||"",buyPrice:p.buyPrice||0,sellPrice:p.sellPrice||0,brokerFee:p.brokerFee||0,installmentFee:p.installmentFee||0,costs:p.costs&&p.costs.length===4?p.costs:PROFIT_BLANK.costs,memo:p.memo||""});
+    setProfitForm({saleType:p.saleType||"purchase",customerName:p.customerName||"",plate:p.plate||"",vehicleName:p.vehicleName||"",buyPrice:p.buyPrice||0,sellPrice:p.sellPrice||0,brokerFee:p.brokerFee||0,installmentFee:p.installmentFee||0,saleFee:p.saleFee||0,costs:p.costs&&p.costs.length===4?p.costs:PROFIT_BLANK.costs,memo:p.memo||""});
     setEditingProfitId(p.id);setProfitFormOpen(true);
   };
 
@@ -1143,6 +1143,7 @@ function App(){
              const totalHaba=visibleProfits.reduce((a,p)=>a+(p.haba||0),0);
              const totalBroker=visibleProfits.reduce((a,p)=>a+(p.brokerFee||0),0);
              const totalInstallment=visibleProfits.reduce((a,p)=>a+(p.installmentFee||0),0);
+             const totalSaleFee=visibleProfits.reduce((a,p)=>a+(p.saleFee||0),0);
              const totalCosts=visibleProfits.reduce((a,p)=>a+(p.costSum||0),0);
              const formCalc=calcProfit(profitForm);
              const onProfitNum=(k)=>(e)=>setProfitForm(f=>({...f,[k]:Number(String(e.target.value).replace(/[^0-9-]/g,""))||0}));
@@ -1179,7 +1180,7 @@ function App(){
               <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))",gap:10,marginBottom:18}}>
                 <StatCard label="거래 건수" value={visibleProfits.length+"건"} />
                 <StatCard label="하바 합계" value={fmt(totalHaba)+"원"} />
-                <StatCard label="알선 + 할부" value={fmt(totalBroker+totalInstallment)+"원"} />
+                <StatCard label="알선+할부+매도" value={fmt(totalBroker+totalInstallment+totalSaleFee)+"원"} />
                 <StatCard label="비용 합계" value={fmt(totalCosts)+"원"} tone="#DC2626" />
                 <StatCard label={showProfitTrash?"휴지통 이익":"총 이익"} value={fmt(totalProfit)+"원"} tone={totalProfit>=0?"#15803D":"#DC2626"} />
               </div>
@@ -1208,6 +1209,7 @@ function App(){
                     <th style={{...thSt,textAlign:"right"}}>하바</th>
                     <th style={{...thSt,textAlign:"right"}}>알선</th>
                     <th style={{...thSt,textAlign:"right"}}>할부</th>
+                    <th style={{...thSt,textAlign:"right"}}>매도비</th>
                     <th style={{...thSt,textAlign:"right"}}>비용</th>
                     <th style={{...thSt,textAlign:"right"}}>이익</th>
                     <th style={{...thSt,textAlign:"right",width:140}}></th>
@@ -1216,7 +1218,7 @@ function App(){
                     const dt=p.createdAtLocal?new Date(p.createdAtLocal):null;
                     const ds=dt?(dt.getFullYear().toString().slice(2)+"."+String(dt.getMonth()+1).padStart(2,"0")+"."+String(dt.getDate()).padStart(2,"0")):"";
                     const isExpanded=expandedProfitId===p.id;
-                    const seqNum=visibleProfits.length-idx;
+                    const seqNum=idx+1;
                     return (<React.Fragment key={p.id}>
                       <tr onClick={()=>setExpandedProfitId(isExpanded?null:p.id)} style={{cursor:"pointer",background:isExpanded?"#FAFAFE":"transparent",transition:"background .12s"}} onMouseEnter={e=>{if(!isExpanded)e.currentTarget.style.background="#FAFBFC";}} onMouseLeave={e=>{if(!isExpanded)e.currentTarget.style.background="transparent";}}>
                         <td style={{...tdSt,textAlign:"center",fontWeight:600,color:NEUTRAL.muted,fontVariantNumeric:"tabular-nums"}}>{seqNum}</td>
@@ -1230,6 +1232,7 @@ function App(){
                         <td style={{...tdSt,textAlign:"right",fontVariantNumeric:"tabular-nums",fontWeight:600,color:(p.haba||0)>=0?"#15803D":"#DC2626"}}>{fmt(p.haba||0)}</td>
                         <td style={{...tdSt,textAlign:"right",fontVariantNumeric:"tabular-nums",color:NEUTRAL.sub}}>{fmt(p.brokerFee||0)}</td>
                         <td style={{...tdSt,textAlign:"right",fontVariantNumeric:"tabular-nums",color:NEUTRAL.sub}}>{fmt(p.installmentFee||0)}</td>
+                        <td style={{...tdSt,textAlign:"right",fontVariantNumeric:"tabular-nums",color:NEUTRAL.sub}}>{fmt(p.saleFee||0)}</td>
                         <td style={{...tdSt,textAlign:"right",fontVariantNumeric:"tabular-nums",color:"#DC2626"}}>{fmt(p.costSum||0)}</td>
                         <td style={{...tdSt,textAlign:"right",fontVariantNumeric:"tabular-nums",fontWeight:700,fontSize:14,color:(p.profit||0)>=0?"#15803D":"#DC2626"}}>{fmt(p.profit||0)}</td>
                         <td style={{...tdSt,textAlign:"right",whiteSpace:"nowrap"}}>{showProfitTrash?
@@ -1243,7 +1246,7 @@ function App(){
                           </span>
                         }</td>
                       </tr>
-                      {isExpanded&&<tr><td colSpan="14" style={{background:"#FAFBFE",padding:"20px 24px",borderBottom:"1px solid "+NEUTRAL.bdSoft}}>
+                      {isExpanded&&<tr><td colSpan="15" style={{background:"#FAFBFE",padding:"20px 24px",borderBottom:"1px solid "+NEUTRAL.bdSoft}}>
                         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:14,marginBottom:14}}>
                           <div><div style={lblSt}>고객명</div><div style={{fontSize:14,fontWeight:600,color:NEUTRAL.text}}>{p.customerName||"—"}</div></div>
                           <div><div style={lblSt}>판매 구분</div><div><Chip type={p.saleType} /></div></div>
@@ -1257,6 +1260,7 @@ function App(){
                           <div style={{padding:"12px 14px",background:"#fff",borderRadius:10,border:"1px solid "+NEUTRAL.bd}}><div style={lblSt}>하바</div><div style={{fontSize:15,fontWeight:700,fontVariantNumeric:"tabular-nums",color:(p.haba||0)>=0?"#15803D":"#DC2626"}}>{fmt(p.haba||0)}원</div></div>
                           <div style={{padding:"12px 14px",background:"#fff",borderRadius:10,border:"1px solid "+NEUTRAL.bd}}><div style={lblSt}>알선수수료</div><div style={{fontSize:15,fontWeight:600,fontVariantNumeric:"tabular-nums",color:NEUTRAL.text}}>{fmt(p.brokerFee||0)}원</div></div>
                           <div style={{padding:"12px 14px",background:"#fff",borderRadius:10,border:"1px solid "+NEUTRAL.bd}}><div style={lblSt}>할부수수료</div><div style={{fontSize:15,fontWeight:600,fontVariantNumeric:"tabular-nums",color:NEUTRAL.text}}>{fmt(p.installmentFee||0)}원</div></div>
+                          <div style={{padding:"12px 14px",background:"#fff",borderRadius:10,border:"1px solid "+NEUTRAL.bd}}><div style={lblSt}>매도비</div><div style={{fontSize:15,fontWeight:600,fontVariantNumeric:"tabular-nums",color:NEUTRAL.text}}>{fmt(p.saleFee||0)}원</div></div>
                         </div>
                         <div style={{padding:"14px 16px",background:"#fff",borderRadius:10,border:"1px solid "+NEUTRAL.bd,marginBottom:14}}>
                           <div style={{...lblSt,marginBottom:10}}>비용 내역</div>
@@ -1267,7 +1271,7 @@ function App(){
                         </div>
                         {p.memo&&<div style={{padding:"12px 14px",background:"#FFFBEB",borderRadius:10,border:"1px solid #FDE68A",fontSize:13,color:"#78350F",marginBottom:14,whiteSpace:"pre-wrap",lineHeight:1.5}}><span style={{...lblSt,color:"#92400E",display:"block",marginBottom:4}}>메모</span>{p.memo}</div>}
                         <div style={{padding:"14px 18px",background:(p.profit||0)>=0?"#F0FDF4":"#FEF2F2",borderRadius:10,border:"1px solid "+((p.profit||0)>=0?"#86EFAC":"#FCA5A5"),display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                          <div style={{fontSize:11,color:NEUTRAL.sub,letterSpacing:0.4,textTransform:"uppercase",fontWeight:600}}>이익 = 알선 + 할부 + 하바 − 비용</div>
+                          <div style={{fontSize:11,color:NEUTRAL.sub,letterSpacing:0.4,textTransform:"uppercase",fontWeight:600}}>이익 = 알선 + 할부 + 매도비 + 하바 − 비용</div>
                           <div style={{fontSize:20,fontWeight:700,fontVariantNumeric:"tabular-nums",color:(p.profit||0)>=0?"#15803D":"#DC2626"}}>{fmt(p.profit||0)}원</div>
                         </div>
                       </td></tr>}
@@ -1277,7 +1281,7 @@ function App(){
                 </div>
               </div>}
               {/* 등록·수정 모달 */}
-              {profitFormOpen&&<div style={{position:"fixed",inset:0,background:"rgba(15,23,42,0.45)",backdropFilter:"blur(2px)",display:"flex",alignItems:"center",justifyContent:"center",padding:16,zIndex:9999}} onClick={e=>{if(e.target===e.currentTarget){setProfitFormOpen(false);setEditingProfitId(null);}}}>
+              {profitFormOpen&&<div style={{position:"fixed",inset:0,background:"rgba(15,23,42,0.45)",backdropFilter:"blur(2px)",display:"flex",alignItems:"center",justifyContent:"center",padding:16,zIndex:9999}}>
                 <div style={{background:"#fff",borderRadius:14,maxWidth:680,width:"100%",maxHeight:"92vh",overflowY:"auto",boxShadow:"0 24px 80px rgba(0,0,0,0.18)",border:"1px solid "+NEUTRAL.bd}}>
                   <div style={{padding:"20px 24px",borderBottom:"1px solid "+NEUTRAL.bd,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                     <div>
@@ -1306,9 +1310,10 @@ function App(){
                       <div><div style={lblSt}>판매가 (원)</div><input type="text" inputMode="numeric" value={fmt(profitForm.sellPrice||0)} onChange={onProfitNum("sellPrice")} style={{...inSt,textAlign:"right",fontVariantNumeric:"tabular-nums"}} /></div>
                       <div><div style={lblSt}>하바 (자동)</div><div style={{...inSt,background:NEUTRAL.bg,textAlign:"right",fontWeight:700,color:formCalc.haba>=0?"#15803D":"#DC2626",fontVariantNumeric:"tabular-nums"}}>{fmt(formCalc.haba)}</div></div>
                     </div>
-                    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:14}}>
+                    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:14}}>
                       <div><div style={lblSt}>알선수수료 (원)</div><input type="text" inputMode="numeric" value={fmt(profitForm.brokerFee||0)} onChange={onProfitNum("brokerFee")} style={{...inSt,textAlign:"right",fontVariantNumeric:"tabular-nums"}} /></div>
                       <div><div style={lblSt}>할부수수료 (원)</div><input type="text" inputMode="numeric" value={fmt(profitForm.installmentFee||0)} onChange={onProfitNum("installmentFee")} style={{...inSt,textAlign:"right",fontVariantNumeric:"tabular-nums"}} /></div>
+                      <div><div style={lblSt}>매도비 (원)</div><input type="text" inputMode="numeric" value={fmt(profitForm.saleFee||0)} onChange={onProfitNum("saleFee")} style={{...inSt,textAlign:"right",fontVariantNumeric:"tabular-nums"}} /></div>
                     </div>
                     <div style={{padding:"14px 16px",background:NEUTRAL.bg,borderRadius:10,border:"1px solid "+NEUTRAL.bd,marginBottom:14}}>
                       <div style={{...lblSt,marginBottom:10}}>비용 (4칸 — 라벨 자유 편집)</div>
